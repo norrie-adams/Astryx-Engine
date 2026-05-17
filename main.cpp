@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Shader.h"
+#include "Mesh.h"
 
 // Vertex shader
 const char* vertexShaderSource = R"(
@@ -34,7 +35,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Engine v0.1", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Astryx Engine", NULL, NULL);
     glfwMakeContextCurrent(window);
 
     // GLAD
@@ -51,22 +52,9 @@ int main()
          0.0f,  0.5f, 0.0f
     };
 
-    // VAO/VBO
-    unsigned int VAO, VBO;
-
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // SHADER OBJECT (your new system)
+    // SHADER OBJECT
     Shader shader(vertexShaderSource, fragmentShaderSource);
+    Mesh triangle(vertices, 9);
 
     // LOOP
     while (!glfwWindowShouldClose(window))
@@ -75,9 +63,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.use();
-
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        triangle.draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
