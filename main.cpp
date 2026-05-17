@@ -54,7 +54,7 @@ int main()
 
     // SHADER OBJECT
     Shader shader(vertexShaderSource, fragmentShaderSource);
-    Mesh triangle(vertices, 9);
+    Mesh triangle(vertices, sizeof(vertices));
 
     // LOOP
     while (!glfwWindowShouldClose(window))
