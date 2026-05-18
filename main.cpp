@@ -27,6 +27,12 @@ void main()
 }
 )";
 
+struct Transform {
+    float x = 0;
+    float y = 0;
+    float z = 0;
+};
+
 int main()
 {
     // GLFW
