@@ -33,6 +33,19 @@ struct Transform {
     float z = 0;
 };
 
+class GameObject {
+    public:
+        Mesh mesh;
+        Transform transform;
+
+        void draw(Shader& shader) {
+            shader.use();
+
+
+            mesh.draw();
+        }
+};
+
 int main()
 {
     // GLFW
