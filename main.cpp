@@ -85,6 +85,18 @@ int main()
     Shader shader(vertexShaderSource, fragmentShaderSource);
     GameObject triangle(vertices, sizeof(vertices));
 
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+    triangle.transform.x += 0.01f;
+
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    triangle.transform.x -= 0.01f;
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    triangle.transform.y += 0.01f;
+
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    triangle.transform.y -= 0.01f;
+
     // LOOP
     while (!glfwWindowShouldClose(window))
     {
