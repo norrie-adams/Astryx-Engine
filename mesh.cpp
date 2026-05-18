@@ -13,11 +13,11 @@ Mesh::Mesh(float* vertices, unsigned int vertexCount)
     glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(float), vertices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
+    glEnableVertexAttribArray(0);
 }
 
 void Mesh::draw()
 {
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, count / 3);
+    glDrawArrays(GL_TRIANGLES, 0, count / 3); 
 }

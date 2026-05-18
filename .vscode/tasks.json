@@ -1,0 +1,28 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Engine",
+      "type": "shell",
+      "command": "g++",
+        "args": [
+            "main.cpp",
+            "Shader.cpp",
+            "Mesh.cpp",
+            "src/glad.c",
+            "-Iinclude",
+            "-Llib",
+            "-lglfw3",
+            "-lopengl32",
+            "-lgdi32",
+            "-o",
+            "engine.exe"
+        ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
