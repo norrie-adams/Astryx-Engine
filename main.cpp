@@ -8,13 +8,15 @@
 // Vertex shader
 const char* vertexShaderSource = R"(
 #version 330 core
+
 layout (location = 0) in vec3 aPos;
+
+uniform vec3 uPos;
 
 void main()
 {
-    gl_Position = vec4(aPos, 1.0);
-}
-)";
+    gl_Position = vec4(aPos + uPos, 1.0);
+})";
 
 // Fragment shader
 const char* fragmentShaderSource = R"(
@@ -38,9 +40,17 @@ class GameObject {
         Mesh mesh;
         Transform transform;
 
-        void draw(Shader& shader) {
-            shader.use();
+        GameObject(float* vertices, unsigned int size)
+            : mesh(vertices, size) {}
 
+        void draw(Shader& shader) {
+
+            glUniform3f(
+                shader.getUniform("uPos"),
+                transform.x,
+                transform.y,
+                transform.z
+            );
 
             mesh.draw();
         }
@@ -73,7 +83,7 @@ int main()
 
     // SHADER OBJECT
     Shader shader(vertexShaderSource, fragmentShaderSource);
-    Mesh triangle(vertices, sizeof(vertices));
+    GameObject triangle(vertices, sizeof(vertices));
 
     // LOOP
     while (!glfwWindowShouldClose(window))
@@ -82,7 +92,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.use();
-        triangle.draw();
+        triangle.draw(shader);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
