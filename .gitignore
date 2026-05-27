@@ -1,2 +1,15 @@
-external/
 build/
+out/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+external/
+
+*.exe
+*.obj
+*.o
+*.a
+*.lib
+
+.vscode/
+.vs/

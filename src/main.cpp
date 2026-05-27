@@ -60,7 +60,7 @@ int main()
         return -1;
     }
 
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, 800, 6g00);
     glEnable(GL_DEPTH_TEST);
 
     // Triangle data
