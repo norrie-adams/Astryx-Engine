@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "GameObject.h"
+#include "Log.h"
 
 // Vertex shader
 const char* vertexShaderSource = R"(
@@ -34,7 +35,7 @@ void main()
 
 int main()
 {
-    std::cout << "Engine Working\n";
+    Log::info("Engine initalized");
 
     // GLFW init
     glfwInit();
@@ -45,7 +46,7 @@ int main()
     GLFWwindow* window = glfwCreateWindow(800, 600, "Astryx Engine", NULL, NULL);
     if (!window)
     {
-        std::cout << "Window failed\n";
+        Log::error("GLFW Init Failed");
         glfwTerminate();
         return -1;
     }
@@ -55,9 +56,12 @@ int main()
     // GLAD init
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cout << "GLAD failed\n";
+        Log::error("GLAD Init Failed");
         return -1;
     }
+
+    glViewport(0, 0, 800, 600);
+    glEnable(GL_DEPTH_TEST);
 
     // Triangle data
     float vertices[] = {
@@ -98,7 +102,7 @@ int main()
 
         // RENDER
         glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         triangle.draw(shader);
 
