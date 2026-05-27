@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+#include <external/include/glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -104,7 +104,7 @@ int main()
     // MAIN LOOP
     while (!glfwWindowShouldClose(window))
     {
-        // INPUT (must be inside loop)
+        // INPUT 
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
             triangle.transform.x += speed;
 
