@@ -31,12 +31,6 @@ void main()
 }
 )";
 
-struct Transform {
-    float x = 0;
-    float y = 0;
-    float z = 0;
-};
-
 class GameObject {
 public:
     Mesh mesh;
