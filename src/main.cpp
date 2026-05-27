@@ -65,9 +65,13 @@ int main()
 
     // Triangle data
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
+    -0.5f, -0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f,
+     0.5f,  0.5f, 0.0f,
+
+     0.5f,  0.5f, 0.0f,
+    -0.5f,  0.5f, 0.0f,
+    -0.5f, -0.5f, 0.0f
     };
 
     // Shader + object
