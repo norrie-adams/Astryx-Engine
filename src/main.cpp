@@ -1,11 +1,11 @@
-#include <external/include/glad/glad.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#include "Shader.h"
-#include "Mesh.h"
-#include "GameObject.h"
-#include "Log.h"
+#include "rendering/Shader.h"
+#include "rendering/Mesh.h"
+#include "scene/GameObject.h"
+#include "core/Log.h"
 
 // Vertex shader
 const char* vertexShaderSource = R"(
