@@ -4,6 +4,7 @@
 
 #include "Shader.h"
 #include "Mesh.h"
+#include "GameObject.h"
 
 // Vertex shader
 const char* vertexShaderSource = R"(
@@ -30,29 +31,6 @@ void main()
     FragColor = vec4(0.4, 0.6, 0.2, 1.0);
 }
 )";
-
-class GameObject {
-public:
-    Mesh mesh;
-    Transform transform;
-
-    GameObject(float* vertices, unsigned int size)
-        : mesh(vertices, size) {}
-
-    void draw(Shader& shader)
-    {
-        shader.use();
-
-        glUniform3f(
-            shader.getUniform("uPos"),
-            transform.x,
-            transform.y,
-            transform.z
-        );
-
-        mesh.draw();
-    }
-};
 
 int main()
 {
@@ -93,11 +71,18 @@ int main()
     GameObject triangle(vertices, sizeof(vertices) / sizeof(float));
 
     // INPUT SPEED
-    float speed = 0.01f;
+    float lastFrame = 0.0f;
 
     // MAIN LOOP
     while (!glfwWindowShouldClose(window))
     {
+
+        float currentFrame = glfwGetTime();
+        float deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        float speed = 2.0f * deltaTime;
+
         // INPUT 
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
             triangle.transform.x += speed;

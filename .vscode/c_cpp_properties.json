@@ -8,7 +8,7 @@
             "cppStandard": "c++17",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/include"
+                "${workspaceFolder}/external/include"
             ]
         }
     ]
