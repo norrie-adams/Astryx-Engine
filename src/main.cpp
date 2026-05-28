@@ -106,7 +106,7 @@ int main()
     // INPUT SPEED
     float lastFrame = 0.0f;
 
-    
+    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 
     // MAIN LOOP
     while (!glfwWindowShouldClose(window))
@@ -119,17 +119,17 @@ int main()
         float speed = 2.0f * deltaTime;
 
         // INPUT 
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-            triangle.transform.x += speed;
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            cameraPos.z -= speed;
 
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-            triangle.transform.x -= speed;
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            cameraPos.z += speed;
 
-        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-            triangle.transform.y += speed;
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            cameraPos.x -= speed;
 
-        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-            triangle.transform.y -= speed;
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            cameraPos.x += speed;
 
         // RENDER
         glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
@@ -147,11 +147,9 @@ int main()
         );
 
         // View Matrix
-        glm::mat4 view = glm::mat4(1.0f);
-
-        view = glm::translate(
-            view,
-            glm::vec3(0.0f, 0.0f, -3.0f)
+        glm::mat4 view = glm::translate(
+            glm::mat4(1.0f),
+                -cameraPos
         );
 
         glm::mat4 projection = glm::perspective(
