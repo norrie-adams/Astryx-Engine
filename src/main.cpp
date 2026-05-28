@@ -1,6 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <glm/glm.hpp>                  
+#include <glm/gtc/matrix_transform.hpp> 
+#include <glm/gtc/type_ptr.hpp>          
 
 #include "rendering/Shader.h"
 #include "rendering/Mesh.h"
@@ -13,11 +16,11 @@ const char* vertexShaderSource = R"(
 
 layout (location = 0) in vec3 aPos;
 
-uniform vec3 uPos;
+uniform mat4 uTransform;
 
 void main()
 {
-    gl_Position = vec4(aPos + uPos, 1.0);
+    gl_Position = uTransform * vec4(aPos, 1.0);
 }
 )";
 
@@ -60,7 +63,7 @@ int main()
         return -1;
     }
 
-    glViewport(0, 0, 800, 6g00);
+    glViewport(0, 0, 800, 600);
     glEnable(GL_DEPTH_TEST);
 
     // Triangle data
@@ -107,6 +110,18 @@ int main()
         // RENDER
         glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        shader.use();
+
+        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::translate(transform, glm::vec3(0.0f, 0.0f, -0.5f));
+
+        float angle = glfwGetTime() * 2.0f; 
+        transform = glm::rotate(transform, angle, glm::vec3(0.0f, 0.0f, 1.0f));
+
+        unsigned int transformLoc = glGetUniformLocation(shader.ID, "uTransform");
+
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
         triangle.draw(shader);
 

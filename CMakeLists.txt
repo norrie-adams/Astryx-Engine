@@ -5,6 +5,8 @@ project(AstryxEngine)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external)
+
 add_subdirectory(external/glfw)
 
 # -----------------------------
@@ -34,7 +36,6 @@ target_include_directories(AstryxEngine PRIVATE
     src
     external/glfw/include
     external/glad/include
-    external/glm
 )
 
 # -----------------------------
