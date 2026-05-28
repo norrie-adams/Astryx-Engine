@@ -16,11 +16,17 @@ const char* vertexShaderSource = R"(
 
 layout (location = 0) in vec3 aPos;
 
-uniform mat4 uTransform;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
 void main()
 {
-    gl_Position = uTransform * vec4(aPos, 1.0);
+    gl_Position =
+        projection *
+        view *
+        model *
+        vec4(aPos, 1.0);
 }
 )";
 
@@ -68,13 +74,29 @@ int main()
 
     // Triangle data
     float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.5f,  0.5f, 0.0f,
+    // Back face
+    -0.5f, -0.5f, -0.5f,   0.5f, -0.5f, -0.5f,   0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f, -0.5f,  -0.5f,  0.5f, -0.5f,  -0.5f, -0.5f, -0.5f,
 
-     0.5f,  0.5f, 0.0f,
-    -0.5f,  0.5f, 0.0f,
-    -0.5f, -0.5f, 0.0f
+    // Front face
+    -0.5f, -0.5f,  0.5f,   0.5f, -0.5f,  0.5f,   0.5f,  0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,  -0.5f,  0.5f,  0.5f,  -0.5f, -0.5f,  0.5f,
+
+    // Left face
+    -0.5f,  0.5f,  0.5f,  -0.5f,  0.5f, -0.5f,  -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,  -0.5f, -0.5f,  0.5f,  -0.5f,  0.5f,  0.5f,
+
+    // Right face
+     0.5f,  0.5f,  0.5f,   0.5f,  0.5f, -0.5f,   0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f, -0.5f,   0.5f, -0.5f,  0.5f,   0.5f,  0.5f,  0.5f,
+
+    // Bottom face
+    -0.5f, -0.5f, -0.5f,   0.5f, -0.5f, -0.5f,   0.5f, -0.5f,  0.5f,
+     0.5f, -0.5f,  0.5f,  -0.5f, -0.5f,  0.5f,  -0.5f, -0.5f, -0.5f,
+
+    // Top face
+    -0.5f,  0.5f, -0.5f,   0.5f,  0.5f, -0.5f,   0.5f,  0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,  -0.5f,  0.5f,  0.5f,  -0.5f,  0.5f, -0.5f,
     };
 
     // Shader + object
@@ -83,6 +105,8 @@ int main()
 
     // INPUT SPEED
     float lastFrame = 0.0f;
+
+    
 
     // MAIN LOOP
     while (!glfwWindowShouldClose(window))
@@ -111,17 +135,54 @@ int main()
         glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // Model Matrix
+        glm::mat4 model = glm::mat4(1.0f);
+
+        float angle = glfwGetTime() * 2.0f;
+
+        model = glm::rotate(
+            model,
+            angle,
+            glm::vec3(0.5f, 1.0f, 0.0f)
+        );
+
+        // View Matrix
+        glm::mat4 view = glm::mat4(1.0f);
+
+        view = glm::translate(
+            view,
+            glm::vec3(0.0f, 0.0f, -3.0f)
+        );
+
+        glm::mat4 projection = glm::perspective(
+            glm::radians(45.0f),
+            800.0f / 600.0f,
+            0.1f,
+            100.0f
+        );
+
         shader.use();
 
-        glm::mat4 transform = glm::mat4(1.0f);
-        transform = glm::translate(transform, glm::vec3(0.0f, 0.0f, -0.5f));
+        glUniformMatrix4fv(
+            glGetUniformLocation(shader.ID, "model"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(model)
+        );
 
-        float angle = glfwGetTime() * 2.0f; 
-        transform = glm::rotate(transform, angle, glm::vec3(0.0f, 0.0f, 1.0f));
+        glUniformMatrix4fv(
+            glGetUniformLocation(shader.ID, "view"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(view)
+        );
 
-        unsigned int transformLoc = glGetUniformLocation(shader.ID, "uTransform");
-
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        glUniformMatrix4fv(
+            glGetUniformLocation(shader.ID, "projection"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(projection)
+        );
 
         triangle.draw(shader);
 
