@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "core/Log.h"
 #include <iostream>
 
 static unsigned int compileShader(unsigned int type, const char* source)
@@ -14,7 +15,7 @@ static unsigned int compileShader(unsigned int type, const char* source)
     if (!success)
     {
         glGetShaderInfoLog(shader, 1024, nullptr, log);
-        std::cout << "Shader compile error:\n" << log << std::endl;
+        Log::error("Shader compiler error");
     }
 
     return shader;
@@ -38,7 +39,7 @@ Shader::Shader(const char* vertexSrc, const char* fragmentSrc)
     if (!success)
     {
         glGetProgramInfoLog(ID, 1024, nullptr, log);
-        std::cout << "Program link error:\n" << log << std::endl;
+        Log::error("Shader link error");
     }
 
     glDeleteShader(vs);
