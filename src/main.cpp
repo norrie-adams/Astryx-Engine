@@ -9,6 +9,7 @@
 #include "rendering/Mesh.h"
 #include "scene/GameObject.h"
 #include "core/Log.h"
+#include "rendering/Camera.h"
 
 // Vertex shader
 const char* vertexShaderSource = R"(
@@ -106,7 +107,7 @@ int main()
     // INPUT SPEED
     float lastFrame = 0.0f;
 
-    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+    Camera camera;
 
     // MAIN LOOP
     while (!glfwWindowShouldClose(window))
@@ -119,17 +120,18 @@ int main()
         float speed = 2.0f * deltaTime;
 
         // INPUT 
+        // INPUT 
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-            cameraPos.z -= speed;
+            camera.position += camera.front * speed;
 
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-            cameraPos.z += speed;
+            camera.position -= camera.front * speed; 
 
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-            cameraPos.x -= speed;
+            camera.position -= glm::normalize(glm::cross(camera.front, camera.up)) * speed;
 
         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-            cameraPos.x += speed;
+            camera.position += glm::normalize(glm::cross(camera.front, camera.up)) * speed; 
 
         // RENDER
         glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
@@ -147,10 +149,7 @@ int main()
         );
 
         // View Matrix
-        glm::mat4 view = glm::translate(
-            glm::mat4(1.0f),
-                -cameraPos
-        );
+        glm::mat4 view = camera.getViewMatrix();
 
         glm::mat4 projection = glm::perspective(
             glm::radians(45.0f),
