@@ -9,7 +9,6 @@ public:
     static void init(GLFWwindow* window);
 
     static bool isWPressed();
-
 private:
     static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
