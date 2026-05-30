@@ -12,4 +12,6 @@ public:
     Camera();
 
     glm::mat4 getViewMatrix();
+
+    void processInput(float deltaTime);
 };
