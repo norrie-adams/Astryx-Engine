@@ -123,17 +123,17 @@ int main()
         float speed = 2.0f * deltaTime;
 
         // INPUT 
-        if (Input::isWPressed())
-            camera.position += camera.front * speed; 
+        if (Input::isKeyPressed(GLFW_KEY_W))
+            camera.position += camera.front * speed;
 
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        if (Input::isKeyPressed(GLFW_KEY_S))
             camera.position -= camera.front * speed; 
 
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        if (Input::isKeyPressed(GLFW_KEY_A))
             camera.position -= glm::normalize(glm::cross(camera.front, camera.up)) * speed;
 
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-            camera.position += glm::normalize(glm::cross(camera.front, camera.up)) * speed; 
+        if (Input::isKeyPressed(GLFW_KEY_D))
+            camera.position += glm::normalize(glm::cross(camera.front, camera.up)) * speed;
 
         // RENDER
         glClearColor(0.2f, 0.3f, 0.4f, 1.0f);

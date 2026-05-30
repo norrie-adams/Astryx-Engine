@@ -1,24 +1,25 @@
 #include "Input.h"
 
-bool Input::m_IsWPressed = false;
+std::bitset<GLFW_KEY_LAST + 1> Input::m_KeyStates;
 
-void Input::init(GLFWwindow* window)
-{
-    glfwSetKeyCallback(window, keyCallback);
+void Input::init(GLFWwindow* window) {
+    glfwSetKeyCallback(window, Input::keyCallback);
+    m_KeyStates.reset();
 }
 
-void Input::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_W)
-    {
-        if (action == GLFW_PRESS)
-            m_IsWPressed = true;
-        else if (action == GLFW_RELEASE)
-            m_IsWPressed = false;
+bool Input::isKeyPressed(int keycode) {
+    if (keycode < 0 || keycode > GLFW_KEY_LAST) return false;
+    
+    return m_KeyStates.test(keycode);
+}
+
+void Input::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (key < 0 || key > GLFW_KEY_LAST) return;
+
+    if (action == GLFW_PRESS) {
+        m_KeyStates.set(key, true);
+    } 
+    else if (action == GLFW_RELEASE) {
+        m_KeyStates.set(key, false);
     }
-}
-
-bool Input::isWPressed()
-{
-    return m_IsWPressed;
 }
