@@ -10,6 +10,7 @@
 #include "scene/GameObject.h"
 #include "core/Log.h"
 #include "rendering/Camera.h"
+#include "core/Input.h"
 
 // Vertex shader
 const char* vertexShaderSource = R"(
@@ -70,6 +71,8 @@ int main()
         return -1;
     }
 
+    Input::init(window);
+    
     glViewport(0, 0, 800, 600);
     glEnable(GL_DEPTH_TEST);
 
@@ -120,9 +123,8 @@ int main()
         float speed = 2.0f * deltaTime;
 
         // INPUT 
-        // INPUT 
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-            camera.position += camera.front * speed;
+        if (Input::isWPressed())
+            camera.position += camera.front * speed; 
 
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
             camera.position -= camera.front * speed; 
