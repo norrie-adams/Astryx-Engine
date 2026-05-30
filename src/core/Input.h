@@ -1,17 +1,15 @@
 #pragma once
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <bitset> // Replaced <unordered_map>
 
-class Input
-{
-public: 
+class Input {
+public:
     static void init(GLFWwindow* window);
+    static bool isKeyPressed(int keycode);
 
-    static bool isWPressed();
 private:
     static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
-    static bool m_IsWPressed;
+    
+    static std::bitset<GLFW_KEY_LAST + 1> m_KeyStates;
 };
-
