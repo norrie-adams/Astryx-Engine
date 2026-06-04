@@ -143,6 +143,7 @@ int main()
         // View Matrix
         glm::mat4 view = camera.getViewMatrix();
 
+        // Projection Matrix
         glm::mat4 projection = glm::perspective(
             glm::radians(45.0f),
             800.0f / 600.0f,
