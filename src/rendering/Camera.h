@@ -5,6 +5,14 @@
 class Camera
 {
 public:
+    Camera();
+
+    glm::mat4 getViewMatrix();
+
+    void processInput(float deltaTime);
+    void proccessMouseMovement(float xoffset, float yoffset);
+
+private:
     glm::vec3 position;
     glm::vec3 front;
     glm::vec3 up;
@@ -13,11 +21,7 @@ public:
     float yaw;
     float pitch;
     float rotationSpeed;
+    float mouseSensitivity;
 
-    Camera();
-
-    glm::mat4 getViewMatrix();
-
-    void processInput(float deltaTime);
     void updateCameraVectors();
 };

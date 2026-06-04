@@ -7,10 +7,10 @@ Camera::Camera()
     position = glm::vec3(0.0f, 0.0f, 3.0f);
     front    = glm::vec3(0.0f, 0.0f, -1.0f);
     worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
     yaw = -90.0f;
     pitch = 0.0f;
     rotationSpeed = 50.0f;
+    mouseSensitivity = 0.1f;
 
     updateCameraVectors();
 }
@@ -28,14 +28,19 @@ void Camera::processInput(float deltaTime)
     glm::vec3 right = glm::normalize(glm::cross(front, worldUp));
     if (Input::isKeyPressed(GLFW_KEY_A)) position -= right * speed;
     if (Input::isKeyPressed(GLFW_KEY_D)) position += right * speed;
+}
 
-    float rotSpeed = rotationSpeed * deltaTime;
-    if (Input::isKeyPressed(GLFW_KEY_Q)) yaw -= rotSpeed;
-    if (Input::isKeyPressed(GLFW_KEY_E)) yaw += rotSpeed;
+void Camera::proccessMouseMovement(float xoffset, float yoffset) {
+    xoffset *= mouseSensitivity;
+    yoffset *= mouseSensitivity;
 
-    if (Input::isKeyPressed(GLFW_KEY_Q) || Input::isKeyPressed(GLFW_KEY_E)) {
-        updateCameraVectors();
-    }
+    yaw += xoffset;
+    pitch += yoffset;
+
+    if (pitch > 89.0f)  pitch = 89.0f;
+    if (pitch < -89.0f) pitch = -89.0f;
+
+    updateCameraVectors();
 }
 
 void Camera::updateCameraVectors() {
