@@ -10,7 +10,7 @@ public:
     glm::mat4 getViewMatrix();
 
     void processInput(float deltaTime);
-    void proccessMouseMovement(float xoffset, float yoffset);
+    void processMouseMovement(float xoffset, float yoffset);
 
 private:
     glm::vec3 position;
