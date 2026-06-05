@@ -28,6 +28,7 @@ file(GLOB_RECURSE SRC_FILES
 )
 
 add_executable(AstryxEngine ${SRC_FILES})
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/src/test_assets" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 
 # -----------------------------
 # INCLUDE DIRECTORIES

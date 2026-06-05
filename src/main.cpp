@@ -10,6 +10,7 @@
 #include "core/Log.h"
 #include "rendering/Camera.h"
 #include "core/Input.h"
+#include "assest/ModelLoader.h"
 
 // Vertex shader
 const char* vertexShaderSource = R"(
@@ -34,6 +35,7 @@ void main()
 }
 )";
 
+
 Camera camera; 
 bool firstMouse = true;
 float lastX = 800.0f / 2.0f;
@@ -57,7 +59,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
     lastX = xpos;
     lastY = ypos;
 
-    camera.proccessMouseMovement(xoffset, yoffset);
+    camera.processMouseMovement(xoffset, yoffset);
 }
 // -----------------------------------------------------------
 
@@ -91,7 +93,15 @@ int main()
     glViewport(0, 0, 800, 600);
     glEnable(GL_DEPTH_TEST);
 
-    // Triangle data
+    auto modelVertices = Loader::loadVertices("test_assets/engine_cube.obj");
+
+    Log::info(
+        "Loaded " +
+        std::to_string(modelVertices.size()) +
+        " vertices"
+    );
+
+    // Cube data
     float vertices[] = {
         // Back face
         -0.5f, -0.5f, -0.5f,  
@@ -144,7 +154,7 @@ int main()
 
     // Shader + object
     Shader shader(vertexShaderSource, fragmentShaderSource);
-    GameObject triangle(vertices, sizeof(vertices) / sizeof(float));
+    GameObject cube(vertices, sizeof(vertices) / sizeof(float));
 
     float lastFrame = 0.0f;
 
@@ -182,7 +192,7 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(shader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-        triangle.draw(shader);
+        cube.draw(shader);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -30,7 +30,7 @@ void Camera::processInput(float deltaTime)
     if (Input::isKeyPressed(GLFW_KEY_D)) position += right * speed;
 }
 
-void Camera::proccessMouseMovement(float xoffset, float yoffset) {
+void Camera::processMouseMovement(float xoffset, float yoffset) {
     xoffset *= mouseSensitivity;
     yoffset *= mouseSensitivity;
 
