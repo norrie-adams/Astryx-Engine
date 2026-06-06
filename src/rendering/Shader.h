@@ -12,7 +12,7 @@ public:
 
     void use();
 
-    int getUniform(const std::string& name)
+    int getUniform(const std::string& name) 
     {
         return glGetUniformLocation(ID, name.c_str());
     }

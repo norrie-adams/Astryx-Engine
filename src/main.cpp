@@ -61,7 +61,6 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
     camera.processMouseMovement(xoffset, yoffset);
 }
-// -----------------------------------------------------------
 
 int main()
 {
@@ -93,13 +92,10 @@ int main()
     glViewport(0, 0, 800, 600);
     glEnable(GL_DEPTH_TEST);
 
-    auto modelVertices = Loader::loadVertices("test_assets/engine_cube.obj");
+    auto modelData = Loader::loadModel("test_assets/engine_cube_triangulated.obj");
 
-    Log::info(
-        "Loaded " +
-        std::to_string(modelVertices.size()) +
-        " vertices"
-    );
+    Log::info("Loaded " + std::to_string(modelData.vertices.size()) + " vertices");
+    Log::info("Loaded " + std::to_string(modelData.faces.size()) + " faces");
 
     // Cube data
     float vertices[] = {

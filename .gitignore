@@ -15,4 +15,4 @@ external/
 .vs/
 
 compilecommands.txt
-assets/
+test_assets/
