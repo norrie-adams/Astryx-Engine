@@ -92,68 +92,16 @@ int main()
     glViewport(0, 0, 800, 600);
     glEnable(GL_DEPTH_TEST);
 
-    auto modelData = Loader::loadModel("test_assets/engine_cube_triangulated.obj");
-
+    auto modelData = Loader::loadModel("test_assets/engine_model.obj");
     std::vector<float> openGLVertices = Loader::buildMeshData(modelData);
 
     Log::info("Loaded " + std::to_string(modelData.vertices.size()) + " vertices");
     Log::info("Loaded " + std::to_string(modelData.faces.size()) + " faces");
     Log::info("Flat float count for OpenGL: " + std::to_string(openGLVertices.size()));
 
-    // Cube data
-    float vertices[] = {
-        // Back face
-        -0.5f, -0.5f, -0.5f,  
-         0.5f, -0.5f, -0.5f,  
-         0.5f,  0.5f, -0.5f,  
-         0.5f,  0.5f, -0.5f,  
-        -0.5f,  0.5f, -0.5f,  
-        -0.5f, -0.5f, -0.5f,  
-
-        // Front face
-        -0.5f, -0.5f,  0.5f,  
-         0.5f, -0.5f,  0.5f,  
-         0.5f,  0.5f,  0.5f,  
-         0.5f,  0.5f,  0.5f,  
-        -0.5f,  0.5f,  0.5f,  
-        -0.5f, -0.5f,  0.5f,  
-
-        // Left face
-        -0.5f,  0.5f,  0.5f,  
-        -0.5f,  0.5f, -0.5f,  
-        -0.5f, -0.5f, -0.5f,  
-        -0.5f, -0.5f, -0.5f,  
-        -0.5f, -0.5f,  0.5f,  
-        -0.5f,  0.5f,  0.5f,  
-
-        // Right face
-         0.5f,  0.5f,  0.5f,  
-         0.5f,  0.5f, -0.5f,  
-         0.5f, -0.5f, -0.5f,  
-         0.5f, -0.5f, -0.5f,  
-         0.5f, -0.5f,  0.5f,  
-         0.5f,  0.5f,  0.5f,  
-
-        // Bottom face
-        -0.5f, -0.5f, -0.5f,  
-         0.5f, -0.5f, -0.5f,  
-         0.5f, -0.5f,  0.5f,  
-         0.5f, -0.5f,  0.5f,  
-        -0.5f, -0.5f,  0.5f,  
-        -0.5f, -0.5f, -0.5f,  
-
-        // Top face
-        -0.5f,  0.5f, -0.5f,  
-         0.5f,  0.5f, -0.5f,  
-         0.5f,  0.5f,  0.5f,  
-         0.5f,  0.5f,  0.5f,  
-        -0.5f,  0.5f,  0.5f,  
-        -0.5f,  0.5f, -0.5f,  
-    };
-
-    // Shader + object
     Shader shader(vertexShaderSource, fragmentShaderSource);
-    GameObject cube(vertices, sizeof(vertices) / sizeof(float));
+    
+    GameObject cube(openGLVertices.data(), openGLVertices.size());
 
     float lastFrame = 0.0f;
 
