@@ -97,7 +97,6 @@ int main()
 
     Log::info("Loaded " + std::to_string(modelData.vertices.size()) + " vertices");
     Log::info("Loaded " + std::to_string(modelData.faces.size()) + " faces");
-    Log::info("Flat float count for OpenGL: " + std::to_string(openGLVertices.size()));
 
     Shader shader(vertexShaderSource, fragmentShaderSource);
     
