@@ -11,6 +11,9 @@ namespace Loader {
         std::vector<Face> faces;
     };
 
-    // ONLY this function should be declared here now!
     ModelData loadModel(const std::string& filename);
+
+    std::vector<float> buildMeshData(
+        const ModelData& data
+    );
 }

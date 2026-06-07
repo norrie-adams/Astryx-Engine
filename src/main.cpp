@@ -94,8 +94,11 @@ int main()
 
     auto modelData = Loader::loadModel("test_assets/engine_cube_triangulated.obj");
 
+    std::vector<float> openGLVertices = Loader::buildMeshData(modelData);
+
     Log::info("Loaded " + std::to_string(modelData.vertices.size()) + " vertices");
     Log::info("Loaded " + std::to_string(modelData.faces.size()) + " faces");
+    Log::info("Flat float count for OpenGL: " + std::to_string(openGLVertices.size()));
 
     // Cube data
     float vertices[] = {
@@ -156,7 +159,7 @@ int main()
 
     // Set cursor modes and callbacks
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPosCallback(window, mouse_callback); // FIXED: Added missing semicolon
+    glfwSetCursorPosCallback(window, mouse_callback); 
 
     // MAIN LOOP
     while (!glfwWindowShouldClose(window))

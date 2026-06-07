@@ -16,15 +16,6 @@ namespace Loader {
         if (!file.is_open()) {
             Log::error("Failed to load model: " + filename);
             Log::error("Current working directory: " + std::filesystem::current_path().string());
-            
-            if (std::filesystem::exists("assets")) {
-                Log::info("Contents of the 'assets' directory:");
-                for (const auto& entry : std::filesystem::directory_iterator("assets")) {
-                    Log::info(" - " + entry.path().filename().string());
-                }
-            } else {
-                Log::error("The 'assets' directory does NOT exist in this working directory!");
-            }
             return data;
         }
 
@@ -42,6 +33,7 @@ namespace Loader {
                     data.vertices.push_back(Vertex{tempX, tempY, tempZ});
                 }
             }
+
             // Parse Faces
             else if (prefix == "f") {
                 std::string b1, b2, b3;
@@ -66,4 +58,25 @@ namespace Loader {
         return data; 
     }
 
+    std::vector<float> buildMeshData(const ModelData& data) {
+        std::vector<float> meshData;
+
+        for (const auto& face : data.faces) {
+            Vertex v1 = data.vertices[face.v1];
+            meshData.push_back(static_cast<float>(v1.x));
+            meshData.push_back(static_cast<float>(v1.y));
+            meshData.push_back(static_cast<float>(v1.z));
+
+            Vertex v2 = data.vertices[face.v2];
+            meshData.push_back(static_cast<float>(v2.x));
+            meshData.push_back(static_cast<float>(v2.y));
+            meshData.push_back(static_cast<float>(v2.z));
+
+            Vertex v3 = data.vertices[face.v3];
+            meshData.push_back(static_cast<float>(v3.x));
+            meshData.push_back(static_cast<float>(v3.y));
+            meshData.push_back(static_cast<float>(v3.z));
+        }
+        return meshData;
+    }
 } 
