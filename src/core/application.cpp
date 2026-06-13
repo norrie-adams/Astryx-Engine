@@ -1,10 +1,123 @@
+#include <iostream>
 #include "Application.h"
+#include "core/Log.h"
+#include "rendering/Camera.h"
+#include "core/Input.h"
+#include "asset/ModelLoader.h"
 
-Application::Application()
+// Vertex shader source
+const char* vertexShaderSource = R"(
+#version 330 core
+layout (location = 0) in vec3 aPos;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+void main()
 {
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
+}
+)";
+
+/// Fragment Shader Source
+const char* fragmentShaderSource = R"(
+#version 330 core
+out vec4 FragColor;
+void main()
+{
+    FragColor = vec4(0.4, 0.6, 0.2, 1.0);
+}
+)";
+
+Application::Application() 
+{ 
 }
 
-void Application::run()
-{    
+Application::~Application() 
+{
+    if (m_Window) {
+        glfwTerminate();
+    }
+}
+
+bool Application::init() 
+{
     
+    // GLFW Init
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    m_Window = glfwCreateWindow(800, 600, "Astryx Engine", NULL, NULL);
+    if (!m_Window)
+    {
+        Log::error("GLFW Init Failed");
+        glfwTerminate();
+        return false;
+    }
+    glfwMakeContextCurrent(m_Window);
+
+    // GLAD init
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        Log::error("GLAD Init Failed");
+        return false;
+    }
+
+    Input::init(m_Window);
+    glViewport(0, 0, 800, 600);
+    glEnable(GL_DEPTH_TEST);
+
+    auto modelData = Loader::loadModel("test_assets/engine_model.obj");
+    std::vector<float> openGLVertices = Loader::buildMeshData(modelData);
+
+    Log::info("Loaded " + std::to_string(modelData.vertices.size()) + " vertices");
+    Log::info("Loaded " + std::to_string(modelData.faces.size()) + " faces");
+
+    m_Shader = std::make_unique<Shader>(vertexShaderSource, fragmentShaderSource);
+    m_Cube = std::make_unique<GameObject>(openGLVertices.data(), openGLVertices.size());
+    
+    return true;
+}
+
+void Application::render() 
+{
+    glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Model Matrix
+    glm::mat4 model = glm::mat4(1.0f);
+    float angle = glfwGetTime() * 2.0f;
+    model = glm::rotate(model, angle, glm::vec3(0.5f, 1.0f, 0.0f));
+
+    // View Matrix
+    glm::mat4 view = m_Camera.getViewMatrix();
+
+    // Projection Matrix
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Width / m_Height, 0.1f, 100.0f);
+
+    m_Shader->use();
+    glUniformMatrix4fv(glGetUniformLocation(m_Shader->ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(glGetUniformLocation(m_Shader->ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(m_Shader->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+    m_Cube->draw(*m_Shader);
+}
+
+void Application::run() 
+{
+    while (!glfwWindowShouldClose(m_Window))
+    {
+        float currentFrame = glfwGetTime();
+        float deltaTime = currentFrame - m_LastFrame;
+        m_LastFrame = currentFrame;
+
+        // INPUT
+        m_Camera.processInput(deltaTime);
+
+        render();
+
+        glfwSwapBuffers(m_Window);
+        glfwPollEvents();
+    }
 }
