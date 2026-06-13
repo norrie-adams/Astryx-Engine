@@ -10,7 +10,7 @@
 #include "core/Log.h"
 #include "rendering/Camera.h"
 #include "core/Input.h"
-#include "assest/ModelLoader.h"
+#include "asset/ModelLoader.h"
 
 // Vertex shader
 const char* vertexShaderSource = R"(

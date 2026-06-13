@@ -13,7 +13,5 @@ namespace Loader {
 
     ModelData loadModel(const std::string& filename);
 
-    std::vector<float> buildMeshData(
-        const ModelData& data
-    );
+    std::vector<float> buildMeshData(const ModelData& data);
 }
