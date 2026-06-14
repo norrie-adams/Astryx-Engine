@@ -28,6 +28,38 @@ void main()
 }
 )";
 
+
+// Mouse-look Variables
+static Camera* g_Camera = nullptr;
+
+static bool firstMouse = true;
+static float lastX = 400.0f;
+static float lastY = 300.0f;
+
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+{
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos;
+
+    lastX = xpos;
+    lastY = ypos;
+
+    if (g_Camera)
+    {
+        g_Camera->processMouseMovement(xoffset, yoffset);
+    }
+}
+
 Application::Application() 
 { 
 }
@@ -65,6 +97,12 @@ bool Application::init()
     }
 
     Input::init(m_Window);
+
+    g_Camera = &m_Camera;
+
+    glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(m_Window, mouse_callback);
+
     glViewport(0, 0, 800, 600);
     glEnable(GL_DEPTH_TEST);
 
