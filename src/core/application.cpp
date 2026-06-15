@@ -4,6 +4,7 @@
 #include "rendering/Camera.h"
 #include "core/Input.h"
 #include "asset/ModelLoader.h"
+#include "rendering/Renderer.h"
 
 // Vertex shader source
 const char* vertexShaderSource = R"(
@@ -36,6 +37,8 @@ static bool firstMouse = true;
 static float lastX = 400.0f;
 static float lastY = 300.0f;
 
+
+// Mouse-look Function
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
     float xpos = static_cast<float>(xposIn);
@@ -120,8 +123,7 @@ bool Application::init()
 
 void Application::render() 
 {
-    glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    m_Renderer.BeginFrame();
 
     // Model Matrix
     glm::mat4 model = glm::mat4(1.0f);
@@ -134,12 +136,7 @@ void Application::render()
     // Projection Matrix
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Width / m_Height, 0.1f, 100.0f);
 
-    m_Shader->use();
-    glUniformMatrix4fv(glGetUniformLocation(m_Shader->ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glUniformMatrix4fv(glGetUniformLocation(m_Shader->ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(m_Shader->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
-    m_Cube->draw(*m_Shader);
+    m_Renderer.Submit(*m_Cube, *m_Shader, model, view, projection);
 }
 
 void Application::run() 

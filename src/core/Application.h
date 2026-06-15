@@ -13,6 +13,7 @@
 #include "rendering/Camera.h"
 #include "rendering/Shader.h"
 #include "scene/GameObject.h"
+#include "rendering/Renderer.h"
 
 // Standard Library
 #include <memory>
@@ -33,6 +34,8 @@ private:
     const unsigned int m_Height = 600;
 
     Camera m_Camera;
+    Renderer m_Renderer;
+
     std::unique_ptr<Shader> m_Shader;
     std::unique_ptr<GameObject> m_Cube;
 
