@@ -8,7 +8,7 @@ class Shader
 public:
     unsigned int ID;
 
-    Shader(const char* vertexSrc, const char* fragmentSrc);
+    Shader(const char* vertexPath, const char* fragmentPath);
 
     void use();
 

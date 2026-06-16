@@ -1,6 +1,26 @@
 #include "Shader.h"
 #include "core/Log.h"
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
+static std::string readFile(const char* filePath)
+{
+    std::ifstream file(filePath);
+    if(!file.is_open())
+    {
+        Log::error("Failed to open shader file: " + std::string(filePath));
+        return "";
+    }
+
+    std::stringstream stream;
+    stream << file.rdbuf();
+    file.close();
+
+    return stream.str();
+
+}
 
 static unsigned int compileShader(unsigned int type, const char* source)
 {
@@ -22,10 +42,17 @@ static unsigned int compileShader(unsigned int type, const char* source)
 
 }
 
-Shader::Shader(const char* vertexSrc, const char* fragmentSrc)
+Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
-    unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexSrc);
-    unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentSrc);
+
+    std::string vertexStr = readFile(vertexPath);
+    std::string fragmentStr = readFile(fragmentPath);
+
+    const char* vsSource = vertexStr.c_str();
+    const char* fsSource = fragmentStr.c_str();
+
+    unsigned int vs = compileShader(GL_VERTEX_SHADER, vsSource);
+    unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fsSource);
 
     ID = glCreateProgram();
     glAttachShader(ID, vs);
