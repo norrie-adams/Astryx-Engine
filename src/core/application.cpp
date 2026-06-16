@@ -5,30 +5,7 @@
 #include "core/Input.h"
 #include "asset/ModelLoader.h"
 #include "rendering/Renderer.h"
-
-// Vertex shader source
-const char* vertexShaderSource = R"(
-#version 330 core
-layout (location = 0) in vec3 aPos;
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-void main()
-{
-    gl_Position = projection * view * model * vec4(aPos, 1.0);
-}
-)";
-
-/// Fragment Shader Source
-const char* fragmentShaderSource = R"(
-#version 330 core
-out vec4 FragColor;
-void main()
-{
-    FragColor = vec4(0.4, 0.6, 0.2, 1.0);
-}
-)";
-
+#include "rendering/Shader.h"
 
 // Mouse-look Variables
 static Camera* g_Camera = nullptr;
@@ -107,7 +84,7 @@ bool Application::init()
     glfwSetCursorPosCallback(m_Window, mouse_callback);
 
     glViewport(0, 0, 800, 600);
-    glEnable(GL_DEPTH_TEST);
+    m_Renderer.Init();
 
     auto modelData = Loader::loadModel("test_assets/engine_model.obj");
     std::vector<float> openGLVertices = Loader::buildMeshData(modelData);
@@ -115,7 +92,7 @@ bool Application::init()
     Log::info("Loaded " + std::to_string(modelData.vertices.size()) + " vertices");
     Log::info("Loaded " + std::to_string(modelData.faces.size()) + " faces");
 
-    m_Shader = std::make_unique<Shader>(vertexShaderSource, fragmentShaderSource);
+    m_Shader = std::make_unique<Shader>("assets/shaders/basic.vert", "assets/shaders/basic.frag");
     m_Cube = std::make_unique<GameObject>(openGLVertices.data(), openGLVertices.size());
     
     return true;
