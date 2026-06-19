@@ -48,6 +48,11 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     std::string vertexStr = readFile(vertexPath);
     std::string fragmentStr = readFile(fragmentPath);
 
+    if (vertexStr.empty() || fragmentStr.empty()) {
+        Log::error("Shader source empty");
+        return;
+    }
+
     const char* vsSource = vertexStr.c_str();
     const char* fsSource = fragmentStr.c_str();
 
