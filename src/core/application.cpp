@@ -87,7 +87,7 @@ bool Application::init()
     glViewport(0, 0, 800, 600);
     m_Renderer.Init();
 
-    auto modelData = Loader::loadModel("test_assets/engine_model.obj");
+    auto modelData = Loader::loadModel("test_assets/engine_cube_triangulated.obj");
     std::vector<float> openGLVertices = Loader::buildMeshData(modelData);
 
     Log::info("Loaded " + std::to_string(modelData.vertices.size()) + " vertices");

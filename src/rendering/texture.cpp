@@ -5,7 +5,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../external/stb/stb_image.h"
 
-Texture::Texture(const char* path)
+Texture::Texture(const std::string& path)
 {
     glGenTextures(1, &ID);
 
@@ -14,25 +14,36 @@ Texture::Texture(const char* path)
     stbi_set_flip_vertically_on_load(true);
 
     int width, height, nrChannels;
-
-    unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
-
+    stbi_set_flip_vertically_on_load(true);  
+    unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+    
     if (data)
     {
-        GLenum format = GL_RGB;
-        if (nrChannels == 4) {
-            format = GL_RGBA;
+        GLenum internalFormat = GL_RGB;
+        GLenum dataFormat = GL_RGB;
+
+        if (nrChannels == 1) {
+            internalFormat = GL_RED;
+            dataFormat = GL_RED;
+        }
+        else if (nrChannels == 3) {
+            internalFormat = GL_RGB;  // How GPU stores it
+            dataFormat = GL_RGB;      // How stbi loaded it
+        }
+        else if (nrChannels == 4) {
+            internalFormat = GL_RGBA;
+            dataFormat = GL_RGBA;
         }
 
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
-    else
-    {
-        Log::error("Failed to load texture at path: " + *path);
-    }
+    
+    stbi_image_free(data);
 }
+
 
 Texture::~Texture()
 {
