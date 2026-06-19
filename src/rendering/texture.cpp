@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include "external/glad/include/glad/glad.h"
+#include "../../external/glad/include/glad/glad.h"
 #include "core/Log.h"
 
 #define STB_IMAGE_IMPLEMENTATION

@@ -1,11 +1,12 @@
 #include <iostream>
 #include "Application.h"
 #include "core/Log.h"
-#include "rendering/Camera.h"
 #include "core/Input.h"
 #include "asset/ModelLoader.h"
+#include "rendering/Camera.h"
 #include "rendering/Renderer.h"
 #include "rendering/Shader.h"
+#include "rendering/Texture.h"
 
 // Mouse-look Variables
 static Camera* g_Camera = nullptr;
@@ -94,6 +95,7 @@ bool Application::init()
 
     m_Shader = std::make_unique<Shader>("assets/shaders/basic.vert", "assets/shaders/basic.frag");
     m_Cube = std::make_unique<GameObject>(openGLVertices.data(), openGLVertices.size());
+    m_Texture = std::make_unique<Texture>("test_assets/brick_texture_test.jpg");
     
     return true;
 }
@@ -112,6 +114,10 @@ void Application::render()
 
     // Projection Matrix
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Width / m_Height, 0.1f, 100.0f);
+
+    if (m_Texture) {
+        m_Texture->bind();
+    }
 
     m_Renderer.Submit(*m_Cube, *m_Shader, model, view, projection);
 }
