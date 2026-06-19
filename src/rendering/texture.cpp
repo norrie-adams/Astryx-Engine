@@ -30,7 +30,7 @@ Texture::Texture(const char* path)
     }
     else
     {
-        Log::error("Failed to load texture");
+        Log::error("Failed to load texture at path: " + *path);
     }
 }
 

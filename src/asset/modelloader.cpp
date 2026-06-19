@@ -4,8 +4,8 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "core/Log.h"
 #include <filesystem>
+#include "core/Log.h"
 
 namespace Loader {
 
@@ -34,6 +34,14 @@ namespace Loader {
                 }
             }
 
+            // Parse Texture UV Coordinates
+            else if (prefix == "vt") {
+                float tempU, tempV;
+                if (iss >> tempU >> tempV) {
+                    data.texCoords.push_back(TexCoord{tempU, tempV});
+                } 
+            }
+
             // Parse Faces
             else if (prefix == "f") {
                 std::string b1, b2, b3;
@@ -44,12 +52,17 @@ namespace Loader {
 
                     std::istringstream ss1(b1), ss2(b2), ss3(b3);
                     int vIdx1 = 0, vIdx2 = 0, vIdx3 = 0;
+                    int vtIdx1 = 0, vtIdx2 = 0, vtIdx3 = 0;
 
-                    ss1 >> vIdx1;
-                    ss2 >> vIdx2;
-                    ss3 >> vIdx3;
+                    ss1 >> vIdx1 >> vtIdx1;
+                    ss2 >> vIdx2 >> vtIdx2;
+                    ss3 >> vIdx3 >> vtIdx3;
 
-                    data.faces.push_back(Face{vIdx1 - 1, vIdx2 - 1, vIdx3 - 1});
+                    data.faces.push_back(Face{
+                        IndexGroup{vIdx1 - 1, vtIdx1 - 1},
+                        IndexGroup{vIdx2 - 1, vtIdx2 - 1},
+                        IndexGroup{vIdx3 - 1, vtIdx3 - 1}
+                    });
                 }
             }
         }
@@ -62,20 +75,39 @@ namespace Loader {
         std::vector<float> meshData;
 
         for (const auto& face : data.faces) {
-            Vertex v1 = data.vertices[face.v1];
+
+            // Position Coordinates
+            Vertex v1 = data.vertices[face.c1.vIdx];
             meshData.push_back(static_cast<float>(v1.x));
             meshData.push_back(static_cast<float>(v1.y));
             meshData.push_back(static_cast<float>(v1.z));
 
-            Vertex v2 = data.vertices[face.v2];
+            // Texture Coordinates
+            TexCoord uv1 = data.texCoords[face.c1.vtIdx];
+            meshData.push_back(uv1.u);
+            meshData.push_back(uv1.v);
+
+            // Position Coordinates
+            Vertex v2 = data.vertices[face.c2.vIdx];
             meshData.push_back(static_cast<float>(v2.x));
             meshData.push_back(static_cast<float>(v2.y));
             meshData.push_back(static_cast<float>(v2.z));
 
-            Vertex v3 = data.vertices[face.v3];
+            // Texture Coordinates
+            TexCoord uv2 = data.texCoords[face.c2.vtIdx];
+            meshData.push_back(uv2.u);
+            meshData.push_back(uv2.v);
+
+            // Position Coordinates
+            Vertex v3 = data.vertices[face.c2.vIdx];
             meshData.push_back(static_cast<float>(v3.x));
             meshData.push_back(static_cast<float>(v3.y));
             meshData.push_back(static_cast<float>(v3.z));
+
+            // Texture Coordinates
+            TexCoord uv3 = data.texCoords[face.c3.vtIdx];
+            meshData.push_back(uv3.u);
+            meshData.push_back(uv3.v);
         }
         return meshData;
     }
