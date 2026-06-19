@@ -14,6 +14,7 @@
 #include "rendering/Shader.h"
 #include "scene/GameObject.h"
 #include "rendering/Renderer.h"
+#include "rendering/Texture.h"
 
 // Standard Library
 #include <memory>
@@ -38,6 +39,7 @@ private:
 
     std::unique_ptr<Shader> m_Shader;
     std::unique_ptr<GameObject> m_Cube;
+    std::unique_ptr<Texture> m_Texture;
 
     // Timing
     float m_LastFrame = 0.0f;
