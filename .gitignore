@@ -14,5 +14,4 @@ external/
 .vscode/
 .vs/
 
-compilecommands.txt
 test_assets/
