@@ -15,7 +15,6 @@ static bool firstMouse = true;
 static float lastX = 400.0f;
 static float lastY = 300.0f;
 
-
 // Mouse-look Function
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
@@ -47,16 +46,23 @@ Application::Application()
 
 Application::~Application() 
 {
-    if (m_Window) {
-        glfwTerminate();
+    if (m_Window) 
+    {
+        glfwDestroyWindow(m_Window);
+        m_Window = nullptr;
     }
+
+    glfwTerminate();
 }
 
 bool Application::init() 
 {
-    
-    // GLFW Init
-    glfwInit();
+    if (!glfwInit())
+    {
+        Log::error("GLFW Init Failed");
+        return false;
+    }
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -64,10 +70,11 @@ bool Application::init()
     m_Window = glfwCreateWindow(800, 600, "Astryx Engine", NULL, NULL);
     if (!m_Window)
     {
-        Log::error("GLFW Init Failed");
+        Log::error("GLFW Window Creation Failed");
         glfwTerminate();
         return false;
     }
+
     glfwMakeContextCurrent(m_Window);
 
     // GLAD init
@@ -94,7 +101,16 @@ bool Application::init()
     Log::info("Loaded " + std::to_string(modelData.faces.size()) + " faces");
 
     m_Shader = std::make_unique<Shader>("assets/shaders/basic.vert", "assets/shaders/basic.frag");
+
     m_Cube = std::make_unique<GameObject>(openGLVertices.data(), openGLVertices.size());
+    m_Cube->transform.position = glm::vec3(-2.0f, 0.0f, -5.0f);
+
+    m_Cube2 = std::make_unique<GameObject>(openGLVertices.data(), openGLVertices.size());
+    m_Cube2->transform.position = glm::vec3(2.0f, 0.0f, -5.0f);
+
+    m_Cube3 = std::make_unique<GameObject>(openGLVertices.data(), openGLVertices.size());
+    m_Cube3->transform.position = glm::vec3(6.0f, 0.0f, -5.0f);
+
     m_Texture = std::make_unique<Texture>("test_assets/brick_texture_test.jpg");
     
     return true;
@@ -104,22 +120,35 @@ void Application::render()
 {
     m_Renderer.BeginFrame();
 
-    // Model Matrix
-    glm::mat4 model = glm::mat4(1.0f);
-    float angle = glfwGetTime() * 2.0f;
-    model = glm::rotate(model, angle, glm::vec3(0.5f, 1.0f, 0.0f));
+    float aspect = (float)m_FramebufferWidth / (float)m_FramebufferHeight;
 
-    // View Matrix
     glm::mat4 view = m_Camera.getViewMatrix();
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
 
-    // Projection Matrix
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Width / m_Height, 0.1f, 100.0f);
-
-    if (m_Texture) {
+    if (m_Texture) 
+    {
         m_Texture->bind();
     }
 
-    m_Renderer.Submit(*m_Cube, *m_Shader, model, view, projection);
+    if (m_Cube) 
+    {
+        glm::mat4 model1 = m_Cube->transform.getModelMatrix();
+        m_Renderer.Submit(*m_Cube, *m_Shader, model1, view, projection);
+    }
+
+    if (m_Cube2) 
+    {
+        m_Cube2->transform.rotation.y += 90.0f * m_DeltaTime;
+        glm::mat4 model2 = m_Cube2->transform.getModelMatrix();
+        m_Renderer.Submit(*m_Cube2, *m_Shader, model2, view, projection);
+    }
+
+    if (m_Cube3) 
+    {
+        glm::mat4 model3 = m_Cube3->transform.getModelMatrix();
+        m_Renderer.Submit(*m_Cube3, *m_Shader, model3, view, projection);
+        m_Cube3->transform.rotation.z += 700.0f * m_DeltaTime;
+    }
 }
 
 void Application::run() 
@@ -129,6 +158,10 @@ void Application::run()
         float currentFrame = glfwGetTime();
         float deltaTime = currentFrame - m_LastFrame;
         m_LastFrame = currentFrame;
+        m_DeltaTime = deltaTime;
+
+        glfwGetFramebufferSize(m_Window, &m_FramebufferWidth, &m_FramebufferHeight);
+        glViewport(0, 0, m_FramebufferWidth, m_FramebufferHeight);
 
         // INPUT
         m_Camera.processInput(deltaTime);

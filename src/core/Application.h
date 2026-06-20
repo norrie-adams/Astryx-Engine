@@ -39,8 +39,14 @@ private:
 
     std::unique_ptr<Shader> m_Shader;
     std::unique_ptr<GameObject> m_Cube;
+    std::unique_ptr<GameObject> m_Cube2;
+    std::unique_ptr<GameObject> m_Cube3;
     std::unique_ptr<Texture> m_Texture;
+
+    int m_FramebufferWidth = 800;
+    int m_FramebufferHeight = 600;
 
     // Timing
     float m_LastFrame = 0.0f;
+    float m_DeltaTime = 0.0f;
 };
