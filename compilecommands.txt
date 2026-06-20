@@ -1,0 +1,65 @@
+# ASTRYX ENGINE - BUILD COMMANDS (MINGW + CMAKE)
+
+--------------------------------------------
+1 - CONFIGURE (FIRST TIME OR AFTER CHANGES)
+--------------------------------------------
+
+From inside your build folder:
+
+cd build
+cmake -G "MinGW Makefiles" ..
+
+This generates the Makefiles using the parent folder (project root).
+
+--------------------------------------------
+2 - BUILD
+--------------------------------------------
+
+Still inside /build:
+
+cmake --build .
+
+OR alternatively:
+
+mingw32-make
+
+--------------------------------------------
+3 - RUN
+--------------------------------------------
+
+From /build:
+
+AstryxEngine.exe
+
+--------------------------------------------
+4 - CLEAN REBUILD (WHEN THINGS BREAK)
+--------------------------------------------
+
+Delete build folder:
+rmdir /s /q build
+
+Then recreate:
+
+mkdir build
+cd build
+cmake -G "MinGW Makefiles" ..
+cmake --build .
+
+--------------------------------------------
+5 = IMPORTANT RULES
+--------------------------------------------
+
+- Always run cmake -G ... .. from inside /build
+- Always build from inside /build
+- Don’t run CMake from the project root unless you change workflow
+- If you change CMakeLists.txt → re-run configure step
+
+--------------------------------------------
+6 - COMMON FIX
+--------------------------------------------
+
+If include errors happen:
+→ Delete build folder and reconfigure
+
+If exe not updating:
+→ Rebuild from scratch (clean build)
