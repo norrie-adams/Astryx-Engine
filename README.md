@@ -36,6 +36,7 @@ To compile and run this project, you will need to set up the following on your s
 * **GLFW:** Version 3.4.0 (Windowing & Input)
 * **GLM:** Version 1.0.3 (OpenGL Mathematics)
 * **GLAD:** Version 0.1.36 (OpenGL Loader)
+* **stb_image.h:** Version 2.3 (Texture Loader) 
 
 ---
 
@@ -80,8 +81,9 @@ AstryxEngine.exe
 ├── src/                    # All engine source code (.cpp and .h files)
 ├── include/                # Engine header files (.hpp files)
 │   ├── glad/               # Place GLAD headers here
-│   ├── GLFW/               # Place GLFW headers here
+│   ├── glfw/               # Place GLFW headers here
 │   └── glm/                # Place GLM headers here
+│   └── stb/                # Place stb_image.h here
 ├── assets/                 # Textures, shaders, models, and scripts
 └── CMakeLists.txt          # Main CMake configuration file
 ```
