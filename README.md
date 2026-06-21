@@ -1,6 +1,6 @@
 # Astryx Engine
 
-Astryx Engine is a custom C++ engine using the OpenGL Rendering API. It currently features WASD and Mouse-look movement, a custom OBJ loader, and a simple, clean logging system.
+Astryx Engine is a custom C++ engine using the OpenGL Rendering API. My goal is to release version 1.0 by June 2027.  
 
 ### Current Features
 * **Clean Engine Architecture:** Modular design built from the ground up.
@@ -9,7 +9,7 @@ Astryx Engine is a custom C++ engine using the OpenGL Rendering API. It currentl
 * **Logging System:** A simple, lightweight utility for clean console output.
 
 ### Roadmap
-* **v0.1** - [IN DEVELOPMENT] [VIDEO COMING SOON] Render an OBJ File and Textures 
+* **v0.1** - [DEVELOPMENT COMPLETE] [VIDEO BREAKDOWN COMING SOON] Render an OBJ File and Textures 
 * **v0.2** - Assimp Integration, Lighting, and ImGui Introduction
 * **v0.3** - World Management 
 * **v0.4** - Animation
