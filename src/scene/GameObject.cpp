@@ -6,7 +6,7 @@ void GameObject::draw(Shader& shader)
 
     glm::mat4 model = transform.getModelMatrix();
 
-    glUniformMatrix4fv(shader.getUniform("uModel"), 1, GL_FALSE, &model[0][0]);
+    glUniformMatrix4fv(shader.getUniform("model"), 1, GL_FALSE, &model[0][0]);
 
     mesh.draw();
 }
