@@ -1,3 +1,9 @@
+// Shader
+//
+// Loads GLSL vertex and fragment shader files,
+// compiles them, links them into a shader program,
+// and provides a way to activate the program for rendering
+
 #include "Shader.h"
 #include "core/Log.h"
 #include <iostream>
@@ -5,6 +11,7 @@
 #include <sstream>
 #include <string>
 
+// Reads a text file into a string
 static std::string readFile(const char* filePath)
 {
     std::ifstream file(filePath);
@@ -22,6 +29,7 @@ static std::string readFile(const char* filePath)
 
 }
 
+// Compiles a single GLSL shader (vertex/fragment)
 static unsigned int compileShader(unsigned int type, const char* source)
 {
     unsigned int shader = glCreateShader(type);
@@ -42,6 +50,7 @@ static unsigned int compileShader(unsigned int type, const char* source)
 
 }
 
+// Links compiled shaders into a program
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
 
@@ -78,6 +87,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     glDeleteShader(fs);
 }
 
+// Activates the shader program for rendering
 void Shader::use() 
 {
     glUseProgram(ID);

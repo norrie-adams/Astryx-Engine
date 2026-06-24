@@ -1,3 +1,11 @@
+// Texture
+//
+// Responsible for loading an image from disk and turns it into a GPU texture that can be used in rendering
+//
+// Uses stbi_load() to load the texture data to the RAM and then later gives to GPU memory with glTexImage2D()
+//
+/// Determines texture format (RGB vs RGBA) based on number of channels
+
 #include "Texture.h"
 #include "../../external/glad/include/glad/glad.h"
 #include "core/Log.h"
@@ -10,8 +18,6 @@ Texture::Texture(const std::string& path)
     glGenTextures(1, &ID);
 
     glBindTexture(GL_TEXTURE_2D, ID);
-
-    stbi_set_flip_vertically_on_load(true);
 
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true);  
