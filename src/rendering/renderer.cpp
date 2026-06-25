@@ -1,3 +1,14 @@
+// Renderer 
+//
+// Handles the basic forward rendering pipeline:
+// - Enables depth testing
+// - Clears frame buffers each frame
+// - Issues draw calls with MVP matrices
+//
+// Sigle-pass Renderer
+// Camera/view logic is external and passed in per frame
+// Each Submit() represents one draw call
+
 #include "Renderer.h"
 #include <glad/glad.h>
 #include "Shader.h"
