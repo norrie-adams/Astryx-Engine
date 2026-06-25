@@ -1,3 +1,20 @@
+// ModelLoader (v0.1)
+//
+// Minimal OBJ file loader that converts model data into a GPU-ready vertex buffer
+//
+// Pipeline:
+// 1. Reads OBJ file from disk
+// 2. Parses vertex positions (v)
+// 3. Parses texture coordinates (vt)
+// 4. Parses triangular faces (f)
+// 5. Expands indexed face data into a flat vertex buffer
+//
+// Limitations:
+// - Only supports triangle faces (no quads or polygons)
+// - No vertex deduplication (fully expanded vertex buffer)
+// - Normals are parsed but not used in final mesh output
+// - Assumes valid and well-formed OBJ files
+
 #include "ModelLoader.h"
 #include <fstream>
 #include <sstream>
@@ -9,6 +26,7 @@
 
 namespace Loader {
 
+    // Loads and parses OBJ file into ModelData structure
     ModelData loadModel(const std::string& filename) {
         std::ifstream file(filename);
         ModelData data;
@@ -46,6 +64,7 @@ namespace Loader {
             else if (prefix == "f") {
                 std::string b1, b2, b3;
                 if (iss >> b1 >> b2 >> b3) {
+                    // Converts slashes to spaces
                     for (char& c : b1) if (c == '/') c = ' ';
                     for (char& c : b2) if (c == '/') c = ' ';
                     for (char& c : b3) if (c == '/') c = ' ';
@@ -59,6 +78,7 @@ namespace Loader {
                     ss2 >> vIdx2 >> vtIdx2 >> vnIdx2;
                     ss3 >> vIdx3 >> vtIdx3 >> vnIdx3;
 
+                    // Ensures UV index is valid (fallback to first UV if missing)
                     if (vtIdx1 < 1) vtIdx1 = 1;
                     if (vtIdx2 < 1) vtIdx2 = 1;
                     if (vtIdx3 < 1) vtIdx3 = 1;
@@ -76,6 +96,8 @@ namespace Loader {
         return data; 
     }
 
+    // Expands indexed face data into a flat float array for OpenGL rendering
+    // Output format per vertex: [x, y, z, u, v]
     std::vector<float> buildMeshData(const ModelData& data) {
         std::vector<float> meshData;
 

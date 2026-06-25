@@ -1,3 +1,25 @@
+// Application 
+//
+// Core engine runtime responsible for:
+// - Initializing GLFW + OpenGL context (GLAD)
+// - Creating window and managing lifecycle
+// - Driving the main engine loop
+// - Managing input, camera, renderer, and assets
+//
+// Frame execution order:
+// 1. Compute deltaTime
+// 2. Update viewport size
+// 3. Process camera input
+// 4. Render scene
+// 5. Swap buffers
+// 6. Poll events
+//
+// Notes:
+// - Mouse input handled via GLFW callbacks
+// - Camera is updated directly from input
+// - Forward rendering only (no ECS, no batching yet)
+// - Temporary global camera pointer used for mouse callback routing
+
 #include <iostream>
 #include "Application.h"
 #include "core/Log.h"
@@ -8,7 +30,7 @@
 #include "rendering/Shader.h"
 #include "rendering/Texture.h"
 
-// Mouse-look Variables
+// Handles mouse movement and forwards deltas to active camera
 static Camera* g_Camera = nullptr;
 
 static bool firstMouse = true;
@@ -55,6 +77,7 @@ Application::~Application()
     glfwTerminate();
 }
 
+// Initializes GLFW, OpenGL context, input system, renderer, and assets
 bool Application::init() 
 {
     if (!glfwInit())
@@ -116,14 +139,15 @@ bool Application::init()
     return true;
 }
 
+// Renders a single frame (forward rendering pass)
 void Application::render() 
 {
     m_Renderer.BeginFrame();
 
     float aspect = (float)m_FramebufferWidth / (float)m_FramebufferHeight;
 
-    glm::mat4 view = m_Camera.getViewMatrix();
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
+    glm::mat4 view = m_Camera.getViewMatrix(); // View transform (camera space)
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f); // Perspective projection
 
     if (m_Texture) 
     {
@@ -151,6 +175,8 @@ void Application::render()
     }
 }
 
+// Main engine loop (runs until window close)
+// Handles timing, input, updates, and rendering
 void Application::run() 
 {
     while (!glfwWindowShouldClose(m_Window))
