@@ -1,24 +1,28 @@
-// Mesh 
+// Mesh
 //
-// Responsible for storing vertex data on the GPU
+// Represents a GPU-uploaded vertex buffer for rendering geometry.
 //
-// Uses:
-// VBO - Stores Vertex Data
-// VAO - Describe vertex layout
+// Data Layout:
+// - Interleaved vertex format: [x, y, z, u, v]
+// - Attribute 0: position (vec3)
+// - Attribute 1: texture coordinates (vec2)
 //
-// Vertex Format:
-// [x, y, z, u, v]
+// Implementation:
+// - Uses VBO to store vertex data in GPU memory
+// - Uses VAO to define vertex attribute layout
+// - No index buffer (non-indexed rendering)
 //
-// Attribute 0 -> Position Coordinates
-// Attribute 1 -> Texture Coordinates
-//
-// draw() renders the mesh using GL_TRIANGLES
+// Notes:
+// - Mesh is static after creation (no CPU-side updates)
+// - Rendered using GL_TRIANGLES
+// - Assumes external renderer handles shader binding
 
 #include "Mesh.h"
 
+// Creates GPU buffers and uploads vertex data
 Mesh::Mesh(float* vertices, unsigned int vertexCount)
 {
-    // 3 Position (X, Y, Z) 2 Texture (U, V)
+    // Each vertex = 5 floats: 3 position + 2 UV
     count = vertexCount / 5;
 
     // Create VAO and VBO
@@ -33,15 +37,16 @@ Mesh::Mesh(float* vertices, unsigned int vertexCount)
 
     GLsizei stride = 5 * sizeof(float);
 
-    // Position Pointer
+    // Position attribute (location 0)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
     glEnableVertexAttribArray(0);
 
-    // Texture Pointer
+    // Texture coordinate attribute (location 1)
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 }
 
+// Renders mesh using triangles
 void Mesh::draw()
 {
     glBindVertexArray(VAO);

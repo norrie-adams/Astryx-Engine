@@ -1,8 +1,17 @@
 // Shader
 //
-// Loads GLSL vertex and fragment shader files,
-// compiles them, links them into a shader program,
-// and provides a way to activate the program for rendering
+// Loads, compiles, and links GLSL vertex + fragment shaders into a program.
+//
+// Pipeline:
+// - Reads shader source files from disk
+// - Compiles vertex and fragment shaders
+// - Links them into a single OpenGL program
+// - Provides activation via use()
+//
+// Error handling:
+// - Logs file read failures
+// - Logs shader compile/link failures (via Log system)
+// - Does not throw exceptions (fails silently after logging)
 
 #include "Shader.h"
 #include "core/Log.h"
@@ -43,7 +52,7 @@ static unsigned int compileShader(unsigned int type, const char* source)
     if (!success)
     {
         glGetShaderInfoLog(shader, 1024, nullptr, log);
-        Log::error("Shader compiler error");
+        Log::error(std::string("Shader compiler error: ") + log);
     }
 
     return shader;
@@ -80,7 +89,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     if (!success)
     {
         glGetProgramInfoLog(ID, 1024, nullptr, log);
-        Log::error("Shader link error");
+        Log::error(std::string("Shader link error: ") + log);
     }
 
     glDeleteShader(vs);
