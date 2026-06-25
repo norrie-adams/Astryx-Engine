@@ -1,3 +1,21 @@
+// Input 
+//
+// Simple keyboard input system using GLFW callbacks.
+//
+// Design:
+// - Stores key states as a boolean bitset (pressed / not pressed)
+// - Updated via GLFW key callback
+// - Queried anywhere in the engine via isKeyPressed()
+//
+// Behavior:
+// - True when key is currently held down
+// - False when key is released
+// - No distinction between "pressed this frame" or "held"
+//
+// Notes:
+// - Keyboard only (no mouse input yet)
+// - State is event-updated via GLFW, not manually polled
+
 #include "Input.h"
 
 std::bitset<GLFW_KEY_LAST + 1> Input::m_KeyStates;

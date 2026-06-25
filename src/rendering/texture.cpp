@@ -1,4 +1,5 @@
 // Texture 
+//
 // Loads an image from disk and uploads it to GPU memory as a 2D OpenGL texture
 //
 // Pipeline:

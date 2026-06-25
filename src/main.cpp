@@ -8,7 +8,7 @@ int main()
     Application app;
     
     if (!app.init()) {
-        Log::error("Application initialization failed!");
+        Log::error("Application initialization failed");
         return -1;
     }
 
