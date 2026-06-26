@@ -1,13 +1,14 @@
 #include "core/Application.h"
 #include "core/Log.h"
 
-int main() 
+int main()
 {
     Log::info("Engine initialized");
 
     Application app;
-    
-    if (!app.init()) {
+
+    if (!app.init())
+    {
         Log::error("Application initialization failed");
         return -1;
     }

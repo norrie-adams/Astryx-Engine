@@ -1,4 +1,4 @@
-// Application 
+// Application
 //
 // Core engine runtime responsible for:
 // - Initializing GLFW + OpenGL context (GLAD)
@@ -20,25 +20,25 @@
 // - Forward rendering only (no ECS, no batching yet)
 // - Temporary global camera pointer used for mouse callback routing
 
-#include <iostream>
 #include "Application.h"
-#include "core/Log.h"
-#include "core/Input.h"
 #include "asset/ModelLoader.h"
+#include "core/Input.h"
+#include "core/Log.h"
 #include "rendering/Camera.h"
 #include "rendering/Renderer.h"
 #include "rendering/Shader.h"
 #include "rendering/Texture.h"
+#include <iostream>
 
 // Handles mouse movement and forwards deltas to active camera
-static Camera* g_Camera = nullptr;
+static Camera *g_Camera = nullptr;
 
 static bool firstMouse = true;
 static float lastX = 400.0f;
 static float lastY = 300.0f;
 
 // Mouse-look Function
-void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+void mouse_callback(GLFWwindow *window, double xposIn, double yposIn)
 {
     float xpos = static_cast<float>(xposIn);
     float ypos = static_cast<float>(yposIn);
@@ -62,13 +62,11 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
     }
 }
 
-Application::Application() 
-{ 
-}
+Application::Application() {}
 
-Application::~Application() 
+Application::~Application()
 {
-    if (m_Window) 
+    if (m_Window)
     {
         glfwDestroyWindow(m_Window);
         m_Window = nullptr;
@@ -78,7 +76,7 @@ Application::~Application()
 }
 
 // Initializes GLFW, OpenGL context, input system, renderer, and assets
-bool Application::init() 
+bool Application::init()
 {
     if (!glfwInit())
     {
@@ -135,39 +133,39 @@ bool Application::init()
     m_Cube3->transform.position = glm::vec3(6.0f, 0.0f, -5.0f);
 
     m_Texture = std::make_unique<Texture>("test_assets/brick_texture_test.jpg");
-    
+
     return true;
 }
 
 // Renders a single frame (forward rendering pass)
-void Application::render() 
+void Application::render()
 {
     m_Renderer.BeginFrame();
 
     float aspect = (float)m_FramebufferWidth / (float)m_FramebufferHeight;
 
-    glm::mat4 view = m_Camera.getViewMatrix(); // View transform (camera space)
+    glm::mat4 view = m_Camera.getViewMatrix();                                          // View transform (camera space)
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f); // Perspective projection
 
-    if (m_Texture) 
+    if (m_Texture)
     {
         m_Texture->bind();
     }
 
-    if (m_Cube) 
+    if (m_Cube)
     {
         glm::mat4 model1 = m_Cube->transform.getModelMatrix();
         m_Renderer.Submit(*m_Cube, *m_Shader, model1, view, projection);
     }
 
-    if (m_Cube2) 
+    if (m_Cube2)
     {
         m_Cube2->transform.rotation.y += 90.0f * m_DeltaTime;
         glm::mat4 model2 = m_Cube2->transform.getModelMatrix();
         m_Renderer.Submit(*m_Cube2, *m_Shader, model2, view, projection);
     }
 
-    if (m_Cube3) 
+    if (m_Cube3)
     {
         glm::mat4 model3 = m_Cube3->transform.getModelMatrix();
         m_Renderer.Submit(*m_Cube3, *m_Shader, model3, view, projection);
@@ -177,7 +175,7 @@ void Application::render()
 
 // Main engine loop (runs until window close)
 // Handles timing, input, updates, and rendering
-void Application::run() 
+void Application::run()
 {
     while (!glfwWindowShouldClose(m_Window))
     {

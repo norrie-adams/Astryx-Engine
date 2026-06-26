@@ -1,4 +1,4 @@
-// Renderer 
+// Renderer
 //
 // Handles the basic forward rendering pipeline:
 // - Enables depth testing
@@ -10,15 +10,12 @@
 // Each Submit() represents one draw call
 
 #include "Renderer.h"
-#include <glad/glad.h>
 #include "Shader.h"
 #include "scene/GameObject.h"
+#include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
-void Renderer::Init()
-{
-    glEnable(GL_DEPTH_TEST);
-}
+void Renderer::Init() { glEnable(GL_DEPTH_TEST); }
 
 void Renderer::BeginFrame()
 {
@@ -26,11 +23,8 @@ void Renderer::BeginFrame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::Submit(GameObject& obj,
-                Shader& shader,
-                const glm::mat4& model,
-                const glm::mat4& view,
-                const glm::mat4& projection)
+void Renderer::Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
+                      const glm::mat4 &projection)
 {
     shader.use();
 

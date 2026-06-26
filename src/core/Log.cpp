@@ -15,13 +15,7 @@
 #include <iostream>
 
 // Prints general engine/runtime information to console
-void Log::info(const std::string& msg)
-{
-    std::cout << "[INFO]" << " " << msg << std::endl;
-}
+void Log::info(const std::string &msg) { std::cout << "[INFO]" << " " << msg << std::endl; }
 
 // Prints error messages to console for debugging issues
-void Log::error(const std::string& msg)
-{
-    std::cout << "[ERROR]" << " " << msg << std::endl;
-}
+void Log::error(const std::string &msg) { std::cout << "[ERROR]" << " " << msg << std::endl; }

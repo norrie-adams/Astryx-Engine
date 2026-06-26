@@ -9,7 +9,7 @@
 
 #include "GameObject.h"
 
-void GameObject::draw(Shader& shader)
+void GameObject::draw(Shader &shader)
 {
     glm::mat4 model = transform.getModelMatrix();
 

@@ -1,4 +1,4 @@
-// Texture 
+// Texture
 //
 // Loads an image from disk and uploads it to GPU memory as a 2D OpenGL texture
 //
@@ -22,7 +22,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../external/stb/stb_image.h"
 
-Texture::Texture(const std::string& path)
+Texture::Texture(const std::string &path)
 {
     glGenTextures(1, &ID);
     glBindTexture(GL_TEXTURE_2D, ID);
@@ -30,31 +30,32 @@ Texture::Texture(const std::string& path)
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true);
 
-    unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 
     if (data)
     {
         GLenum internalFormat = GL_RGB;
         GLenum dataFormat = GL_RGB;
 
-        if (nrChannels == 1) {
+        if (nrChannels == 1)
+        {
             internalFormat = GL_RED;
             dataFormat = GL_RED;
         }
-        else if (nrChannels == 3) {
+        else if (nrChannels == 3)
+        {
             internalFormat = GL_RGB;
             dataFormat = GL_RGB;
         }
-        else if (nrChannels == 4) {
+        else if (nrChannels == 4)
+        {
             internalFormat = GL_RGBA;
             dataFormat = GL_RGBA;
         }
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat,
-                     width, height, 0,
-                     dataFormat, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 
         glGenerateMipmap(GL_TEXTURE_2D);
     }
@@ -62,12 +63,6 @@ Texture::Texture(const std::string& path)
     stbi_image_free(data);
 }
 
-Texture::~Texture()
-{
-    glDeleteTextures(1, &ID);
-}
+Texture::~Texture() { glDeleteTextures(1, &ID); }
 
-void Texture::bind()
-{
-    glBindTexture(GL_TEXTURE_2D, ID);
-}
+void Texture::bind() { glBindTexture(GL_TEXTURE_2D, ID); }
