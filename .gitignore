@@ -15,3 +15,4 @@ external/
 .vs/
 
 test_assets/
+.clang-format

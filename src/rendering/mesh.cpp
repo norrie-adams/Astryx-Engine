@@ -20,7 +20,7 @@
 #include "Mesh.h"
 
 // Creates GPU buffers and uploads vertex data
-Mesh::Mesh(float* vertices, unsigned int vertexCount)
+Mesh::Mesh(float *vertices, unsigned int vertexCount)
 {
     // Each vertex = 5 floats: 3 position + 2 UV
     count = vertexCount / 5;
@@ -38,11 +38,11 @@ Mesh::Mesh(float* vertices, unsigned int vertexCount)
     GLsizei stride = 5 * sizeof(float);
 
     // Position attribute (location 0)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void *)0);
     glEnableVertexAttribArray(0);
 
     // Texture coordinate attribute (location 1)
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 }
 
@@ -50,5 +50,5 @@ Mesh::Mesh(float* vertices, unsigned int vertexCount)
 void Mesh::draw()
 {
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, count); 
+    glDrawArrays(GL_TRIANGLES, 0, count);
 }

@@ -10,8 +10,7 @@ public:
     Mesh mesh;
     Transform transform;
 
-    GameObject(float* vertices, unsigned int size)
-        : mesh (vertices, size) {}
+    GameObject(float *vertices, unsigned int size) : mesh(vertices, size) {}
 
-    void draw(Shader& shader);
+    void draw(Shader &shader);
 };

@@ -15,16 +15,16 @@
 
 #include "Shader.h"
 #include "core/Log.h"
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
 
 // Reads a text file into a string
-static std::string readFile(const char* filePath)
+static std::string readFile(const char *filePath)
 {
     std::ifstream file(filePath);
-    if(!file.is_open())
+    if (!file.is_open())
     {
         Log::error("Failed to open shader file: " + std::string(filePath));
         return "";
@@ -35,11 +35,10 @@ static std::string readFile(const char* filePath)
     file.close();
 
     return stream.str();
-
 }
 
 // Compiles a single GLSL shader (vertex/fragment)
-static unsigned int compileShader(unsigned int type, const char* source)
+static unsigned int compileShader(unsigned int type, const char *source)
 {
     unsigned int shader = glCreateShader(type);
     glShaderSource(shader, 1, &source, nullptr);
@@ -56,23 +55,23 @@ static unsigned int compileShader(unsigned int type, const char* source)
     }
 
     return shader;
-
 }
 
 // Links compiled shaders into a program
-Shader::Shader(const char* vertexPath, const char* fragmentPath)
+Shader::Shader(const char *vertexPath, const char *fragmentPath)
 {
 
     std::string vertexStr = readFile(vertexPath);
     std::string fragmentStr = readFile(fragmentPath);
 
-    if (vertexStr.empty() || fragmentStr.empty()) {
+    if (vertexStr.empty() || fragmentStr.empty())
+    {
         Log::error("Shader source empty");
         return;
     }
 
-    const char* vsSource = vertexStr.c_str();
-    const char* fsSource = fragmentStr.c_str();
+    const char *vsSource = vertexStr.c_str();
+    const char *fsSource = fragmentStr.c_str();
 
     unsigned int vs = compileShader(GL_VERTEX_SHADER, vsSource);
     unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fsSource);
@@ -97,7 +96,4 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 }
 
 // Activates the shader program for rendering
-void Shader::use() 
-{
-    glUseProgram(ID);
-}
+void Shader::use() { glUseProgram(ID); }
