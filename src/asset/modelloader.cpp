@@ -1,4 +1,4 @@
-// ModelLoader (v0.1)
+// ModelLoader
 //
 // Minimal OBJ file loader that converts model data into a GPU-ready vertex buffer
 //
