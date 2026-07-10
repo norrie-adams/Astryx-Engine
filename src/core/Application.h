@@ -1,8 +1,8 @@
 #pragma once
 
 // Graphics & Windowing
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 // GLM Math
 #include <glm/glm.hpp>
