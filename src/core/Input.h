@@ -1,7 +1,7 @@
 #pragma once
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <bitset>
-#include <glad/glad.h>
 
 class Input
 {

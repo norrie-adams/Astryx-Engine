@@ -5,12 +5,13 @@ project(AstryxEngine)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external)
-
-add_subdirectory(external/glfw)
+# -----------------------------
+# GLFW
+# -----------------------------
+add_subdirectory(external/glfw/glfw-3.4)
 
 # -----------------------------
-# GLAD AS PROPER LIBRARY
+# GLAD
 # -----------------------------
 add_library(glad STATIC
     external/glad/src/glad.c
@@ -28,26 +29,37 @@ file(GLOB_RECURSE SRC_FILES
 )
 
 add_executable(AstryxEngine ${SRC_FILES})
-file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/src/test_assets" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
-file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 
 # -----------------------------
 # INCLUDE DIRECTORIES
 # -----------------------------
 target_include_directories(AstryxEngine PRIVATE
     src
-    external/glfw/include
-    external/glad/include
+    external/glm/glm-1.0.3
 )
 
 # -----------------------------
-# LINK EVERYTHING
+# LINK LIBRARIES
 # -----------------------------
 target_link_libraries(AstryxEngine PRIVATE
     glfw
     glad
 )
 
-if (WIN32)
+# Windows OpenGL library
+if(WIN32)
     target_link_libraries(AstryxEngine PRIVATE opengl32)
 endif()
+
+# -----------------------------
+# COPY ASSETS
+# -----------------------------
+file(COPY
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets"
+    DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
+)
+
+file(COPY
+    "${CMAKE_CURRENT_SOURCE_DIR}/test_assets"
+    DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
+)
