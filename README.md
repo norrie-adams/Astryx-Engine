@@ -1,6 +1,6 @@
 # Astryx Engine
 
-Astryx Engine is a custom C++ engine using the OpenGL Rendering API. My goal is to release version 1.0 by June 2027.  
+Astryx Engine is a custom C++ engine using the OpenGL Rendering API. My goal is to release version 1.0 by August 2028.  
 
 ### Current Features
 * **Clean Engine Architecture:** Modular design built from the ground up.

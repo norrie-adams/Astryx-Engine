@@ -18,11 +18,13 @@
 #include "ModelLoader.h"
 #include "core/Log.h"
 #include <filesystem>
-#include <fstream>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 namespace Loader
 {
@@ -30,87 +32,67 @@ namespace Loader
 // Loads and parses OBJ file into ModelData structure
 ModelData loadModel(const std::string &filename)
 {
-    std::ifstream file(filename);
     ModelData data;
 
-    if (!file.is_open())
-    {
-        Log::error("Failed to load model: " + filename);
-        Log::error("Current working directory: " + std::filesystem::current_path().string());
+    Assimp::Importer importer;
+
+    const aiScene* scene = importer.ReadFile(filename, ASSIMP_FLAGS);
+
+    if (!scene) {
+        Log::error(importer.GetErrorString());
         return data;
     }
 
-    std::string line;
-    while (std::getline(file, line))
+    processNode(scene->mRootNode, scene, data);
+
+    return data;
+}
+
+void processNode(aiNode* node, const aiScene* scene, ModelData& data) {
+
+    // Process meshes attached to node
+    for (unsigned int i = 0; i < node->mNumMeshes; i++ )
     {
-        std::istringstream iss(line);
-        std::string prefix;
+        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 
-        if (!(iss >> prefix))
-            continue;
-
-        // Parse Vertices
-        if (prefix == "v")
-        {
-            double tempX, tempY, tempZ;
-            if (iss >> tempX >> tempY >> tempZ)
-            {
-                data.vertices.push_back(Vertex{tempX, tempY, tempZ});
-            }
-        }
-
-        // Parse Texture UV Coordinates
-        else if (prefix == "vt")
-        {
-            float tempU, tempV;
-            if (iss >> tempU >> tempV)
-            {
-                data.texCoords.push_back(TexCoord{tempU, tempV});
-            }
-        }
-
-        // Parse Faces
-        else if (prefix == "f")
-        {
-            std::string b1, b2, b3;
-            if (iss >> b1 >> b2 >> b3)
-            {
-                // Converts slashes to spaces
-                for (char &c : b1)
-                    if (c == '/')
-                        c = ' ';
-                for (char &c : b2)
-                    if (c == '/')
-                        c = ' ';
-                for (char &c : b3)
-                    if (c == '/')
-                        c = ' ';
-
-                std::istringstream ss1(b1), ss2(b2), ss3(b3);
-                int vIdx1 = 0, vtIdx1 = 0, vnIdx1 = 0;
-                int vIdx2 = 0, vtIdx2 = 0, vnIdx2 = 0;
-                int vIdx3 = 0, vtIdx3 = 0, vnIdx3 = 0;
-
-                ss1 >> vIdx1 >> vtIdx1 >> vnIdx1;
-                ss2 >> vIdx2 >> vtIdx2 >> vnIdx2;
-                ss3 >> vIdx3 >> vtIdx3 >> vnIdx3;
-
-                // Ensures UV index is valid (fallback to first UV if missing)
-                if (vtIdx1 < 1)
-                    vtIdx1 = 1;
-                if (vtIdx2 < 1)
-                    vtIdx2 = 1;
-                if (vtIdx3 < 1)
-                    vtIdx3 = 1;
-
-                data.faces.push_back(Face{IndexGroup{vIdx1 - 1, vtIdx1 - 1}, IndexGroup{vIdx2 - 1, vtIdx2 - 1},
-                                          IndexGroup{vIdx3 - 1, vtIdx3 - 1}});
-            }
-        }
+        processMesh(mesh, scene, data);
     }
 
-    file.close();
-    return data;
+    for (unsigned int i = 0; i < node->mNumChildren; i++) {
+        processNode(node->mChildren[i], scene, data);
+    }
+} 
+
+void processMesh(aiMesh* mesh, const aiScene* scene, ModelData& data) {
+
+    // Loop through vertices
+    for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
+        data.vertices.push_back(Vertex{mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z});
+    }
+    
+    // Loop through UV Coordinates
+    for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+        if (mesh->mTextureCoords[0])
+        {
+            data.texCoords.push_back(TexCoord{mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y});
+        }
+        else 
+        {
+            data.texCoords.push_back(TexCoord{0.0f, 0.0f});
+        }
+    } 
+
+    // Loop through faces
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
+        aiFace face = mesh->mFaces[i];
+
+        data.faces.push_back( Face{ 
+            {face.mIndices[0], face.mIndices[0]}, 
+            {face.mIndices[1], face.mIndices[1]}, 
+            {face.mIndices[2], face.mIndices[2]} 
+        } 
+    );
+    }
 }
 
 // Expands indexed face data into a flat float array for OpenGL rendering
@@ -118,8 +100,6 @@ ModelData loadModel(const std::string &filename)
 std::vector<float> buildMeshData(const ModelData &data)
 {
     std::vector<float> meshData;
-
-    TexCoord fallbackUV{0.0f, 0.0f};
 
     for (const auto &face : data.faces)
     {

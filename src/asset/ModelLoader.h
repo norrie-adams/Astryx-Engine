@@ -1,6 +1,10 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+#define ASSIMP_FLAGS (aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_FlipUVs)
 
 namespace Loader
 {
@@ -20,8 +24,8 @@ struct TexCoord
 
 struct IndexGroup
 {
-    int vIdx;  // Index for data.vertices
-    int vtIdx; // Index for data.texCoords
+    unsigned int vIdx;  // Index for data.vertices
+    unsigned int vtIdx; // Index for data.texCoords
 };
 
 struct Face
@@ -40,4 +44,7 @@ struct ModelData
 
 ModelData loadModel(const std::string &filename);
 std::vector<float> buildMeshData(const ModelData &data);
+
+void processNode(aiNode* node, const aiScene* scene, ModelData& data);
+void processMesh(aiMesh* mesh, const aiScene* scene, ModelData& data);
 } // namespace Loader
