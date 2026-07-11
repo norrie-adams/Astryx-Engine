@@ -28,4 +28,4 @@ Before writing any code, please review our core reference documents to keep the 
 
 1. Read our Coding Standards to align your code style with the project requirements.
 
-2.  Check out the Contributing Guidelines for details on our branching model and pull request process.
+2. Check out the Contributing Guidelines for details on our branching model and pull request process.

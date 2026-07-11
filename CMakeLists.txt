@@ -11,6 +11,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(external/glfw/glfw-3.4)
 
 # -----------------------------
+# ASSIMP
+# -----------------------------
+
+set(ASSIMP_WARNINGS_AS_ERRORS OFF CACHE BOOL "" FORCE)
+add_subdirectory(external/assimp)
+
+# -----------------------------
 # GLAD
 # -----------------------------
 add_library(glad STATIC
@@ -44,6 +51,7 @@ target_include_directories(AstryxEngine PRIVATE
 target_link_libraries(AstryxEngine PRIVATE
     glfw
     glad
+    assimp
 )
 
 # Windows OpenGL library
