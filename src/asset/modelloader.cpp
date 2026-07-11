@@ -1,27 +1,17 @@
 // ModelLoader
 //
-// Minimal OBJ file loader that converts model data into a GPU-ready vertex buffer
+// A loader that uses Assimp to load a file and pass the meshData to OpenGL
 //
 // Pipeline:
-// 1. Reads OBJ file from disk
-// 2. Parses vertex positions (v)
-// 3. Parses texture coordinates (vt)
-// 4. Parses triangular faces (f)
-// 5. Expands indexed face data into a flat vertex buffer
-//
-// Limitations:
-// - Only supports triangle faces (no quads or polygons)
-// - No vertex deduplication (fully expanded vertex buffer)
-// - Normals are parsed but not used in final mesh output
-// - Assumes valid and well-formed OBJ files
+// 1. Reads file from the disk
+// 2. Recursively traverses the Assimp node hierarchy
+// 3. Extracts mesh data (vertices, UVs, faces) into ModelData
+// 4. Converts ModelData into a GPU-ready meshData vector
 
 #include "ModelLoader.h"
 #include "core/Log.h"
-#include <filesystem>
-#include <iostream>
 #include <string>
 #include <vector>
-
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -29,7 +19,7 @@
 namespace Loader
 {
 
-// Loads and parses OBJ file into ModelData structure
+// Loads a model file through Assimp and converts it into ModelData
 ModelData loadModel(const std::string &filename)
 {
     ModelData data;
@@ -48,6 +38,7 @@ ModelData loadModel(const std::string &filename)
     return data;
 }
 
+// Processes each node in the scene
 void processNode(aiNode* node, const aiScene* scene, ModelData& data) {
 
     // Process meshes attached to node
@@ -58,11 +49,13 @@ void processNode(aiNode* node, const aiScene* scene, ModelData& data) {
         processMesh(mesh, scene, data);
     }
 
+    // Processes children nodes
     for (unsigned int i = 0; i < node->mNumChildren; i++) {
         processNode(node->mChildren[i], scene, data);
     }
 } 
 
+// Converts an Assimp mesh into ModelData
 void processMesh(aiMesh* mesh, const aiScene* scene, ModelData& data) {
 
     // Loop through vertices
