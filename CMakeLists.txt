@@ -53,8 +53,10 @@ target_link_libraries(AstryxEngine PRIVATE
     glad
     assimp
 )
+# -----------------------------
+# WINDOWS OPENGL LIBRARY
+#------------------------------
 
-# Windows OpenGL library
 if(WIN32)
     target_link_libraries(AstryxEngine PRIVATE opengl32)
 endif()

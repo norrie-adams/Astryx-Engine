@@ -58,9 +58,15 @@ void processNode(aiNode* node, const aiScene* scene, ModelData& data) {
 // Converts an Assimp mesh into ModelData
 void processMesh(aiMesh* mesh, const aiScene* scene, ModelData& data) {
 
-    // Loop through vertices
+    // Loop through vertices and normals
     for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
         data.vertices.push_back(Vertex{mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z});
+
+        if (mesh->HasNormals()) {
+            data.normals.push_back(Loader::Normal{mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z});
+        } else {
+            data.normals.push_back(Loader::Normal{0.0f, 1.0f, 0.0f});
+        }
     }
     
     // Loop through UV Coordinates
@@ -107,6 +113,12 @@ std::vector<float> buildMeshData(const ModelData &data)
         TexCoord uv1 = data.texCoords[face.c1.vtIdx];
         meshData.push_back(uv1.u);
         meshData.push_back(uv1.v);
+        
+        // Normals
+        Loader::Normal n1 = data.normals[face.c1.vIdx];
+        meshData.push_back(n1.nx);
+        meshData.push_back(n1.ny);
+        meshData.push_back(n1.nz);
 
         // Position Coordinates
         Vertex v2 = data.vertices[face.c2.vIdx];
@@ -119,6 +131,12 @@ std::vector<float> buildMeshData(const ModelData &data)
         meshData.push_back(uv2.u);
         meshData.push_back(uv2.v);
 
+        // Normals
+        Loader::Normal n2 = data.normals[face.c2.vIdx];
+        meshData.push_back(n2.nx);
+        meshData.push_back(n2.ny);
+        meshData.push_back(n2.nz);
+
         // Position Coordinates
         Vertex v3 = data.vertices[face.c3.vIdx];
         meshData.push_back(static_cast<float>(v3.x));
@@ -129,6 +147,12 @@ std::vector<float> buildMeshData(const ModelData &data)
         TexCoord uv3 = data.texCoords[face.c3.vtIdx];
         meshData.push_back(uv3.u);
         meshData.push_back(uv3.v);
+
+        // Normals
+        Loader::Normal n3 = data.normals[face.c3.vIdx];
+        meshData.push_back(n3.nx);
+        meshData.push_back(n3.ny);
+        meshData.push_back(n3.nz);
     }
     return meshData;
 }
