@@ -24,13 +24,17 @@ void Renderer::BeginFrame()
 }
 
 void Renderer::Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
-                      const glm::mat4 &projection)
+                      const glm::mat4 &projection, const glm::vec3 &viewPos)
 {
     shader.use();
 
+    // Matrix uniforms
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
+    glUniform3f(shader.getUniform("lightPos"), viewPos.x, viewPos.y, viewPos.z); 
+    glUniform3f(shader.getUniform("lightColor"), 1.0f, 1.0f, 1.0f);
+    glUniform3f(shader.getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
     obj.draw(shader);
 }

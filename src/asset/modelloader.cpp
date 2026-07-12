@@ -19,6 +19,10 @@
 namespace Loader
 {
 
+// Foward Function Decleration
+void processNode(aiNode* node, const aiScene* scene, ModelData& data);
+void processMesh(aiMesh* mesh, const aiScene* scene, ModelData& data);
+
 // Loads a model file through Assimp and converts it into ModelData
 ModelData loadModel(const std::string &filename)
 {
