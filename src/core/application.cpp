@@ -28,6 +28,7 @@
 #include "rendering/Renderer.h"
 #include "rendering/Shader.h"
 #include "rendering/Texture.h"
+#include "scene/Light.h"
 #include <iostream>
 
 // Handles mouse movement and forwards deltas to active camera
@@ -172,6 +173,12 @@ void Application::render()
         glm::mat4 model3 = m_Cube3->transform.getModelMatrix();
         m_Renderer.Submit(*m_Cube3, *m_Shader, model3, view, projection, camPos);
     }
+
+    Light light;
+
+    light.position = glm::vec3(2.0f, 3.0f, 1.0f);
+    light.color = glm::vec3(1.0f);
+    light.intensity = 1.0f;
 }
 
 // Main engine loop (runs until window close)

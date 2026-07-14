@@ -36,5 +36,12 @@ void Renderer::Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, c
     glUniform3f(shader.getUniform("lightPos"), viewPos.x, viewPos.y, viewPos.z); 
     glUniform3f(shader.getUniform("lightColor"), 1.0f, 1.0f, 1.0f);
     glUniform3f(shader.getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
+
     obj.draw(shader);
+}
+
+void Renderer::SetLight(const Light& light, Shader &shader) {
+    glUniform3f(shader.getUniform("light.position"), light.position.x, light.position.y,light.position.z);
+    glUniform3f(shader.getUniform("light.color"), light.color.x, light.color.y,light.color.z);
+    glUniform1f(shader.getUniform("light.intensity"), light.intensity);
 }

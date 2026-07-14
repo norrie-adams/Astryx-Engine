@@ -29,6 +29,15 @@ target_include_directories(glad PUBLIC
 )
 
 # -----------------------------
+# GLM
+# -----------------------------
+add_library(glm INTERFACE)
+
+target_include_directories(glm INTERFACE
+    external/glm
+)
+
+# -----------------------------
 # ENGINE SOURCES
 # -----------------------------
 file(GLOB_RECURSE SRC_FILES
@@ -42,7 +51,6 @@ add_executable(AstryxEngine ${SRC_FILES})
 # -----------------------------
 target_include_directories(AstryxEngine PRIVATE
     src
-    external/glm/glm-1.0.3
 )
 
 # -----------------------------
@@ -52,6 +60,7 @@ target_link_libraries(AstryxEngine PRIVATE
     glfw
     glad
     assimp
+    glm
 )
 # -----------------------------
 # WINDOWS OPENGL LIBRARY
