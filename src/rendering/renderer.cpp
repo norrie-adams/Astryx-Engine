@@ -29,19 +29,19 @@ void Renderer::Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, c
     shader.use();
 
     // Matrix uniforms
-    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    shader.setMat4("model", model);
+    shader.setMat4("view", view);
+    shader.setMat4("projection", projection);
 
-    glUniform3f(shader.getUniform("lightPos"), viewPos.x, viewPos.y, viewPos.z); 
-    glUniform3f(shader.getUniform("lightColor"), 1.0f, 1.0f, 1.0f);
-    glUniform3f(shader.getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
+    shader.setVec3("lightPos", viewPos);
+    shader.setVec3("lightColor", glm::vec3(1.0f));
+    shader.setVec3("viewPos", viewPos);
 
     obj.draw(shader);
 }
 
 void Renderer::SetLight(const Light& light, Shader &shader) {
-    glUniform3f(shader.getUniform("light.position"), light.position.x, light.position.y,light.position.z);
-    glUniform3f(shader.getUniform("light.color"), light.color.x, light.color.y,light.color.z);
-    glUniform1f(shader.getUniform("light.intensity"), light.intensity);
+    shader.setVec3("light.position", light.position);
+    shader.setVec3("light.color", light.color);
+    shader.setFloat("light.intensity", light.intensity);
 }

@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # -----------------------------
 # GLFW
 # -----------------------------
-add_subdirectory(external/glfw/glfw-3.4)
+add_subdirectory(external/glfw)
 
 # -----------------------------
 # ASSIMP
