@@ -22,8 +22,8 @@
 // Creates GPU buffers and uploads vertex data
 Mesh::Mesh(float *vertices, unsigned int vertexCount)
 {
-    // Each vertex = 5 floats: 3 position + 2 UV
-    count = vertexCount / 5;
+    // Each vertex = 8 floats: 3 position + 2 UV + 3 Normal
+    count = vertexCount / 8;
 
     // Create VAO and VBO
     glGenVertexArrays(1, &VAO);
@@ -35,7 +35,7 @@ Mesh::Mesh(float *vertices, unsigned int vertexCount)
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(float), vertices, GL_STATIC_DRAW);
 
-    GLsizei stride = 5 * sizeof(float);
+    GLsizei stride = 8 * sizeof(float);
 
     // Position attribute (location 0)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void *)0);
@@ -44,6 +44,9 @@ Mesh::Mesh(float *vertices, unsigned int vertexCount)
     // Texture coordinate attribute (location 1)
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void *)(5 * sizeof(float)));
+    glEnableVertexAttribArray(2); 
 }
 
 // Renders mesh using triangles
