@@ -31,8 +31,11 @@ target_include_directories(glad PUBLIC
 # -----------------------------
 # GLM
 # -----------------------------
+add_library(glm INTERFACE)
 
-add_subdirectory(external/glm)
+target_include_directories(glm INTERFACE
+    external/glm
+)
 
 # -----------------------------
 # ENGINE SOURCES
@@ -59,8 +62,10 @@ target_link_libraries(AstryxEngine PRIVATE
     assimp
     glm
 )
+# -----------------------------
+# WINDOWS OPENGL LIBRARY
+#------------------------------
 
-# Windows OpenGL library
 if(WIN32)
     target_link_libraries(AstryxEngine PRIVATE opengl32)
 endif()

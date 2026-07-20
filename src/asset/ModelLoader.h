@@ -1,50 +1,47 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
-#define ASSIMP_FLAGS (aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_FlipUVs)
+#define ASSIMP_FLAGS (aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_FlipUVs | aiProcess_GenSmoothNormals)
 
 namespace Loader
 {
 
-struct Vertex
-{
-    double x;
-    double y;
-    double z;
+// 1. Define the Normal struct (just like your Vertex struct)
+struct Vertex {
+    double x, y, z;
 };
 
-struct TexCoord
-{
-    float u;
-    float v;
+struct Normal {
+    float nx, ny, nz; // Holds the x, y, z direction of the normal
 };
 
-struct IndexGroup
-{
-    unsigned int vIdx;  // Index for data.vertices
-    unsigned int vtIdx; // Index for data.texCoords
+struct TexCoord {
+    float u, v;
 };
 
-struct Face
-{
+// (Keep your Face and Component structs exactly how you have them)
+struct IndexGroup {
+    unsigned int vIdx;
+    unsigned int vtIdx;
+};
+
+struct Face {
     IndexGroup c1;
     IndexGroup c2;
     IndexGroup c3;
 };
 
-struct ModelData
-{
+// 2. Add the normals vector to ModelData
+struct ModelData {
     std::vector<Vertex> vertices;
+    std::vector<Normal> normals;    // <-- ADD THIS LINE
     std::vector<TexCoord> texCoords;
     std::vector<Face> faces;
 };
 
+// Your function declarations...
 ModelData loadModel(const std::string &filename);
 std::vector<float> buildMeshData(const ModelData &data);
 
-void processNode(aiNode* node, const aiScene* scene, ModelData& data);
-void processMesh(aiMesh* mesh, const aiScene* scene, ModelData& data);
-} // namespace Loader
+}

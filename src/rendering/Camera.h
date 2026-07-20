@@ -12,6 +12,8 @@ public:
     void processInput(float deltaTime);
     void processMouseMovement(float xoffset, float yoffset);
 
+    glm::vec3 getPosition() const { return position; } 
+
 private:
     glm::vec3 position;
     glm::vec3 front;

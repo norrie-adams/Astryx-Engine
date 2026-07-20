@@ -28,6 +28,7 @@
 #include "rendering/Renderer.h"
 #include "rendering/Shader.h"
 #include "rendering/Texture.h"
+#include "scene/Light.h"
 #include <iostream>
 
 // Handles mouse movement and forwards deltas to active camera
@@ -152,25 +153,32 @@ void Application::render()
         m_Texture->bind();
     }
 
+    glm::vec3 camPos = m_Camera.getPosition();
+
     if (m_Cube)
     {
         glm::mat4 model1 = m_Cube->transform.getModelMatrix();
-        m_Renderer.Submit(*m_Cube, *m_Shader, model1, view, projection);
+        m_Renderer.Submit(*m_Cube, *m_Shader, model1, view, projection, camPos);
     }
 
     if (m_Cube2)
     {
         m_Cube2->transform.rotation.y += 90.0f * m_DeltaTime;
         glm::mat4 model2 = m_Cube2->transform.getModelMatrix();
-        m_Renderer.Submit(*m_Cube2, *m_Shader, model2, view, projection);
+        m_Renderer.Submit(*m_Cube2, *m_Shader, model2, view, projection, camPos);
     }
 
     if (m_Cube3)
     {
         glm::mat4 model3 = m_Cube3->transform.getModelMatrix();
-        m_Renderer.Submit(*m_Cube3, *m_Shader, model3, view, projection);
-        m_Cube3->transform.rotation.z += 700.0f * m_DeltaTime;
+        m_Renderer.Submit(*m_Cube3, *m_Shader, model3, view, projection, camPos);
     }
+
+    Light light;
+
+    light.position = glm::vec3(2.0f, 3.0f, 1.0f);
+    light.color = glm::vec3(1.0f);
+    light.intensity = 1.0f;
 }
 
 // Main engine loop (runs until window close)
