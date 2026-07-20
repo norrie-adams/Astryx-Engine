@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # -----------------------------
 # GLFW
 # -----------------------------
-add_subdirectory(external/glfw/glfw-3.4)
+add_subdirectory(external/glfw)
 
 # -----------------------------
 # ASSIMP
@@ -29,6 +29,12 @@ target_include_directories(glad PUBLIC
 )
 
 # -----------------------------
+# GLM
+# -----------------------------
+
+add_subdirectory(external/glm)
+
+# -----------------------------
 # ENGINE SOURCES
 # -----------------------------
 file(GLOB_RECURSE SRC_FILES
@@ -42,7 +48,6 @@ add_executable(AstryxEngine ${SRC_FILES})
 # -----------------------------
 target_include_directories(AstryxEngine PRIVATE
     src
-    external/glm/glm-1.0.3
 )
 
 # -----------------------------
@@ -52,6 +57,7 @@ target_link_libraries(AstryxEngine PRIVATE
     glfw
     glad
     assimp
+    glm
 )
 
 # Windows OpenGL library
