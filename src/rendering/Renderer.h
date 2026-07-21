@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include "scene/Light.h"
 
@@ -20,4 +21,5 @@ public:
     void RenderScenePass();
 
     void SetLight(const Light& light, Shader &shader);
+
 };
