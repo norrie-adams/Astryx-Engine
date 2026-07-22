@@ -90,6 +90,7 @@ bool Application::init()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     m_Window = glfwCreateWindow(800, 600, "Astryx Engine", NULL, NULL);
+    
     if (!m_Window)
     {
         Log::error("GLFW Window Creation Failed");
