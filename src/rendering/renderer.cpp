@@ -18,21 +18,17 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-void CreateShadowMap() 
+void Renderer::CreateShadowMap() 
 {
     // Generate Depth Texture
-    GLuint m_depthTexture;
-
     glGenTextures(1, &m_depthTexture);
     glBindTexture(GL_TEXTURE_2D, m_depthTexture);
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 
     // Attach to FBO
-    GLuint m_FBO;
-
-    glGenFramebuffers(1, &m_FBO);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+    glGenFramebuffers(1, &m_shadowFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
 
@@ -57,22 +53,30 @@ void Renderer::BeginFrame() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void RenderShadowPass(const Light &light, const Shader &shader) 
+void Renderer::RenderShadowPass(const Light &light, Shader &shader, GameObject &gameObject, glm::mat4 model) 
 {
+    // Matrix Calculations
     glm::mat4 lightView = glm::lookAt(light.position, light.position + light.direction, glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 50.0f);
     glm::mat4 lightSpaceMatrix = lightProjection * lightView;
-    shader.setMat4("LightSpaceMatrix", lightSpaceMatrix);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
+    glViewport(0, 0, 1024, 1024);
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    shader.use();
+    shader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+    shader.setMat4("model", model);
+
+    gameObject.draw(shader);
 }
 
 void RenderScenePass()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-
 } 
 
-void Renderer::Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
+void Renderer::Submit(GameObject &gameObject, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
                       const glm::mat4 &projection, const glm::vec3 &viewPos)
 {
     shader.use();
@@ -86,7 +90,7 @@ void Renderer::Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, c
     shader.setVec3("lightColor", glm::vec3(1.0f));
     shader.setVec3("viewPos", viewPos);
 
-    obj.draw(shader);
+    gameObject.draw(shader);
 }
 
 void Renderer::SetLight(const Light& light, Shader &shader) {
