@@ -14,6 +14,8 @@
 #include "Shader.h"
 #include "scene/GameObject.h"
 #include "core/Log.h"
+#include "scene/Light.h"
+#include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 void CreateShadowMap() 
@@ -37,6 +39,9 @@ void CreateShadowMap()
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         Log::error("Failed to generate framebuffer for shadows");
     }
+
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
 }
 
 void Renderer::Init() 
@@ -52,14 +57,19 @@ void Renderer::BeginFrame() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void RenderShadowPass() 
+void RenderShadowPass(const Light &light, const Shader &shader) 
 {
-    
+    glm::mat4 lightView = glm::lookAt(light.position, light.position + light.direction, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 50.0f);
+    glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+    shader.setMat4("LightSpaceMatrix", lightSpaceMatrix);
 }
 
 void RenderScenePass()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
 } 
 
 void Renderer::Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,

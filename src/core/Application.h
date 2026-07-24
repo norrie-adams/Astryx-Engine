@@ -39,6 +39,7 @@ private:
     Renderer m_Renderer;
 
     std::unique_ptr<Shader> m_Shader;
+    std::unique_ptr<Shader> m_shadowShader;
     std::unique_ptr<GameObject> m_Cube;
     std::unique_ptr<GameObject> m_Cube2;
     std::unique_ptr<GameObject> m_Cube3;
