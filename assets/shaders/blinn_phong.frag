@@ -5,10 +5,46 @@ in vec2 TexCoord;
 in vec3 FragPos;
 in vec3 Normal;
 
-uniform sampler2D texture1;
+struct Light {
+    vec3 position;
+    vec3 color;
+    vec3 direction;
+    float intensity;
+};
+
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform vec3 lightColor;
+uniform sampler2D diffuseTexture;
+uniform sampler2D shadowMap;
+
+float shadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir)
+{
+    // Convert Clip Space -> NDC 
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+
+    // Convert to UV range
+    projCoords = projCoords * 0.5 + 0.5;
+
+    // Get depth of current fragment
+    float currentDepth = projCoords.z;
+
+    // Makes fragments beyond shadow map plane not be shadowed to prevent weird shadows
+    if(projCoords.z > 1.0)
+        return 0.0;
+
+    // Shadow bias to prevent shadow acne (small offset)
+    float bias = max(0.05 * (1.0 - dot(nromal, lightDir)), 0.005);
+
+    // Sample closet depth value from shadow map
+    float closetDepth = texture(shadowMap, projCoords.xy).r;
+
+    // Check if current fragment is in shadow
+    float shadow = currentDepth - bias > closetDepth ? 1.0 : 0.0;
+
+    return shadow;
+}   
+
 
 void main()
 {
@@ -33,7 +69,12 @@ void main()
     float spec = pow(max(dot(norm, halfwayDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;
 
-    vec3 finalColor = (ambient + diffuse + specular) * objectColor;
+    // Shadows
+    float shadow = ShadowCalculation(fragPosLightSpace, norm, lightDir);
+
+    vec3 lighting = ambient + (1.0 - shadow) * (diffuse + specular);
+
+    vec3 finalColor = lighting * objectColor;
 
     FragColor = vec4(finalColor, 1.0);
 } 
