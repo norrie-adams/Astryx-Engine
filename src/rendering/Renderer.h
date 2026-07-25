@@ -11,19 +11,18 @@ class Renderer
 {
 public:
     void Init();
-
-    void BeginFrame();
     
     void CreateShadowMap();
 
-    void BeginShadowPass(const Light &light, Shader &shader, GameObject &gameObject, glm::mat4 model);
+    // Pass 1
+    void BeginShadowPass(const Light &light, Shader &shader);
     void SubmitShadow(Shader &shader, glm::mat4 &model, GameObject &gameObject);
     void BindShadowMap(Shader &shader);
-    void BeginScenePass();
-    void Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
-                const glm::mat4 &projection, const glm::vec3 &viewPos);
 
-    void SetLight(const Light& light, Shader &shader);
+    // Pass 2
+    void BeginScenePass(Shader &mainShader, int screenWidth, int screenHeight);
+    void Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
+                const glm::mat4 &projection, const glm::vec3 &viewPos, const Light &light);
 
 private:
     GLuint m_depthTexture;

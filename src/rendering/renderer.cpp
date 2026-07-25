@@ -26,6 +26,15 @@ void Renderer::CreateShadowMap()
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 
+    // Texture Parameters to prevent weird shadows
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+    float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
     // Attach to FBO
     glGenFramebuffers(1, &m_shadowFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
@@ -46,24 +55,17 @@ void Renderer::Init()
     CreateShadowMap();
 }
 
-void Renderer::BeginFrame() {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
 // -------------------------------------
 //         PASS 1 (SHADOW MAPS)
 // -------------------------------------
 
 // Preperation for Pass 1
-void Renderer::BeginShadowPass(const Light &light, Shader &shader, GameObject &gameObject, glm::mat4 model) 
+void Renderer::BeginShadowPass(const Light &light, Shader &shader) 
 {
     // Matrix Calculations
     glm::mat4 lightView = glm::lookAt(light.position, light.position + light.direction, glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 50.0f);
-    glm::mat4 m_lightSpaceMatrix = lightProjection * lightView;
+    m_lightSpaceMatrix = lightProjection * lightView;
 
     // Bind (activate) custom FBO to be used
     glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
@@ -91,30 +93,44 @@ void Renderer::BindShadowMap(Shader &shader)
     shader.setInt("shadowMap", 1);
 }
 
-void Renderer::BeginScenePass()
+// -------------------------------------
+//       PASS 2 (RENDERING SCENE)
+// -------------------------------------
+
+// Preperation for Pass 2
+void Renderer::BeginScenePass(Shader &mainShader, int screenWidth, int screenHeight)
 {
-    
+    // Reset screen to main monitor
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, screenWidth, screenHeight);
+
+    // Resets colors to draw objects
+    glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    mainShader.use();
+    BindShadowMap(mainShader);
 }
 
-void Renderer::Submit(GameObject &gameObject, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
-                      const glm::mat4 &projection, const glm::vec3 &viewPos)
+// Drawing objects on screen
+void Renderer::Submit(GameObject &gameObject, Shader &mainShader, const glm::mat4 &model, const glm::mat4 &view,
+                      const glm::mat4 &projection, const glm::vec3 &viewPos, const Light &light)
 {
-    shader.use();
+    mainShader.use();
 
-    // Matrix uniforms
-    shader.setMat4("model", model);
-    shader.setMat4("view", view);
-    shader.setMat4("projection", projection);
+    // Camera matrix uniforms
+    mainShader.setMat4("model", model);
+    mainShader.setMat4("view", view);
+    mainShader.setMat4("projection", projection);
 
-    shader.setVec3("lightPos", viewPos);
-    shader.setVec3("lightColor", glm::vec3(1.0f));
-    shader.setVec3("viewPos", viewPos);
+    mainShader.setMat4("lightSpaceMatrix", m_lightSpaceMatrix);
 
-    gameObject.draw(shader);
-}
+    // Light Properties
+    mainShader.setVec3("light.position", light.position);
+    mainShader.setVec3("light.color", light.color);
+    mainShader.setFloat("light.intensity", light.intensity);
+    mainShader.setVec3("lightColor", glm::vec3(1.0f));
+    mainShader.setVec3("viewPos", viewPos);
 
-void Renderer::SetLight(const Light& light, Shader &shader) {
-    shader.setVec3("light.position", light.position);
-    shader.setVec3("light.color", light.color);
-    shader.setFloat("light.intensity", light.intensity);
+    gameObject.draw(mainShader);
 }
