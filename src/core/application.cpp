@@ -124,7 +124,7 @@ bool Application::init()
     Log::info("Loaded " + std::to_string(modelData.faces.size()) + " faces");
 
     m_Shader = std::make_unique<Shader>("assets/shaders/blinn_phong.vert", "assets/shaders/blinn_phong.frag");
-    m_shadowShader = std::make_unique<Shader>("assets/shaders/shadow_map.vert", "assets/shadows/shadow_map.frag");
+    m_shadowShader = std::make_unique<Shader>("assets/shaders/shadow_map.vert", "assets/shaders/shadow_map.frag");
 
     m_Cube = std::make_unique<GameObject>(openGLVertices.data(), openGLVertices.size());
     m_Cube->transform.position = glm::vec3(-2.0f, 0.0f, -5.0f);

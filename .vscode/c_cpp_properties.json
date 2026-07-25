@@ -1,9 +1,10 @@
 {
-  "version": 4,
-  "configurations": [
-    {
-      "name": "CMake",
-      "configurationProvider": "ms-vscode.cmake-tools"
-    }
-  ]
+    "version": 4,
+    "configurations": [
+        {
+            "name": "CMake",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "compilerPath": "C:/msys64/ucrt64/bin/g++.exe"
+        }
+    ]
 }
