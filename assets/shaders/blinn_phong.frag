@@ -28,13 +28,11 @@ void main()
     // Specular
     float specularStrength = 0.5;
     vec3 viewDir = normalize(viewPos - FragPos);
-    // FIX: Changed viewDIr to viewDir
     vec3 halfwayDir = normalize(lightDir + viewDir);
     
     float spec = pow(max(dot(norm, halfwayDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;
 
-    // FIX: Changed aimbient to ambient
     vec3 finalColor = (ambient + diffuse + specular) * objectColor;
 
     FragColor = vec4(finalColor, 1.0);

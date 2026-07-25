@@ -53,28 +53,48 @@ void Renderer::BeginFrame() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::RenderShadowPass(const Light &light, Shader &shader, GameObject &gameObject, glm::mat4 model) 
+// -------------------------------------
+//         PASS 1 (SHADOW MAPS)
+// -------------------------------------
+
+// Preperation for Pass 1
+void Renderer::BeginShadowPass(const Light &light, Shader &shader, GameObject &gameObject, glm::mat4 model) 
 {
     // Matrix Calculations
     glm::mat4 lightView = glm::lookAt(light.position, light.position + light.direction, glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 50.0f);
-    glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+    glm::mat4 m_lightSpaceMatrix = lightProjection * lightView;
 
+    // Bind (activate) custom FBO to be used
     glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
     glViewport(0, 0, 1024, 1024);
     glClear(GL_DEPTH_BUFFER_BIT);
 
+    // Activates shader and passes in lightSpaceMatrix
     shader.use();
-    shader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
-    shader.setMat4("model", model);
+    shader.setMat4("lightSpaceMatrix", m_lightSpaceMatrix);
 
-    gameObject.draw(shader);
 }
 
-void RenderScenePass()
+// Draws objects in Pass 1
+void Renderer::SubmitShadow(Shader &shader, glm::mat4 &model, GameObject &gameObject)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    shader.setMat4("model", model);
+    gameObject.draw(shader);
 } 
+
+// Binds depth buffer texture so the main shader can read the shadow data (positions of each object)
+void Renderer::BindShadowMap(Shader &shader)
+{
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, m_depthTexture);
+    shader.setInt("shadowMap", 1);
+}
+
+void Renderer::BeginScenePass()
+{
+    
+}
 
 void Renderer::Submit(GameObject &gameObject, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
                       const glm::mat4 &projection, const glm::vec3 &viewPos)
