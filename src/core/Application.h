@@ -43,6 +43,7 @@ private:
     std::unique_ptr<GameObject> m_Cube;
     std::unique_ptr<GameObject> m_Cube2;
     std::unique_ptr<GameObject> m_Cube3;
+    std::unique_ptr<GameObject> m_Plane;
     std::unique_ptr<Texture> m_Texture;
 
     int m_FramebufferWidth = 800;
