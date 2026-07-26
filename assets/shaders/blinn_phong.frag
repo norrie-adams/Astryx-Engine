@@ -4,6 +4,7 @@ out vec4 FragColor;
 in vec2 TexCoord;
 in vec3 FragPos;
 in vec3 Normal;
+in vec4 fragPosLightSpace;
 
 struct Light {
     vec3 position;
@@ -34,7 +35,7 @@ float shadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir)
         return 0.0;
 
     // Shadow bias to prevent shadow acne (small offset)
-    float bias = max(0.05 * (1.0 - dot(nromal, lightDir)), 0.005);
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
 
     // Sample closet depth value from shadow map
     float closetDepth = texture(shadowMap, projCoords.xy).r;
@@ -48,7 +49,7 @@ float shadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir)
 
 void main()
 {
-    vec3 objectColor = texture(texture1, TexCoord).rgb;
+    vec3 objectColor = texture(diffuseTexture, TexCoord).rgb;
 
     // Ambient
     float ambientStrength = 0.15;
@@ -70,7 +71,7 @@ void main()
     vec3 specular = specularStrength * spec * lightColor;
 
     // Shadows
-    float shadow = ShadowCalculation(fragPosLightSpace, norm, lightDir);
+    float shadow = shadowCalculation(fragPosLightSpace, norm, lightDir);
 
     vec3 lighting = ambient + (1.0 - shadow) * (diffuse + specular);
 
