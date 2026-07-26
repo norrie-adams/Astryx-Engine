@@ -63,7 +63,7 @@ void Renderer::Init()
 void Renderer::BeginShadowPass(const Light &light, Shader &shader) 
 {
     // Matrix Calculations
-    glm::mat4 lightView = glm::lookAt(light.position, light.position + light.direction, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 lightView = glm::lookAt(light.position, light.position + glm::normalize(light.direction), glm::vec3(0.0f, 0.0f, 1.0f));
     glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 50.0f);
     m_lightSpaceMatrix = lightProjection * lightView;
 
@@ -109,6 +109,7 @@ void Renderer::BeginScenePass(Shader &mainShader, int screenWidth, int screenHei
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mainShader.use();
+    mainShader.setMat4("lightSpaceMatrix", m_lightSpaceMatrix);
     BindShadowMap(mainShader);
 }
 
@@ -129,7 +130,7 @@ void Renderer::Submit(GameObject &gameObject, Shader &mainShader, const glm::mat
     mainShader.setVec3("light.position", light.position);
     mainShader.setVec3("light.color", light.color);
     mainShader.setFloat("light.intensity", light.intensity);
-    mainShader.setVec3("lightColor", glm::vec3(1.0f));
+    mainShader.setVec3("light.color", glm::vec3(1.0f));
     mainShader.setVec3("viewPos", viewPos);
 
     gameObject.draw(mainShader);

@@ -154,14 +154,19 @@ void Application::render()
 {
     Light light;
 
-    light.position = glm::vec3(2.0f, 3.0f, 1.0f);
+    light.position = glm::vec3(20.0f, 20.0f, 20.0f);
     light.color = glm::vec3(1.0f);
-    light.direction = glm::vec3(-0.2f, -1.0f, -0.3f);
+    light.direction = glm::normalize(glm::vec3(-1.0f, -1.0f, -1.0f));
     light.intensity = 1.0f;
 
     if (m_Cube2)
     {
         m_Cube2->transform.rotation.y += 90.0f * m_DeltaTime;
+    }
+
+    if (m_Plane)
+    {
+        m_Plane->transform.rotation.x = -90.0f;
     }
 
     // -----------------------------------------
@@ -226,7 +231,7 @@ void Application::render()
         m_Renderer.Submit(*m_Cube2, *m_Shader, model2, view, projection, camPos, light);
     }
 
-    if (m_Cube)
+    if (m_Cube3)
     {
         glm::mat4 model3 = m_Cube3->transform.getModelMatrix();
         m_Renderer.Submit(*m_Cube3, *m_Shader, model3, view, projection, camPos, light);
