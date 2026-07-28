@@ -90,7 +90,6 @@ bool Application::init()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     m_Window = glfwCreateWindow(800, 600, "Astryx Engine", NULL, NULL);
-    
     if (!m_Window)
     {
         Log::error("GLFW Window Creation Failed");
@@ -117,32 +116,22 @@ bool Application::init()
     glViewport(0, 0, 800, 600);
     m_Renderer.Init();
 
-    auto cubeData = Loader::loadModel("test_assets/engine_cube.obj");
-    std::vector<float> cubeVertices = Loader::buildMeshData(cubeData);
+    auto modelData = Loader::loadModel("test_assets/engine_cube.obj");
+    std::vector<float> openGLVertices = Loader::buildMeshData(modelData);
 
-    auto planeData = Loader::loadModel("test_assets/engine_plane.fbx");
-    std::vector<float> planeVertices = Loader::buildMeshData(planeData);
-
-    Log::info("Loaded " + std::to_string(cubeData.vertices.size()) + " vertices");
-    Log::info("Loaded " + std::to_string(cubeData.faces.size()) + " faces");
-
-    Log::info("Loaded " + std::to_string(planeData.vertices.size()) + " vertices");
-    Log::info("Loaded " + std::to_string(planeData.faces.size()) + " faces");
+    Log::info("Loaded " + std::to_string(modelData.vertices.size()) + " vertices");
+    Log::info("Loaded " + std::to_string(modelData.faces.size()) + " faces");
 
     m_Shader = std::make_unique<Shader>("assets/shaders/blinn_phong.vert", "assets/shaders/blinn_phong.frag");
-    m_shadowShader = std::make_unique<Shader>("assets/shaders/shadow_map.vert", "assets/shaders/shadow_map.frag");
 
-    m_Cube = std::make_unique<GameObject>(cubeVertices.data(), cubeVertices.size());
+    m_Cube = std::make_unique<GameObject>(openGLVertices.data(), openGLVertices.size());
     m_Cube->transform.position = glm::vec3(-2.0f, 0.0f, -5.0f);
 
-    m_Cube2 = std::make_unique<GameObject>(cubeVertices.data(), cubeVertices.size());
+    m_Cube2 = std::make_unique<GameObject>(openGLVertices.data(), openGLVertices.size());
     m_Cube2->transform.position = glm::vec3(2.0f, 0.0f, -5.0f);
 
-    m_Cube3 = std::make_unique<GameObject>(cubeVertices.data(), cubeVertices.size());
+    m_Cube3 = std::make_unique<GameObject>(openGLVertices.data(), openGLVertices.size());
     m_Cube3->transform.position = glm::vec3(6.0f, 0.0f, -5.0f);
-
-    m_Plane = std::make_unique<GameObject>(planeVertices.data(), planeVertices.size());
-    m_Plane->transform.position = glm::vec3(0.0f, -1.0f, 0.0f);
 
     m_Texture = std::make_unique<Texture>("test_assets/brick_texture_test.jpg");
 
@@ -152,90 +141,44 @@ bool Application::init()
 // Renders a single frame (forward rendering pass)
 void Application::render()
 {
-    Light light;
-
-    light.position = glm::vec3(20.0f, 20.0f, 20.0f);
-    light.color = glm::vec3(1.0f);
-    light.direction = glm::normalize(glm::vec3(-1.0f, -1.0f, -1.0f));
-    light.intensity = 1.0f;
-
-    if (m_Cube2)
-    {
-        m_Cube2->transform.rotation.y += 90.0f * m_DeltaTime;
-    }
-
-    if (m_Plane)
-    {
-        m_Plane->transform.rotation.x = -90.0f;
-    }
-
-    // -----------------------------------------
-    //            PASS 1 - SHADOWS
-    // -----------------------------------------
-    m_Renderer.BeginShadowPass(light, *m_shadowShader);
-
-    if (m_Plane)
-    {
-        glm::mat4 planeModel = m_Plane->transform.getModelMatrix();
-        m_Renderer.SubmitShadow(*m_shadowShader, planeModel, *m_Plane);
-    }
-
-    if (m_Cube)
-    {
-        glm::mat4 model1 = m_Cube->transform.getModelMatrix();
-        m_Renderer.SubmitShadow(*m_shadowShader, model1, *m_Cube);
-    }
-
-    if (m_Cube2)
-    {
-        glm::mat4 model2 = m_Cube2->transform.getModelMatrix();
-        m_Renderer.SubmitShadow(*m_shadowShader, model2, *m_Cube2);
-    }
-
-    if (m_Cube3)
-    {
-        glm::mat4 model3 = m_Cube3->transform.getModelMatrix();
-        m_Renderer.SubmitShadow(*m_shadowShader, model3, *m_Cube3);
-    }
-
-    // -----------------------------------------
-    //        PASS 2 - MAIN SCENE PASS
-    // -----------------------------------------
-    m_Renderer.BeginScenePass(*m_Shader, m_FramebufferWidth, m_FramebufferHeight);
+    m_Renderer.BeginFrame();
 
     float aspect = (float)m_FramebufferWidth / (float)m_FramebufferHeight;
+
     glm::mat4 view = m_Camera.getViewMatrix();                                          // View transform (camera space)
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f); // Perspective projection
-    glm::vec3 camPos = m_Camera.getPosition();
 
     if (m_Texture)
     {
         m_Texture->bind();
     }
 
-    if (m_Plane)
-    {
-        glm::mat4 planeModel = m_Plane->transform.getModelMatrix();
-        m_Renderer.Submit(*m_Plane, *m_Shader, planeModel, view, projection, camPos, light);
-    }
+    glm::vec3 camPos = m_Camera.getPosition();
 
     if (m_Cube)
     {
         glm::mat4 model1 = m_Cube->transform.getModelMatrix();
-        m_Renderer.Submit(*m_Cube, *m_Shader, model1, view, projection, camPos, light);
+        m_Renderer.Submit(*m_Cube, *m_Shader, model1, view, projection, camPos);
     }
 
     if (m_Cube2)
     {
+        m_Cube2->transform.rotation.y += 90.0f * m_DeltaTime;
         glm::mat4 model2 = m_Cube2->transform.getModelMatrix();
-        m_Renderer.Submit(*m_Cube2, *m_Shader, model2, view, projection, camPos, light);
+        m_Renderer.Submit(*m_Cube2, *m_Shader, model2, view, projection, camPos);
     }
 
     if (m_Cube3)
     {
         glm::mat4 model3 = m_Cube3->transform.getModelMatrix();
-        m_Renderer.Submit(*m_Cube3, *m_Shader, model3, view, projection, camPos, light);
+        m_Renderer.Submit(*m_Cube3, *m_Shader, model3, view, projection, camPos);
     }
+
+    Light light;
+
+    light.position = glm::vec3(2.0f, 3.0f, 1.0f);
+    light.color = glm::vec3(1.0f);
+    light.intensity = 1.0f;
 }
 
 // Main engine loop (runs until window close)
