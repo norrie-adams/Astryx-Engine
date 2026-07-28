@@ -6,27 +6,17 @@
 
 class GameObject;
 class Shader;
+class Light;
 
 class Renderer
 {
 public:
     void Init();
-    
-    void CreateShadowMap();
 
-    // Pass 1
-    void BeginShadowPass(const Light &light, Shader &shader);
-    void SubmitShadow(Shader &shader, glm::mat4 &model, GameObject &gameObject);
-    void BindShadowMap(Shader &shader);
+    void BeginFrame();
 
-    // Pass 2
-    void BeginScenePass(Shader &mainShader, int screenWidth, int screenHeight);
     void Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
-                const glm::mat4 &projection, const glm::vec3 &viewPos, const Light &light);
+                      const glm::mat4 &projection, const glm::vec3 &viewPos);
 
-private:
-    GLuint m_depthTexture;
-    GLuint m_shadowFBO;
-
-    glm::mat4 m_lightSpaceMatrix;
+    void SetLight(const Light &light, Shader &shader);
 };
