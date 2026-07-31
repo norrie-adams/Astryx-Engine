@@ -198,35 +198,41 @@ void Application::render()
         m_Renderer.SubmitShadow(*m_shadowShader, model3, *m_Cube3);
     }
 
+    m_Renderer.EndShadowPass();
+
+    // ---------------------------------
+    //              PASS 2
+    // ---------------------------------
+
+    m_Renderer.BeginScenePass(*m_Shader, m_FramebufferWidth, m_FramebufferHeight);
+
     float aspect = (float)m_FramebufferWidth / (float)m_FramebufferHeight;
 
     glm::mat4 view = m_Camera.getViewMatrix();                                          // View transform (camera space)
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f); // Perspective projection
+    glm::vec3 camPos = m_Camera.getPosition();
 
     if (m_Texture)
     {
         m_Texture->bind();
     }
 
-    glm::vec3 camPos = m_Camera.getPosition();
-
-    if (m_Cube)
-    {
-        glm::mat4 model1 = m_Cube->transform.getModelMatrix();
-        m_Renderer.Submit(*m_Cube, *m_Shader, model1, view, projection, camPos);
+    if (m_Plane) {
+        glm::mat4 planeModel = m_Plane->transform.getModelMatrix();
+        m_Renderer.Submit(*m_Plane, *m_Shader, light, planeModel, view, projection, camPos);
     }
-
-    if (m_Cube2)
-    {
+    if (m_Cube) {
+        glm::mat4 model1 = m_Cube->transform.getModelMatrix();
+        m_Renderer.Submit(*m_Cube, *m_Shader, light, model1, view, projection, camPos);
+    }
+    if (m_Cube2) {
         m_Cube2->transform.rotation.y += 90.0f * m_DeltaTime;
         glm::mat4 model2 = m_Cube2->transform.getModelMatrix();
-        m_Renderer.Submit(*m_Cube2, *m_Shader, model2, view, projection, camPos);
+        m_Renderer.Submit(*m_Cube2, *m_Shader, light, model2, view, projection, camPos);
     }
-
-    if (m_Cube3)
-    {
+    if (m_Cube3) {
         glm::mat4 model3 = m_Cube3->transform.getModelMatrix();
-        m_Renderer.Submit(*m_Cube3, *m_Shader, model3, view, projection, camPos);
+        m_Renderer.Submit(*m_Cube3, *m_Shader, light, model3, view, projection, camPos);
     }
 }
 

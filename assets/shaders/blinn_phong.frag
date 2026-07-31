@@ -4,9 +4,10 @@ out vec4 FragColor;
 in vec2 TexCoord;
 in vec3 FragPos;
 in vec3 Normal;
+in vec4 FragPosLightSpace;
 
 uniform sampler2D diffuseTexture;
-uniform smapler2D shadowMap;
+uniform sampler2D shadowMap;
 
 uniform vec3 lightPos;
 uniform vec3 viewPos;
@@ -14,15 +15,20 @@ uniform vec3 lightColor;
 
 float ShadowCalculation (vec4 FragPosLightSpace)
 {
-    vec3 projCoords - FragPosLightSpace.xyz / FragPosLightSpace.w;
+    vec3 projCoords = FragPosLightSpace.xyz / FragPosLightSpace.w;
 
     projCoords = projCoords * 0.5 + 0.5;
 
-    float closestDepth = textrue(shadowMap, projCoords.xy).r;
+    float closestDepth = texture(shadowMap, projCoords.xy).r;
+
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
 
     float currentDepth = projCoords.z;
 
-    float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
+    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+
+    if(projCoords.z > 1.0)
+        shadow = 0.0;
 
     return shadow;
 }

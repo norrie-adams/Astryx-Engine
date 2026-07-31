@@ -11,7 +11,7 @@ out vec4 FragPosLightSpace;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-uniform mat4 lightSpaceMatrix;
+uniform mat4 m_lightSpaceMatrix;
 
 void main()
 {
@@ -21,7 +21,7 @@ void main()
 
     Normal = mat3(transpose(inverse(model))) * aNormal;
 
-    FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
+    FragPosLightSpace = m_lightSpaceMatrix * vec4(FragPos, 1.0);
 
     gl_Position = projection * view * vec4(FragPos, 1.0);
 }
