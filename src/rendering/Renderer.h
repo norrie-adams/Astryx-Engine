@@ -11,12 +11,20 @@ class Light;
 class Renderer
 {
 public:
+    void CreateShadowMap();
+
     void Init();
 
-    void BeginFrame();
+    void BeginShadowPass();
 
     void Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
                       const glm::mat4 &projection, const glm::vec3 &viewPos);
 
     void SetLight(const Light &light, Shader &shader);
+
+private:
+    GLuint m_depthMapFBO;
+    GLuint m_depthMap;
+
+    glm::mat4 m_lightSpaceMatrix;
 };
