@@ -15,7 +15,9 @@ public:
 
     void Init();
 
-    void BeginShadowPass();
+    void BeginShadowPass(Shader &shader);
+
+    void Renderer::SubmitShadow(Shader &shader, GameObject &gameObject, glm::mat4 &model);
 
     void Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
                       const glm::mat4 &projection, const glm::vec3 &viewPos);
@@ -27,4 +29,6 @@ private:
     GLuint m_depthMap;
 
     glm::mat4 m_lightSpaceMatrix;
+
+    const unsigned int m_SHADOW_WIDTH = 1024, m_SHADOW_HEIGHT = 1024;
 };
