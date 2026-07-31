@@ -58,6 +58,14 @@ Texture::Texture(const std::string &path)
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 
         glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }
+    else {
+        Log::error("Texture failed to load at path: " + path);
     }
 
     stbi_image_free(data);
@@ -65,4 +73,7 @@ Texture::Texture(const std::string &path)
 
 Texture::~Texture() { glDeleteTextures(1, &ID); }
 
-void Texture::bind() { glBindTexture(GL_TEXTURE_2D, ID); }
+void Texture::bind() {
+    glActiveTexture(GL_TEXTURE0); 
+    glBindTexture(GL_TEXTURE_2D, ID); 
+}

@@ -131,6 +131,10 @@ bool Application::init()
     m_Shader = std::make_unique<Shader>("assets/shaders/blinn_phong.vert", "assets/shaders/blinn_phong.frag");
     m_shadowShader = std::make_unique<Shader>("assets/shaders/shadow_map.vert", "assets/shaders/shadow_map.frag");
 
+    m_Shader->use();
+    m_Shader->setInt("diffuseTexture", 0);
+    m_Shader->setInt("shadowMap", 1);
+
     m_Cube = std::make_unique<GameObject>(cubeVertices.data(), cubeVertices.size());
     m_Cube->transform.position = glm::vec3(-2.0f, 0.0f, -5.0f);
 
@@ -141,7 +145,7 @@ bool Application::init()
     m_Cube3->transform.position = glm::vec3(6.0f, 0.0f, -5.0f);
 
     m_Plane = std::make_unique<GameObject>(planeVertices.data(), planeVertices.size());
-    m_Plane->transform.position = glm::vec3(0.0f, -1.0f, 0.0f);
+    m_Plane->transform.position = glm::vec3(0.0f, -1.0f, -5.0f);
 
     m_Texture = std::make_unique<Texture>("test_assets/brick_texture_test.jpg");
 
@@ -216,6 +220,8 @@ void Application::render()
     {
         m_Texture->bind();
     }
+
+    m_Renderer.BindShadowMap(*m_Shader);
 
     if (m_Plane) {
         glm::mat4 planeModel = m_Plane->transform.getModelMatrix();
