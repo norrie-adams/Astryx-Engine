@@ -15,9 +15,11 @@ public:
 
     void Init();
 
-    void BeginShadowPass(Shader &shader, Light &light);
+    void BeginShadowPass(Light &light, Shader &shader);
 
-    void SubmitShadow(Shader &shader, GameObject &gameObject, glm::mat4 &model);
+    void SubmitShadow(Shader &shader, glm::mat4 &model, GameObject &gameObject);
+
+    void EndShadowPass();
 
     void BindShadowMap(Shader &shader);
 
