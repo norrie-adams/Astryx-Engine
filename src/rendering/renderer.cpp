@@ -91,8 +91,10 @@ void Renderer::Submit(GameObject &gameObject, Shader &shader, Light &light, cons
     shader.setVec3("viewPos", viewPos);
     
     shader.setMat4("m_lightSpaceMatrix", m_lightSpaceMatrix);
+
     shader.setVec3("light.position", light.position);
     shader.setVec3("light.color", light.color);
+    shader.setVec3("light.direction", light.direction);
     shader.setFloat("light.intensity", light.intensity);
     
     gameObject.draw(shader);
