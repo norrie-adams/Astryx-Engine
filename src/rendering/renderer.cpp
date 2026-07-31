@@ -18,11 +18,9 @@
 void Renderer::CreateShadowMap() {
     glGenFramebuffers(1, &m_depthMapFBO);
 
-    const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-
     glGenTextures(1, &m_depthMap);
     glBindTexture(GL_TEXTURE_2D, m_depthMap);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_SHADOW_WIDTH, m_SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -40,12 +38,24 @@ void Renderer::Init() {
     CreateShadowMap();
 }
 
-void Renderer::BeginShadowPass() {
+void Renderer::BeginShadowPass(Shader &shader) {
     // Light Space Matrix Calculation
     float near_plane = 1.0f, far_plane = 7.5f;
     glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
     glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f, 1.0f, 0.0f));
     glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+    glBindFramebuffer(GL_FRAMEBUFFER, m_depthMapFBO);
+    glViewport(0, 0, m_SHADOW_WIDTH, m_SHADOW_HEIGHT);
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    shader.use();
+    shader.setMat4("m_lightSpaceMatrix", m_lightSpaceMatrix);
+}
+
+void Renderer::SubmitShadow(Shader &shader, GameObject &gameObject, glm::mat4 &model) {
+    shader.setMat4("model", model);
+    gameObject.draw(shader);
 }
 
 void Renderer::Submit(GameObject &obj, Shader &shader, const glm::mat4 &model, const glm::mat4 &view,
