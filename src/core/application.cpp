@@ -119,7 +119,7 @@ bool Application::init()
     auto cubeData = Loader::loadModel("test_assets/engine_cube.obj");
     std::vector<float> cubeVertices = Loader::buildMeshData(cubeData);
 
-    auto planeData = Loader::loadModel("test_assets/engine_plane.fbx");
+    auto planeData = Loader::loadModel("test_assets/engine_plane.obj");
     std::vector<float> planeVertices = Loader::buildMeshData(planeData);
 
     Log::info("Loaded " + std::to_string(cubeData.vertices.size()) + " vertices");
@@ -167,10 +167,10 @@ void Application::render()
         m_Cube->transform.rotation.y = 90.0f * m_DeltaTime;
     } 
 
-    if (m_Plane)
+   /*  if (m_Plane)
     {
         m_Plane->transform.rotation.x = -90.0f;
-    }
+    } */
 
     // -------------------------------------
     //               PASS 1 
