@@ -44,9 +44,9 @@ void Renderer::Init() {
 
 void Renderer::BeginShadowPass(Light &light, Shader &shader) {
     // Light Space Matrix Calculation
-    float near_plane = 1.0f, far_plane = 7.5f;
+    float near_plane = 1.0f, far_plane = 60.0f;
     glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-    glm::mat4 lightView = glm::lookAt(light.position, light.position + light.direction, glm::vec3( 0.0f, 1.0f, 0.0f));
+    glm::mat4 lightView = glm::lookAt(light.position, glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3( 0.0f, 1.0f, 0.0f));
     m_lightSpaceMatrix = lightProjection * lightView;
 
     glBindFramebuffer(GL_FRAMEBUFFER, m_depthMapFBO);
