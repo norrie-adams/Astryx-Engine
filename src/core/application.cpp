@@ -178,12 +178,6 @@ void Application::render()
 
     m_Renderer.BeginShadowPass(light, *m_shadowShader);
 
-    if (m_Plane)
-    {
-        glm::mat4 planeModel = m_Plane->transform.getModelMatrix();
-        m_Renderer.SubmitShadow(*m_shadowShader, planeModel, *m_Plane);
-    }
-
     if (m_Cube)
     {
         glm::mat4 model1 = m_Cube->transform.getModelMatrix();

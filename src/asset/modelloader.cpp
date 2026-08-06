@@ -5,8 +5,6 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <filesystem>
-#include <iostream>
 
 namespace Loader {
 
@@ -15,7 +13,6 @@ void processNode(aiNode* node, const aiScene* scene, ModelData& data, unsigned i
 void processMesh(aiMesh* mesh, const aiScene* scene, ModelData& data, unsigned int& vertexOffset);
 
 ModelData loadModel(const std::string &filename) {
-    std::cout << "Current Working Directory: " << std::filesystem::current_path() << std::endl;
 
     ModelData data;
     Assimp::Importer importer;
