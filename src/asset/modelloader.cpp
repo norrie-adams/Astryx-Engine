@@ -1,3 +1,13 @@
+// ModelLoader
+//
+// A loader that uses Assimp to load a file and pass the meshData to OpenGL
+//
+// Pipeline:
+// 1. Reads file from the disk
+// 2. Recursively traverses the Assimp node hierarchy
+// 3. Extracts mesh data (vertices, UVs, faces) into ModelData
+// 4. Converts ModelData into a GPU-ready meshData vector
+
 #include "ModelLoader.h"
 #include "core/Log.h"
 #include <string>
@@ -8,7 +18,6 @@
 
 namespace Loader {
 
-// Fixed forward declarations to use exact types matching ModelLoader.h
 void processNode(aiNode* node, const aiScene* scene, ModelData& data, unsigned int& vertexOffset);
 void processMesh(aiMesh* mesh, const aiScene* scene, ModelData& data, unsigned int& vertexOffset);
 
