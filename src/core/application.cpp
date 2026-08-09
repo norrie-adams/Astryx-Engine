@@ -29,6 +29,9 @@
 #include "rendering/Shader.h"
 #include "rendering/Texture.h"
 #include "scene/Light.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 #include <iostream>
 
 // Handles mouse movement and forwards deltas to active camera
@@ -67,6 +70,8 @@ Application::Application() {}
 
 Application::~Application()
 {
+    
+    
     if (m_Window)
     {
         glfwDestroyWindow(m_Window);
@@ -135,6 +140,19 @@ bool Application::init()
 
     m_Texture = std::make_unique<Texture>("test_assets/brick_texture_test.jpg");
 
+    // Initialize Dear ImGui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; 
+
+    // Setup ImGui style
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(m_Window, true); 
+    ImGui_ImplOpenGL3_Init("#version 330");       
+
     return true;
 }
 
@@ -181,6 +199,28 @@ void Application::render()
     light.intensity = 1.0f;
 }
 
+void Application::renderImGui() {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    // Will be moved to another file later, just temporary
+    {
+        ImGui::Begin("Astryx Engine Control Panel");
+        
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 
+                    1000.0f / ImGui::GetIO().Framerate, 
+                    ImGui::GetIO().Framerate);
+                    
+        ImGui::Separator();
+        
+        ImGui::End();
+    }
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
 // Main engine loop (runs until window close)
 // Handles timing, input, updates, and rendering
 void Application::run()
@@ -199,6 +239,8 @@ void Application::run()
         m_Camera.processInput(deltaTime);
 
         render();
+
+        renderImGui();
 
         glfwSwapBuffers(m_Window);
         glfwPollEvents();
