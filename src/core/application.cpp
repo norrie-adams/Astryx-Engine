@@ -70,7 +70,9 @@ Application::Application() {}
 
 Application::~Application()
 {
-    
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
     
     if (m_Window)
     {
