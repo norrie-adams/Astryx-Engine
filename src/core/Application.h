@@ -33,6 +33,7 @@ public:
 
 private:
     void render();
+    void renderImGui();
 
     GLFWwindow *m_Window = nullptr;
     const unsigned int m_Width = 800;
