@@ -32,7 +32,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include <iostream>
+#include "stats/renderer/renderer_stats.h"
 
 // Handles mouse movement and forwards deltas to active camera
 static Camera *g_Camera = nullptr;
@@ -161,6 +161,7 @@ bool Application::init()
 // Renders a single frame (forward rendering pass)
 void Application::render()
 {
+    rendererStats.drawCalls = 0;
     m_Renderer.BeginFrame();
 
     float aspect = (float)m_FramebufferWidth / (float)m_FramebufferHeight;
@@ -208,6 +209,10 @@ void Application::renderImGui() {
 
     // Will be moved to another file later, just temporary
     {
+        float padding = 10.0f; // Distance from the screen edges
+        ImGui::SetNextWindowPos(ImVec2(padding, padding), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_Always);
+
         ImGui::Begin("Astryx Engine Control Panel");
         
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 
@@ -216,6 +221,9 @@ void Application::renderImGui() {
                     
         ImGui::Separator();
         
+        ImGui::Text("Application Draw Calls (Per Frame): %u", 
+                    rendererStats.drawCalls);
+
         ImGui::End();
     }
 

@@ -18,6 +18,7 @@
 // - Assumes external renderer handles shader binding
 
 #include "Mesh.h"
+#include "stats/renderer/renderer_stats.h"
 
 // Creates GPU buffers and uploads vertex data
 Mesh::Mesh(float *vertices, unsigned int vertexCount)
@@ -54,4 +55,5 @@ void Mesh::draw()
 {
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, count);
+    rendererStats.drawCalls++;
 }
