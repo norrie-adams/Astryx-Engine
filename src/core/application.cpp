@@ -176,7 +176,6 @@ bool Application::init()
 void Application::render()
 {
     rendererStats.drawCalls = 0;
-    m_Renderer.BeginFrame();
     Light light;
 
     light.position = glm::vec3(20.0f, 20.0f, 20.0f);
