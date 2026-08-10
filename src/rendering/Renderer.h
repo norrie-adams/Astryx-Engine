@@ -36,5 +36,5 @@ private:
 
     glm::mat4 m_lightSpaceMatrix;
 
-    const unsigned int m_SHADOW_WIDTH = 1024, m_SHADOW_HEIGHT = 1024;
+    const unsigned int m_SHADOW_WIDTH = 2048, m_SHADOW_HEIGHT = 2048;
 };
