@@ -29,7 +29,10 @@
 #include "rendering/Shader.h"
 #include "rendering/Texture.h"
 #include "scene/Light.h"
-#include <iostream>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "stats/renderer/renderer_stats.h"
 
 // Handles mouse movement and forwards deltas to active camera
 static Camera *g_Camera = nullptr;
@@ -67,6 +70,10 @@ Application::Application() {}
 
 Application::~Application()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+    
     if (m_Window)
     {
         glfwDestroyWindow(m_Window);
@@ -149,12 +156,27 @@ bool Application::init()
 
     m_Texture = std::make_unique<Texture>("test_assets/brick_texture_test.jpg");
 
+    // Initialize Dear ImGui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; 
+
+    // Setup ImGui style
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(m_Window, true); 
+    ImGui_ImplOpenGL3_Init("#version 330");       
+
     return true;
 }
 
 // Renders a single frame (forward rendering pass)
 void Application::render()
 {
+    rendererStats.drawCalls = 0;
+    m_Renderer.BeginFrame();
     Light light;
 
     light.position = glm::vec3(20.0f, 20.0f, 20.0f);
@@ -236,6 +258,45 @@ void Application::render()
     }
 }
 
+void Application::renderImGui() {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    // Will be moved to another file later, just temporary
+    {
+        float padding = 10.0f; // Distance from the screen edges
+        ImGui::SetNextWindowPos(ImVec2(padding, padding), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(340, 120), ImGuiCond_Always);
+
+        ImGui::Begin("Astryx Engine Debug Panel");
+        
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 
+                    1000.0f / ImGui::GetIO().Framerate, 
+                    ImGui::GetIO().Framerate);
+
+        ImGui::Text("Application Draw Calls (Per Frame): %u", 
+                    rendererStats.drawCalls);
+                    
+        ImGui::Separator();
+        
+        const GLubyte* renderAPIVersion = glGetString(GL_VERSION);
+        ImGui::Text("OpenGL: %s",
+            reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+
+        ImGui::Text("GPU: %s",
+            reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+
+        ImGui::Text("Vendor: %s",
+            reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+
+        ImGui::End();
+    }
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
 // Main engine loop (runs until window close)
 // Handles timing, input, updates, and rendering
 void Application::run()
@@ -254,6 +315,8 @@ void Application::run()
         m_Camera.processInput(deltaTime);
 
         render();
+
+        renderImGui();
 
         glfwSwapBuffers(m_Window);
         glfwPollEvents();
