@@ -22,20 +22,37 @@ uniform Light light;
 
 float ShadowCalculation (vec4 FragPosLightSpace, vec3 norm, vec3 lightDir)
 {
+    // Perform perspective divide
     vec3 projCoords = FragPosLightSpace.xyz / FragPosLightSpace.w;
 
+    // Transform to [0,1] range
     projCoords = projCoords * 0.5 + 0.5;
 
-    float closestDepth = texture(shadowMap, projCoords.xy).r;
-
-    float bias = max(0.005 * (1.0 - dot(norm, lightDir)), 0.0005);
+    // Keep shadows at 0.0 when outside the light's far plane
+    if(projCoords.z > 1.0)
+        return 0.0;
 
     float currentDepth = projCoords.z;
+    float bias = max(0.005 * (1.0 - dot(norm, lightDir)), 0.0005);
 
-    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+    // PCF 
+    float shadow = 0.0;
+    
+    // Get the size of a single texel in the shadow map
+    vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
 
-    if(projCoords.z > 1.0)
-        shadow = 0.0;
+    // Loop through a 3x3 grid around the target pixel
+    for(int x = -1; x <= 1; ++x)
+    {
+        for(int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+            shadow += (currentDepth - bias > pcfDepth) ? 1.0 : 0.0;        
+        }    
+    }
+
+    // Average the result across all 9 samples
+    shadow /= 9.0;
 
     return shadow;
 }
@@ -69,4 +86,4 @@ void main()
     vec3 finalColor = lighting * objectColor;
 
     FragColor = vec4(finalColor, 1.0);
-} 
+}

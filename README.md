@@ -3,17 +3,18 @@
 Astryx Engine is a custom C++ engine using the OpenGL Rendering API. My goal is to release version 1.0 by August 2028.  
 
 ### Current Features
-* **Clean Engine Architecture:** Modular design built from the ground up.
+* **Model and Texture Loading:** Loads models of many different formats and textures.
 * **Camera System:** WASD and Mouse-look movement for 3D navigation.
-* **Custom OBJ Loader:** Parses 3D models and applies textures without external heavy lifters.
+* **Blinn-Phong Lighting and Shadows:** Utilizes Blinn-Phong Lighting Formulas and a dual-pass renderer for shadows
+* **Debug Overlay:** A custom overlay that displays FPS and some basic GPU information
 * **Logging System:** A simple, lightweight utility for clean console output.
 
 ### Roadmap
 * **v0.1** - [DEVELOPMENT COMPLETE] Render an OBJ File and Textures 
-* **v0.2** - Assimp Integration, Lighting, and ImGui Introduction
-* **v0.3** - World Management 
-* **v0.4** - Animation
-* **v0.5** - Full ECS System
+* **v0.2** - [DEVELOPMENT COMPLETE] Assimp Integration, Lighting, and ImGui Introduction
+* **v0.3** - ECS Transition
+* **v0.4** - Preformance Upgrade
+* **v0.5** - Animation
 * **v0.6** - Physics System
 * **v0.7** - Asset and Scene Pipeline
 * **v0.8** - UI Overhaul
@@ -32,10 +33,12 @@ To compile and run this project, you will need to set up the following on your s
 * **CMake:** Version 3.10 or higher
 
 #### Libraries (To be downloaded/installed separately)
+* **Assimp:** Version 6.0.5 (Model Loader)
 * **OpenGL:** Version 3.3 (Core Profile)
-* **GLFW:** Version 3.4.0 (Windowing & Input)
+* **GLFW:** Version 3.5.0 (Windowing & Input)
 * **GLM:** Version 1.0.3 (OpenGL Mathematics)
 * **GLAD:** Version 0.1.36 (OpenGL Loader)
+* **ImGui:** Version 1.92 (UI)
 * **stb_image.h:** Version 2.3 (Texture Loader) 
 
 ---
@@ -80,9 +83,11 @@ AstryxEngine.exe
 ├── build/                  # Generated build files
 ├── src/                    # All engine source code (.cpp and .h files)
 ├── include/                # Engine header files (.hpp files)
-│   ├── glad/               # Place GLAD headers here
-│   ├── glfw/               # Place GLFW headers here
-│   └── glm/                # Place GLM headers here
+│   ├── assimp/             # Place Assimp here
+│   ├── glad/               # Place GLAD here
+│   ├── glfw/               # Place GLFW here
+│   └── glm/                # Place GLM here
+│   └── imgui/              # Place ImGui here
 │   └── stb/                # Place stb_image.h here
 ├── assets/                 # Textures, shaders, models, and scripts
 └── CMakeLists.txt          # Main CMake configuration file
