@@ -12,8 +12,8 @@ Astryx Engine is a custom C++ engine using the OpenGL Rendering API. My goal is 
 ### Roadmap
 * **v0.1** - [DEVELOPMENT COMPLETE] Render an OBJ File and Textures 
 * **v0.2** - [DEVELOPMENT COMPLETE] Assimp Integration, Lighting, and ImGui Introduction
-* **v0.3** - ECS Transition
-* **v0.4** - Preformance Upgrade
+* **v0.3** - ECS Transition (Includes new Sandbox developer mode)
+* **v0.4** - Backend Upgrade
 * **v0.5** - Animation
 * **v0.6** - Physics System
 * **v0.7** - Asset and Scene Pipeline
