@@ -1,8 +1,8 @@
 #include "Registry.h"
 #include "Entity.h"
+#include <iostream>
 #include <cstdint>
 #include <bitset>
-#include <iostream>
 
 using namespace std;
 
@@ -17,8 +17,14 @@ void Registry::deleteEntity(uint32_t ID) {
     std::cout << "Deleted Entity: " << ID << endl;
 }
 
-int main() {
+void Registry::addComponent() {
+    std::bitset<64> componentCombination;
+    componentCombination.set(0);
+    componentCombination.set(2);
+    std::cout << "Component Bitset Combination: " << componentCombination << std::endl;
+}
 
+int main() {
     Registry registry;
 
     uint32_t EntityA = registry.createEntity();
@@ -27,6 +33,8 @@ int main() {
 
     registry.deleteEntity(EntityA);
 
+    registry.addComponent();
+    
     std::cout << EntityC << std::endl;
     std::cout << EntityB << std::endl;
 
