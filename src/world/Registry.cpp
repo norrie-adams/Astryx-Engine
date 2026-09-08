@@ -12,13 +12,22 @@ uint32_t Registry::createEntity() {
     return currentID;
 };
 
+void Registry::deleteEntity(uint32_t ID) {
+    m_reusedIDS.push_back(ID);
+    std::cout << "Deleted Entity: " << ID << endl;
+}
+
 int main() {
+
     Registry registry;
 
     uint32_t EntityA = registry.createEntity();
     uint32_t EntityB = registry.createEntity();
+    uint32_t EntityC = registry.createEntity();
 
-    std::cout << EntityA << std::endl;
+    registry.deleteEntity(EntityA);
+
+    std::cout << EntityC << std::endl;
     std::cout << EntityB << std::endl;
 
     return 0;
