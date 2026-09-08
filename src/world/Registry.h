@@ -13,4 +13,6 @@ public:
     std::vector<Entity> m_reusedIDS;
 
     void deleteEntity(uint32_t ID);
+
+    void addComponent();
 };
