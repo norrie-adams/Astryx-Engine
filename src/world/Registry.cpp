@@ -17,13 +17,13 @@ void Registry::deleteEntity(uint32_t ID) {
     m_reusedIDS.push_back(ID);
     std::cout << "Deleted Entity: " << ID << std::endl;
 }
-
+/*
 void Registry::addComponent() {
-    std::bitset<64> componentCombination;
-    componentCombination.set(0);
-    componentCombination.set(2);
-    std::cout << "Component Bitset Combination: " << componentCombination << std::endl;
-}
+    std::bitset<64> m_componentCombination;
+    m_componentCombination.set(0);
+    m_componentCombination.set(2);
+    std::cout << "Component Bitset Combination: " << m_componentCombination << std::endl;
+} */ 
 
 int main() {
     Registry registry;
@@ -35,10 +35,10 @@ int main() {
 
     registry.deleteEntity(EntityA);
 
-    registry.addComponent();
-    
-    std::cout << EntityC << std::endl;
-    std::cout << EntityB << std::endl;
+    registry.addComponent<Transform>(EntityB);
+
+    std::cout << "The ID of Entity C is: " << EntityC << std::endl;
+    std::cout << "The ID of Entity B is: " << EntityB << std::endl;
 
     std::cout << "Transform ID is: " << componentIDGenerator.get<Transform>() << std::endl;
 
