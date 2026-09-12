@@ -4,7 +4,8 @@
 #include <cstdint>
 #include <bitset>
 
-using namespace std;
+// ComponentCounter decleration
+uint32_t ComponentIDGenerator::counter = 0;
 
 uint32_t Registry::createEntity() {
     Entity currentID = m_EntityCounter;
@@ -14,7 +15,7 @@ uint32_t Registry::createEntity() {
 
 void Registry::deleteEntity(uint32_t ID) {
     m_reusedIDS.push_back(ID);
-    std::cout << "Deleted Entity: " << ID << endl;
+    std::cout << "Deleted Entity: " << ID << std::endl;
 }
 
 void Registry::addComponent() {
@@ -26,6 +27,7 @@ void Registry::addComponent() {
 
 int main() {
     Registry registry;
+    ComponentIDGenerator componentIDGenerator;
 
     uint32_t EntityA = registry.createEntity();
     uint32_t EntityB = registry.createEntity();
@@ -37,6 +39,8 @@ int main() {
     
     std::cout << EntityC << std::endl;
     std::cout << EntityB << std::endl;
+
+    std::cout << "Transform ID is: " << componentIDGenerator.get<Transform>() << std::endl;
 
     return 0;
 }

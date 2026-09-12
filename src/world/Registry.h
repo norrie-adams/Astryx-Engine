@@ -3,6 +3,22 @@
 #include <cstdint>
 #include "Entity.h"
 
+class ComponentIDGenerator {
+    private:
+        static uint32_t counter;
+    public: 
+        template <typename T>
+        static std::uint32_t get() {
+            static std::uint32_t id = counter++;
+            return id;
+        }   
+};
+
+// A test struct for now
+struct Transform {
+    float x, y, z;
+};
+
 class Registry {
 
 public: 
@@ -16,3 +32,5 @@ public:
 
     void addComponent();
 };
+
+#include "Registry.inl"
