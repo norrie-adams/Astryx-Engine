@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <cstdint>
+#include <bitset>
 #include "Entity.h"
 
 using ComponentMask = std::bitset<64>;
@@ -23,7 +24,7 @@ struct Transform {
 
 class Registry {
 
-public: 
+public:
     uint32_t m_EntityCounter = 0;
 
     uint32_t createEntity();
@@ -36,7 +37,6 @@ public:
     template <typename T> 
     void addComponent(Entity entity) {
         uint32_t typeID = ComponentIDGenerator::get<T>();
-        
     }
 };
 
