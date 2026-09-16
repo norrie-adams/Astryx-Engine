@@ -2,17 +2,19 @@
 #include <vector>
 #include <cstdint>
 #include <bitset>
+
 #include "Entity.h"
 
-using ComponentMask = std::bitset<64>;
+using ComponentMask = std::bitset<256>;
+using TransformMask = std::bitset<256>;
 
 class ComponentIDGenerator {
     private:
-        static uint32_t counter;
+        inline static uint32_t counter;
     public: 
         template <typename T>
-        static std::uint32_t get() {
-            static std::uint32_t id = counter++;
+        static uint32_t get() {
+            static uint32_t id = counter++;
             return id;
         }   
 };
@@ -29,14 +31,17 @@ public:
 
     uint32_t createEntity();
 
+    // Entity Vectors
+    std::vector<Entity> m_liveEntities;
     std::vector<Entity> m_reusedIDS;
-    std::vector<ComponentMask> m_ComponentMasks;
+    std::vector<ComponentMask> m_EntityMasks;
 
     void deleteEntity(uint32_t ID);
 
     template <typename T> 
     void addComponent(Entity entity) {
         uint32_t typeID = ComponentIDGenerator::get<T>();
+        m_EntityMasks[entity].set(typeID);
     }
 };
 
