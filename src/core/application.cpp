@@ -32,7 +32,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include "stats/renderer/renderer_stats.h"
+#include "stats/renderer/rendererStats.h"
 
 // Handles mouse movement and forwards deltas to active camera
 static Camera *g_Camera = nullptr;
