@@ -1,5 +1,6 @@
 #include "Registry.h"
 #include "Entity.h"
+#include "TransformSystem.h"
 #include <iostream>
 #include <cstdint>
 #include <bitset>
@@ -8,7 +9,7 @@
 uint32_t Registry::createEntity() {
     Entity currentID = m_EntityCounter;
     m_EntityCounter++;
-    m_liveEntities.resize(currentID);
+    m_liveEntities.push_back(currentID);
     m_EntityMasks.resize(currentID);
     return currentID;
 };
@@ -20,6 +21,7 @@ void Registry::deleteEntity(uint32_t ID) {
 
 int main() {
     Registry registry;
+    TransformSystem transformSystem;
 
     uint32_t EntityA = registry.createEntity();
     uint32_t EntityB = registry.createEntity();
@@ -35,11 +37,7 @@ int main() {
 
     std::cout << "EntityA Component Mask: " << registry.m_EntityMasks[EntityA] << std::endl;
 
-    for (int i = 0; i < registry.m_liveEntities.size(); i++) {
-        if (registry.m_EntityMasks[registry.m_liveEntities[i]] == TransformMask()) {
-            std::cout << "Entity" << registry.m_liveEntities[i] << "has an empty mask" << std::endl;
-        }
-    }
+    transformSystem.runSystem(registry);
 
     return 0;
 }
