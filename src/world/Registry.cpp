@@ -31,10 +31,11 @@ int main() {
 
     registry.addComponent<Transform>(EntityA);
     registry.addComponent<Transform>(EntityB);
-    registry.addComponent<Rigidbody>(EntityB);
     registry.addComponent<MeshRenderer>(EntityA);
 
-    std::cout << EntityC << std::endl;
+    registry.m_Transforms.emplace_back(10, 10, 10);
+
+    std::cout << EntityA << std::endl;
     std::cout << EntityB << std::endl;
 
     std::cout << "EntityA Component Mask: " << registry.m_EntityMasks[EntityA] << std::endl;
