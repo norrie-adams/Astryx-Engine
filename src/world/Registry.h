@@ -43,6 +43,9 @@ public:
     std::vector<Entity> m_reusedIDS;
     std::vector<ComponentMask> m_EntityMasks;
 
+    // Component Storage
+    std::vector<Transform> m_Transforms;
+
     void deleteEntity(uint32_t ID);
 
     template <typename T> 

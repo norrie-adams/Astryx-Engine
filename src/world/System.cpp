@@ -26,7 +26,7 @@ void System::execute(Registry& registry) {
 
         // Component Combo #2
         if ((registry.m_EntityMasks[registry.m_liveEntities[i]] & rendererMask) == rendererMask) {
-            std::cout << "Entity" << " " << registry.m_liveEntities[i] << " " << "will be rendered" << std::endl;
+            std::cout << "Entity" << " " << registry.m_liveEntities[i] << " " << "will be rendered at " << "X: " << registry.m_Transforms[i].x << " Y: " << registry.m_Transforms[i].y << " Z: " << registry.m_Transforms[i].z << std::endl;
         }
     }
 
