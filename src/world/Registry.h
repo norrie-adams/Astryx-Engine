@@ -6,7 +6,6 @@
 #include "Entity.h"
 
 using ComponentMask = std::bitset<256>;
-using TransformMask = std::bitset<256>;
 
 class ComponentIDGenerator {
     private:
@@ -19,9 +18,17 @@ class ComponentIDGenerator {
         }   
 };
 
-// A test struct for now
+// Test Structs
 struct Transform {
     float x, y, z;
+};
+
+struct MeshRenderer {
+    uint32_t AssetID;
+};
+
+struct Rigidbody {
+    float Velocity;
 };
 
 class Registry {
@@ -35,6 +42,9 @@ public:
     std::vector<Entity> m_liveEntities;
     std::vector<Entity> m_reusedIDS;
     std::vector<ComponentMask> m_EntityMasks;
+
+    // Component Storage
+    std::vector<Transform> m_Transforms;
 
     void deleteEntity(uint32_t ID);
 
