@@ -18,6 +18,20 @@ class ComponentIDGenerator {
         }   
 };
 
+class ISparseSet {
+    virtual ~ISparseSet() = default;
+    virtual void remove(Entity ent) = 0;
+};
+
+template <typename T> 
+class SparseSet {
+public:
+    std::vector<int> m_denseIndexIDs;
+    std::vector<Entity> m_entityIDs;
+    std::vector<T> m_componentData;
+
+};
+
 // Test Structs
 struct Transform {
     float x, y, z;
