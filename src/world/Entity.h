@@ -1,3 +1,5 @@
+// Simple alias for the Entity
+
 #pragma once
 #include <cstdint>
 

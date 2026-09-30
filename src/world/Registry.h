@@ -45,36 +45,21 @@ public:
     std::vector<Entity> m_reusedIDS;
     std::vector<ComponentMask> m_EntityMasks;
 
-    // Component Storage
-    std::vector<Transform> m_Transforms;
-
+    // Component Pools
     std::vector<std::unique_ptr<ISparseSet>> m_ComponentPools;
 
     void deleteEntity(uint32_t ID);
 
     template <typename T> 
-    void addComponent(Entity entity) {
-        uint32_t typeID = ComponentIDGenerator::getComponentID<T>();
-        m_EntityMasks[entity].set(typeID);
-        getPool<T>();
+    void addComponent(Entity entity, T component) {
+        uint32_t componentID = ComponentIDGenerator::getComponentID<T>();
+        m_EntityMasks[entity].set(componentID);
+        pool = getPool<T>();
+        pool.insert(entity, component);
     }
 
     template <typename T>
-    SparseSet<T>& getPool() {
-        uint32_t componentID = ComponentIDGenerator::getComponentID<T>();
-
-        if (componentID >= m_ComponentPools.size()) {
-            m_ComponentPools.resize(componentID + 1);
-        }
-
-        auto& pool = m_ComponentPools[componentID];
-
-        if (pool == nullptr) {
-            pool = std::make_unique<SparseSet<T>>();
-        }
-
-        return *static_cast<SparseSet<T>*>(pool.get());
-    }
+    SparseSet<T>& getPool();
 
 };
 
