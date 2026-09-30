@@ -4,13 +4,13 @@
 
 TransformMask System::getTransformMask() {
     TransformMask transformMask;
-    transformMask.set(ComponentIDGenerator::get<Transform>());
+    transformMask.set(ComponentIDGenerator::getComponentID<Transform>());
     return transformMask;
 }
 
 MeshRendererMask System::getMeshRendererMask() {
     MeshRendererMask meshMask;
-    meshMask.set(ComponentIDGenerator::get<MeshRenderer>());
+    meshMask.set(ComponentIDGenerator::getComponentID<MeshRenderer>());
     return meshMask;
 }
 
