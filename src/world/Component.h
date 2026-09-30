@@ -1,4 +1,7 @@
+#pragma once
+
 #include "Entity.h"
+#include <vector>
 
 class ISparseSet {
     public:
@@ -13,7 +16,9 @@ public:
     std::vector<Entity> m_entityIDs;
     std::vector<T> m_componentData;
 
-    void remove (Entity ent) {
-        
-    }
+    void insert (Entity ent, T component);
+
+    void remove (Entity ent);
 };
+
+#include "Component.inl"
