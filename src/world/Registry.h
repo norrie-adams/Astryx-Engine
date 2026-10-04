@@ -2,8 +2,10 @@
 #include <vector>
 #include <cstdint>
 #include <bitset>
+#include <memory>
 
 #include "Entity.h"
+#include "Component.h"
 
 using ComponentMask = std::bitset<256>;
 
@@ -12,7 +14,7 @@ class ComponentIDGenerator {
         inline static uint32_t counter;
     public: 
         template <typename T>
-        static uint32_t get() {
+        static uint32_t getComponentID() {
             static uint32_t id = counter++;
             return id;
         }   
@@ -43,16 +45,20 @@ public:
     std::vector<Entity> m_reusedIDS;
     std::vector<ComponentMask> m_EntityMasks;
 
-    // Component Storage
-    std::vector<Transform> m_Transforms;
+    // Component Pools
+    std::vector<std::unique_ptr<ISparseSet>> m_ComponentPools;
 
     void deleteEntity(uint32_t ID);
+    
+    template<typename T>
+    bool hasComponent(Entity ent);
 
     template <typename T> 
-    void addComponent(Entity entity) {
-        uint32_t typeID = ComponentIDGenerator::get<T>();
-        m_EntityMasks[entity].set(typeID);
-    }
+    void addComponent(Entity ent, T component);
+
+    template <typename T>
+    SparseSet<T>& getPool();
+
 };
 
 #include "Registry.inl"

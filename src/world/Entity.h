@@ -1,3 +1,6 @@
+// Simple alias for the Entity
+// Stored as a uint32_t
+
 #pragma once
 #include <cstdint>
 
