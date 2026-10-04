@@ -18,3 +18,22 @@ SparseSet<T>& Registry::getPool() {
     return *static_cast<SparseSet<T>*>(pool.get());
 };
 
+template <typename T> 
+void Registry::addComponent(Entity ent, T component) {
+    // Entity Masks
+    uint32_t componentID = ComponentIDGenerator::getComponentID<T>();
+    if (ent >= m_EntityMasks.size()) { // simple resize check
+        m_EntityMasks.resize(ent + 1);
+    }
+    m_EntityMasks[ent].set(componentID);
+
+    // Component Pools
+    auto& pool = getPool<T>();
+    pool.insert(ent, component);
+}
+
+template <typename T> 
+void Registry::hasComponent(Entity ent) {
+    uint32_t componentID = ComponentIDGenerator::getComponentID<T>;
+    return m_EntityMasks[ent].test(componentID);
+}
