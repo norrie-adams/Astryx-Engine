@@ -51,7 +51,7 @@ public:
     void deleteEntity(uint32_t ID);
     
     template<typename T>
-    void hasComponent(Entity ent);
+    bool hasComponent(Entity ent);
 
     template <typename T> 
     void addComponent(Entity ent, T component);

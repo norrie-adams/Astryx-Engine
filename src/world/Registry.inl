@@ -33,7 +33,7 @@ void Registry::addComponent(Entity ent, T component) {
 }
 
 template <typename T> 
-void Registry::hasComponent(Entity ent) {
+bool Registry::hasComponent(Entity ent) {
     uint32_t componentID = ComponentIDGenerator::getComponentID<T>;
     return m_EntityMasks[ent].test(componentID);
 }
