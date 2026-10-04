@@ -27,14 +27,6 @@ int main() {
     uint32_t EntityB = registry.createEntity();
     uint32_t EntityC = registry.createEntity();
 
-    registry.deleteEntity(EntityA);
-
-    registry.addComponent<Transform>(EntityA);
-    registry.addComponent<Transform>(EntityB);
-    registry.addComponent<MeshRenderer>(EntityA);
-
-    registry.m_Transforms.emplace_back(10, 10, 10);
-
     std::cout << EntityA << std::endl;
     std::cout << EntityB << std::endl;
 

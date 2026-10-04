@@ -17,7 +17,6 @@ public:
     std::vector<T> m_componentData;
 
     void insert (Entity ent, T component);
-
     void remove (Entity ent);
 };
 

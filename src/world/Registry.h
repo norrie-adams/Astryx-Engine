@@ -49,14 +49,12 @@ public:
     std::vector<std::unique_ptr<ISparseSet>> m_ComponentPools;
 
     void deleteEntity(uint32_t ID);
+    
+    template<typename T>
+    void hasComponent(Entity ent);
 
     template <typename T> 
-    void addComponent(Entity entity, T component) {
-        uint32_t componentID = ComponentIDGenerator::getComponentID<T>();
-        m_EntityMasks[entity].set(componentID);
-        pool = getPool<T>();
-        pool.insert(entity, component);
-    }
+    void addComponent(Entity ent, T component);
 
     template <typename T>
     SparseSet<T>& getPool();
