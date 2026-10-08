@@ -33,5 +33,12 @@ int main() {
     std::cout << "EntityA Component Mask: " << registry.m_EntityMasks[EntityA] << std::endl;
     std::cout << "EntityB Component Mask: " << registry.m_EntityMasks[EntityB] << std::endl;
 
+    registry.addComponent<Transform>(EntityA, Transform {10.0f, 10.0f, 10.0f});
+    registry.addComponent<MeshRenderer>(EntityA, MeshRenderer {29});
+
+    registry.addComponent<Transform>(EntityB, Transform {10.0f, 40.0f, 19.0f});
+
+    system.execute(registry);
+
     return 0;
 }
