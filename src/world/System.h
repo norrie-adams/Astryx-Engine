@@ -9,7 +9,7 @@ using SystemMask = std::bitset<256>;
 
 class System {
 public:
-    void execute();
+    void execute(Registry& registry);
 
     // Actual view function
     template <typename... Args>
@@ -26,7 +26,7 @@ public:
     
         // Finds smallest pool
         auto smallestPoolIterator = std::ranges::min_element(poolSizes);
-        size_t smallestIndex = std::distance(std::begin(poolSizes), smallestPoolIterator)
+        size_t smallestIndex = std::distance(std::begin(poolSizes), smallestPoolIterator);
         ISparseSet* smallestPool = pools[smallestIndex];
 
         // gets the entites of the pool and loops through each one to figure out what matches

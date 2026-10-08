@@ -33,7 +33,5 @@ int main() {
     std::cout << "EntityA Component Mask: " << registry.m_EntityMasks[EntityA] << std::endl;
     std::cout << "EntityB Component Mask: " << registry.m_EntityMasks[EntityB] << std::endl;
 
-    system.matchEntites<Transform>(registry);
-
     return 0;
 }
