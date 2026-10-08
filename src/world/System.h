@@ -22,7 +22,7 @@ public:
 
         // Gets the sizes of pools and actual pools for system iteration
         size_t poolSizes[] = { registry.getPool<Args>().m_entityIDs.size()... };
-        ISparseSet* pools[] = { registry.getPool<Args>()... }; // makes a parallel array for pools
+        ISparseSet* pools[] = { &registry.getPool<Args>()... }; // makes a parallel array for pools
     
         // Finds smallest pool
         auto smallestPoolIterator = std::ranges::min_element(poolSizes);
