@@ -2,33 +2,23 @@
 #include "System.h"
 #include <iostream>
 
-TransformMask System::getTransformMask() {
-    TransformMask transformMask;
-    transformMask.set(ComponentIDGenerator::getComponentID<Transform>());
-    return transformMask;
-}
-
-MeshRendererMask System::getMeshRendererMask() {
-    MeshRendererMask meshMask;
-    meshMask.set(ComponentIDGenerator::getComponentID<MeshRenderer>());
-    return meshMask;
-}
-
 void System::execute(Registry& registry) {
+    // Matches the entites
+    std::vector<Entity> renderedEntites = System::matchEntites<Transform, MeshRenderer>(registry);
 
-    auto rendererMask = getMeshRendererMask() | getTransformMask();
+    // Gets pools
+    auto& TransformPool = registry.getPool<Transform>();
+    auto& MeshRendererPool = registry.getPool<MeshRenderer>();
 
-    for (int i = 0; i < registry.m_liveEntities.size(); i++) {
-        // Component Combo #1
-        if ((registry.m_EntityMasks[registry.m_liveEntities[i]] & getTransformMask()) == getTransformMask()) {
-            std::cout << "Entity" << " " << registry.m_liveEntities[i] << " " << "has a Transform component" << std::endl;
-        }
-/*
-        // Component Combo #2
-        if ((registry.m_EntityMasks[registry.m_liveEntities[i]] & rendererMask) == rendererMask) {
-            std::cout << "Entity" << " " << registry.m_liveEntities[i] << " " << "will be rendered at " << "X: " << registry.m_Transforms[i].x << " Y: " << registry.m_Transforms[i].y << " Z: " << registry.m_Transforms[i].z << std::endl;
-        } */
+    // Loops through entites
+    for (Entity entity : renderedEntites) {
+        // Find dense index ids of entites
+        uint32_t transformIndex = TransformPool.m_denseIndexIDs[entity];
+        uint32_t meshRendererIndex = MeshRendererPool.m_denseIndexIDs[entity];
+
+        Transform& transform = TransformPool.m_componentData[transformIndex];
+        MeshRenderer& meshRenderer = MeshRendererPool.m_componentData[meshRendererIndex];
+
+        std::cout << "Entity: " << entity << "will be rendered at: " << transform.x << transform.y << transform.z << "\n";
     }
-
 }
- 

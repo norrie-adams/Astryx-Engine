@@ -32,8 +32,9 @@ void Registry::addComponent(Entity ent, T component) {
     pool.insert(ent, component);
 }
 
+// helper function
 template <typename T> 
 bool Registry::hasComponent(Entity ent) {
-    uint32_t componentID = ComponentIDGenerator::getComponentID<T>;
+    uint32_t componentID = ComponentIDGenerator::getComponentID<T>();
     return m_EntityMasks[ent].test(componentID);
 }

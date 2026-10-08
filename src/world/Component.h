@@ -7,6 +7,7 @@ class ISparseSet {
     public:
         virtual ~ISparseSet() = default;
         virtual void remove(Entity ent) = 0;
+        virtual const std::vector<Entity>& getEntites() const = 0;
 };
 
 template <typename T> 
@@ -18,6 +19,10 @@ public:
 
     void insert (Entity ent, T component);
     void remove (Entity ent);
+
+    const std::vector<Entity>& getEntites() const override {
+        return m_entityIDs;
+    }
 };
 
 #include "Component.inl"
