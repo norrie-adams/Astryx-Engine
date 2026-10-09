@@ -11,7 +11,6 @@ class System {
 public:
     void execute(Registry& registry);
 
-    // Actual view function
     template <typename... Args>
     std::vector<Entity> matchEntites(Registry& registry) {
         std::vector<Entity> m_matchingEntites;
