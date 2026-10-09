@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <bitset>
 #include <memory>
+#include <queue>
 
 #include "Entity.h"
 #include "Component.h"
@@ -42,7 +43,7 @@ public:
 
     // Entity Vectors
     std::vector<Entity> m_liveEntities;
-    std::vector<Entity> m_reusedIDS;
+    std::queue<Entity> m_reusedEntities;
     std::vector<ComponentMask> m_EntityMasks;
 
     // Component Pools
