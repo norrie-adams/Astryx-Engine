@@ -5,18 +5,32 @@
 #include <cstdint>
 #include <bitset>
 #include <string>
+#include <queue>
 
-uint32_t Registry::createEntity() {
-    Entity currentID = m_EntityCounter;
+Entity Registry::createEntity() {
+    if (m_reusedEntities.size() != 0) {
+        Entity id = m_reusedEntities.front();
+        return id;
+    }
+    Entity id = m_EntityCounter;
     m_EntityCounter++;
-    m_liveEntities.push_back(currentID);
-    m_EntityMasks.resize(currentID + 1);
-    return currentID;
+    m_liveEntities.push_back(id);
+    m_EntityMasks.resize(id + 1);
+    return id;
 };
 
-void Registry::deleteEntity(uint32_t ID) {
-    m_reusedIDS.push_back(ID);
-    std::cout << "Deleted Entity: " << ID << std::endl;
+void Registry::deleteEntity(Entity entity) {
+    // Entity
+    m_EntityMasks[entity].reset();
+    m_reusedEntities.push(entity);
+    // Component
+    for (auto& pool : m_ComponentPools) {
+        if (pool != nullptr) {
+            pool->remove(entity);
+        }
+    }
+    // Test
+    std::cout << "Deleted Entity: " << entity << std::endl;
 }
 
 int main() {
