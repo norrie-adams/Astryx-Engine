@@ -19,6 +19,6 @@ void System::execute(Registry& registry) {
         Transform& transform = TransformPool.m_componentData[transformIndex];
         MeshRenderer& meshRenderer = MeshRendererPool.m_componentData[meshRendererIndex];
 
-        std::cout << "Entity: " << entity << "will be rendered at: " << transform.x << transform.y << transform.z << "\n";
+        std::cout << "Entity: " << entity << " will be rendered at: " << transform.x << transform.y << transform.z << "\n";
     }
 }
