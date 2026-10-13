@@ -109,7 +109,9 @@ std::vector<float> buildMeshData(const ModelData &data) {
         meshData.push_back(uv1.u);
         meshData.push_back(uv1.v);
         Normal n1 = data.normals[face.c1.vIdx];
-        meshData.push_back(n1.nx); meshData.push_back(n1.ny); meshData.push_back(n1.nz);
+        meshData.push_back(n1.nx); 
+        meshData.push_back(n1.ny);
+        meshData.push_back(n1.nz);
 
         // Vertex 2
         Vertex v2 = data.vertices[face.c2.vIdx];
@@ -120,7 +122,9 @@ std::vector<float> buildMeshData(const ModelData &data) {
         meshData.push_back(uv2.u);
         meshData.push_back(uv2.v);
         Normal n2 = data.normals[face.c2.vIdx];
-        meshData.push_back(n2.nx); meshData.push_back(n2.ny); meshData.push_back(n2.nz);
+        meshData.push_back(n2.nx); 
+        meshData.push_back(n2.ny); 
+        meshData.push_back(n2.nz);
 
         // Vertex 3
         Vertex v3 = data.vertices[face.c3.vIdx];
@@ -131,7 +135,9 @@ std::vector<float> buildMeshData(const ModelData &data) {
         meshData.push_back(uv3.u);
         meshData.push_back(uv3.v);
         Normal n3 = data.normals[face.c3.vIdx];
-        meshData.push_back(n3.nx); meshData.push_back(n3.ny); meshData.push_back(n3.nz);
+        meshData.push_back(n3.nx); 
+        meshData.push_back(n3.ny); 
+        meshData.push_back(n3.nz);
     }
     return meshData;
 }
