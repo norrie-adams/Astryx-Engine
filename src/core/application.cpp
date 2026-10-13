@@ -188,11 +188,6 @@ void Application::render()
         m_Cube->transform.rotation.y = 90.0f * m_DeltaTime;
     } 
 
-   /*  if (m_Plane)
-    {
-        m_Plane->transform.rotation.x = -90.0f;
-    } */
-
     // -------------------------------------
     //               PASS 1 
     // -------------------------------------

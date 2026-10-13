@@ -71,7 +71,9 @@ Texture::Texture(const std::string &path)
     stbi_image_free(data);
 }
 
-Texture::~Texture() { glDeleteTextures(1, &ID); }
+Texture::~Texture() { 
+    glDeleteTextures(1, &ID); 
+}
 
 void Texture::bind() {
     glActiveTexture(GL_TEXTURE0); 

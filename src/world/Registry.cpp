@@ -33,6 +33,7 @@ void Registry::deleteEntity(Entity entity) {
     std::cout << "Deleted Entity: " << entity << std::endl;
 }
 
+/* 
 int main() {
     Registry registry;
     System system;
@@ -56,3 +57,4 @@ int main() {
 
     return 0;
 }
+*/ 
