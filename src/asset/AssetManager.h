@@ -14,6 +14,6 @@ class AssetManager {
     // File Paths
     std::unordered_map<assetHash, std::string> m_filePaths;
 
-    assetHash hashAsset(std::string &filepath);
+    constexpr assetHash hashAsset(const char* str);
     assetHash registerModel(std::string &filepath);
 };
