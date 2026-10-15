@@ -1,12 +1,41 @@
 #include "AssetManager.h"
+#include "ModelLoader.h"
 #include <functional>
 #include <cstdint>
+#include <memory>
 
-assetHash hashAsset() {
-    uint64_t key = 123456789012345ULL;
+// 64-bit FNV-1a constants
+constexpr uint64_t FNV_OFFSET_BASIS = 14695981039346656037ULL;
+constexpr uint64_t FNV_PRIME        = 1099511628211ULL;
 
-    std::hash<uint64_t> hasher;
-    uint64_t hashAsset = hasher(key); 
+constexpr uint64_t AssetManager::hashAsset(const char* str) {
+    if (!str) return 0; 
 
-    return hashAsset; 
+    uint64_t hash = FNV_OFFSET_BASIS;
+
+    while (*str) {
+        hash ^= static_cast<uint8_t>(*str);
+        hash *= FNV_PRIME;
+        str++;
+    }
+
+    return hash;
+}
+
+assetHash AssetManager::registerModel(std::string &filePath) {
+    assetHash assetHash = hashAsset(filePath.c_str());
+
+    auto it = m_Models.find(assetHash);
+    if (it != m_Models.end()) {
+        return assetHash;
+    };
+
+    m_filePaths[assetHash] = filePath;
+
+    Loader::ModelData model = Loader::loadModel(filePath);
+    std::vector<float> modelData = Loader::buildMeshData(model);
+
+    m_Models[assetHash] = std::make_unique<std::vector<float>>(modelData);
+
+    return assetHash;
 };
