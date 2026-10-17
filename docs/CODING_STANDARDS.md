@@ -14,7 +14,8 @@ We use specific casing styles to instantly identify the scope and type of an ide
 | **Functions / Methods** | camelCase | `initialize()`, `bindShader()` |
 | **Local Variables** | camelCase | `vertexCount`, `shaderSource` |
 | **Private/Protected Members** | `m_` + camelCase | `m_windowWidth`, `m_isActive` |
-| **Global / Static Variables** | `s_` + camelCase | `s_allocatedMemory` |
+| **Static Variables** | `s_` + camelCase | `s_allocatedMemory` |
+| **Global Variables** | `g_` + camelCase | `g_Registry` |
 | **Constants / Macros** | ALL_CAPS | `MAX_BONES`, `AST_ASSERT` |
 | **Enums and Enum Members** | PascalCase | `BufferType::VertexBuffer` |
 
