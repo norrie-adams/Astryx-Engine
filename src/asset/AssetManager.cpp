@@ -6,7 +6,7 @@
 
 // 64-bit FNV-1a constants
 constexpr uint64_t FNV_OFFSET_BASIS = 14695981039346656037ULL;
-constexpr uint64_t FNV_PRIME        = 1099511628211ULL;
+constexpr uint64_t FNV_PRIME = 1099511628211ULL;
 
 constexpr uint64_t AssetManager::hashAsset(const char* str) {
     if (!str) return 0; 
@@ -34,7 +34,6 @@ assetHash AssetManager::registerModel(std::string &filePath) {
 
     Loader::ModelData model = Loader::loadModel(filePath);
     std::vector<float> modelData = Loader::buildMeshData(model);
-
     m_Models[assetHash] = std::make_unique<std::vector<float>>(modelData);
 
     return assetHash;
