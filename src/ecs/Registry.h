@@ -4,6 +4,7 @@
 #include <bitset>
 #include <memory>
 #include <queue>
+#include <string>
 
 #include "Entity.h"
 #include "Component.h"
@@ -27,7 +28,7 @@ struct Transform {
 };
 
 struct MeshRenderer {
-    uint32_t AssetID;
+    std::string modelFilePath;
 };
 
 struct Rigidbody {
@@ -63,3 +64,6 @@ public:
 };
 
 #include "Registry.inl"
+
+// global registry
+extern Registry g_Registry; 

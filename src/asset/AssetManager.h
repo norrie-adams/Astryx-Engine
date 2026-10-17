@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdint>
 #include <string>
+#include "ecs/Registry.h"
 
 using assetHash = uint64_t;
 
@@ -16,4 +17,5 @@ class AssetManager {
 
     constexpr assetHash hashAsset(const char* str);
     assetHash registerModel(std::string &filepath);
+    bool init();
 };
