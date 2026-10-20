@@ -3,7 +3,6 @@ out/
 cmake-build-*/
 CMakeFiles/
 CMakeCache.txt
-external/
 
 *.exe
 *.obj

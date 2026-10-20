@@ -2,6 +2,8 @@
 #include "System.h"
 #include <iostream>
 
+// Example system
+
 void System::execute(Registry& registry) {
     // Matches the entites
     std::vector<Entity> renderedEntites = System::matchEntites<Transform, MeshRenderer>(registry);

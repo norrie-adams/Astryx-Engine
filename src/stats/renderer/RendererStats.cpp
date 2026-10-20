@@ -1,4 +1,4 @@
-#include "rendererStats.h"
+#include "RendererStats.h"
 #include <cstdint>
 
 RendererStats rendererStats;

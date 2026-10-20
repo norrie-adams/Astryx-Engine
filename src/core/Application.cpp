@@ -32,7 +32,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include "stats/renderer/rendererStats.h"
+#include "stats/renderer/RendererStats.h"
 
 // Handles mouse movement and forwards deltas to active camera
 static Camera *g_Camera = nullptr;
@@ -187,11 +187,6 @@ void Application::render()
     {
         m_Cube->transform.rotation.y = 90.0f * m_DeltaTime;
     } 
-
-   /*  if (m_Plane)
-    {
-        m_Plane->transform.rotation.x = -90.0f;
-    } */
 
     // -------------------------------------
     //               PASS 1 

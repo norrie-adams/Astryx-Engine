@@ -40,3 +40,4 @@ public:
     }
 };
 
+#include "System.inl"
