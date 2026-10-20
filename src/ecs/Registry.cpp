@@ -7,6 +7,8 @@
 #include <string>
 #include <queue>
 
+Registry g_Registry;
+
 Entity Registry::createEntity() {
     if (m_reusedEntities.size() != 0) {
         Entity id = m_reusedEntities.front();
@@ -32,6 +34,8 @@ void Registry::deleteEntity(Entity entity) {
     // Test
     std::cout << "Deleted Entity: " << entity << std::endl;
 }
+
+// Example Code for Creation (and was used for testing)
 
 /* 
 int main() {
