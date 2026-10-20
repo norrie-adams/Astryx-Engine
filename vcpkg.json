@@ -1,0 +1,16 @@
+{
+  "name": "astryx-engine",
+  "version-string": "0.3.0",
+  "dependencies": [
+    "assimp",
+    "glfw3",
+    "glm",
+    {
+      "name": "imgui",
+      "features": [
+        "glfw-binding",
+        "opengl3-binding"
+      ]
+    }
+  ]
+}
