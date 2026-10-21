@@ -2,7 +2,7 @@
 #include "System.h"
 #include <iostream>
 
-// Example system
+// Example system so I don't forget how this works
 
 void System::execute(Registry& registry) {
     // Matches the entites
