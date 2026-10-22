@@ -4,8 +4,7 @@
 #include "../rendering/Shader.h"
 #include "Transform.h"
 
-class GameObject
-{
+class GameObject {
 public:
     Mesh mesh;
     Transform transform;

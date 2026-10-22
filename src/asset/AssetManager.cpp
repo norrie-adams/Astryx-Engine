@@ -2,6 +2,7 @@
 #include "ModelLoader.h"
 #include "ecs/Registry.h"
 #include "core/Log.h"
+#include "rendering/Mesh.h"
 #include <functional>
 #include <cstdint>
 #include <memory>
@@ -36,9 +37,17 @@ assetHash AssetManager::registerModel(std::string &filePath) {
 
     Loader::ModelData model = Loader::loadModel(filePath);
     std::vector<float> modelData = Loader::buildMeshData(model);
-    m_Models[assetHash] = std::make_unique<std::vector<float>>(modelData);
+    m_Models[assetHash] = std::make_unique<Mesh>(modelData.data(), modelData.size());
 
     return assetHash;
+};
+
+Mesh* AssetManager::getMesh(assetHash hash) {
+    auto it = m_Models.find(hash);
+    if (it != m_Models.end()) {
+        return it->second.get();
+    }
+    return nullptr;
 };
 
 bool AssetManager::init() {
