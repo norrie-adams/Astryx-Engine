@@ -2,7 +2,8 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include "scene/Light.h"
+#include "Mesh.h"
+#include "ecs/components/Light.h"
 
 class GameObject;
 class Shader;
@@ -11,6 +12,14 @@ class Light;
 class Renderer
 {
 public:
+    struct RenderParameters {
+        Mesh* mesh = nullptr;
+        Shader* shader = nullptr;
+        glm::mat4 model;
+        glm::mat4 view;
+        glm::mat4 projection;
+    };
+
     void CreateShadowMap();
 
     void Init();

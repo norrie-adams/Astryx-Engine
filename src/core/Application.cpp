@@ -28,7 +28,7 @@
 #include "rendering/Renderer.h"
 #include "rendering/Shader.h"
 #include "rendering/Texture.h"
-#include "scene/Light.h"
+#include "ecs/components/Light.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
