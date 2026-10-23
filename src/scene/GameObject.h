@@ -2,7 +2,7 @@
 
 #include "../rendering/Mesh.h"
 #include "../rendering/Shader.h"
-#include "Transform.h"
+#include "ecs/components/Transform.h"
 
 class GameObject {
 public:

@@ -2,7 +2,9 @@
 #include "ecs/System.h"
 #include "ecs/Registry.h"
 #include "ecs/Entity.h"
+#include "ecs/components/Components.h"
 #include "asset/AssetManager.h"
+#include "Renderer.h"
 #include "Mesh.h"
 #include <string>
 #include <vector>
@@ -29,5 +31,10 @@ void RenderSystem::render() {
         // Register model and retrieve mesh
         assetHash assetKey = assetManager.registerModel(meshRenderer.modelFilePath);
         Mesh* mesh = assetManager.getMesh(assetKey);
+
+        // Writes data to command
+        Renderer::RenderParameters command;
+        command.mesh = mesh;
+        command.model = transform.getModelMatrix();
     }
 }
