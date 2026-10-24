@@ -3,6 +3,7 @@
 #include "ecs/Registry.h"
 #include "core/Log.h"
 #include "rendering/Mesh.h"
+#include "ecs/components/MeshRenderer.h"
 #include <functional>
 #include <cstdint>
 #include <memory>
@@ -51,7 +52,7 @@ Mesh* AssetManager::getMesh(assetHash hash) {
 };
 
 bool AssetManager::init() {
-    auto& meshRendererPool = g_Registry.getPool<MeshRenderer>();
+    auto& meshRendererPool = m_Registry->getPool<MeshRenderer>();
 
     if (meshRendererPool.m_componentData.empty()) {
         Log::error("No entites have a MeshRenderer component. Will not render anything");

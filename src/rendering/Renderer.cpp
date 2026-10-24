@@ -14,6 +14,7 @@
 #include "scene/GameObject.h"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <memory>
 
 void Renderer::CreateShadowMap() {
     glGenFramebuffers(1, &m_depthMapFBO);
@@ -57,9 +58,9 @@ void Renderer::BeginShadowPass(Light &light, Shader &shader) {
     shader.setMat4("m_lightSpaceMatrix", m_lightSpaceMatrix);
 }
 
-void Renderer::SubmitShadow(Shader &shader, glm::mat4 &model, GameObject &gameObject) {
-    shader.setMat4("model", model);
-    gameObject.draw(shader);
+void Renderer::SubmitShadow(ShadowPassParameters shadowPassParameters) {
+    shadowPassParameters.shadowShader->setMat4("model", shadowPassParameters.model);
+    shadowPassParameters.mesh->draw();
 }
 
 void Renderer::EndShadowPass() {

@@ -192,6 +192,7 @@ void Application::render()
     //               PASS 1 
     // -------------------------------------
 
+    /*
     m_Renderer.BeginShadowPass(light, *m_shadowShader);
 
     if (m_Cube)
@@ -212,7 +213,7 @@ void Application::render()
         m_Renderer.SubmitShadow(*m_shadowShader, model3, *m_Cube3);
     }
 
-    m_Renderer.EndShadowPass();
+    m_Renderer.EndShadowPass(); */
 
     // ---------------------------------
     //              PASS 2

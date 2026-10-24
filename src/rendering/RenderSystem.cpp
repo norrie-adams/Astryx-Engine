@@ -2,7 +2,8 @@
 #include "ecs/System.h"
 #include "ecs/Registry.h"
 #include "ecs/Entity.h"
-#include "ecs/components/Components.h"
+#include "ecs/components/Transform.h"
+#include "ecs/components/MeshRenderer.h"
 #include "asset/AssetManager.h"
 #include "Renderer.h"
 #include "Mesh.h"
@@ -15,10 +16,10 @@ System renderSystem;
 AssetManager assetManager;
 
 void RenderSystem::render() {
-    std::vector drawnEntites = renderSystem.matchEntites<Transform, MeshRenderer>(g_Registry);
+    std::vector drawnEntites = renderSystem.matchEntites<Transform, MeshRenderer>();
 
-    auto& transformPool = g_Registry.getPool<Transform>();
-    auto& meshRendererPool = g_Registry.getPool<MeshRenderer>();
+    auto& transformPool = m_Registry->getPool<Transform>();
+    auto& meshRendererPool = m_Registry->getPool<MeshRenderer>();
 
     for (Entity entity : drawnEntites) {
         // Get data
@@ -32,9 +33,13 @@ void RenderSystem::render() {
         assetHash assetKey = assetManager.registerModel(meshRenderer.modelFilePath);
         Mesh* mesh = assetManager.getMesh(assetKey);
 
-        // Writes data to command
-        Renderer::RenderParameters command;
-        command.mesh = mesh;
-        command.model = transform.getModelMatrix();
+        // Pass 1 (parameters = shadow shader, model matrix, and mesh)
+        Renderer::ShadowPassParameters shadowCommand;
+        shadowCommand.shadowShader = m_shadowShader.get();
+        shadowCommand.model = transform.getModelMatrix();
+        shadowCommand.mesh = mesh;
+        m_Renderer.SubmitShadow(shadowCommand);
+
+        
     }
 }
