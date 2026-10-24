@@ -4,12 +4,16 @@
 #include <vector>
 #include <cstdint>
 #include <string>
+#include <memory>
 #include "rendering/Mesh.h"
 #include "ecs/Registry.h"
 
 using assetHash = uint64_t;
 
 class AssetManager {
+    private:
+        std::shared_ptr<Registry> m_Registry;
+
     public:
     // Storage Components
     std::unordered_map<assetHash, std::unique_ptr<Mesh>> m_Models;
