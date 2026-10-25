@@ -20,9 +20,10 @@ public:
     struct MainPassParameters {
         Mesh* mesh = nullptr;
         Shader* shader = nullptr;
-        glm::mat4 model;
-        glm::mat4 view;
-        glm::mat4 projection;
+        const glm::mat4 model;
+        const glm::mat4 view;
+        const glm::mat4 projection;
+        const glm::vec3 viewPos;
     };
 
     void CreateShadowMap();
