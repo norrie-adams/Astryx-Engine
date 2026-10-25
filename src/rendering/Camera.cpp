@@ -24,7 +24,6 @@ Camera::Camera()
     worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
     yaw = -90.0f;
     pitch = 0.0f;
-    // NOTE: unused in v0.1 (reserved for future rotation mode)
     rotationSpeed = 50.0f;
     mouseSensitivity = 0.1f;
 

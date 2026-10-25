@@ -51,7 +51,7 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         assetHash assetKey = assetManager.registerModel(meshRenderer.modelFilePath);
         Mesh* mesh = assetManager.getMesh(assetKey);
 
-        // Pass 1 (parameters = shadow shader, model matrix, and mesh)
+        // pass in parameters
         Renderer::ShadowPassParameters shadowParameters;
         shadowParameters.shadowShader = m_shadowShader.get();
         shadowParameters.model = transform.getModelMatrix();
@@ -65,12 +65,19 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
     m_Renderer.BeginScenePass((*m_sceneShader), screenWidth, screenHeight);
 
     for (Entity entity : drawnEntites) {
+        // All same stuff as before
         uint32_t transformIndex = transformPool.m_denseIndexIDs[entity];
         uint32_t meshRendererIndex = meshRendererPool.m_denseIndexIDs[entity];
 
         Transform& transform = transformPool.m_componentData[transformIndex];
         MeshRenderer& meshRenderer = meshRendererPool.m_componentData[meshRendererIndex];
 
-        
+        assetHash assetKey = assetManager.registerModel(meshRenderer.modelFilePath);
+        Mesh* mesh = assetManager.getMesh(assetKey);
+
+        Renderer::MainPassParameters sceneParameters;
+        sceneParameters.mesh = mesh;
+        sceneParameters.shader = m_sceneShader.get();
+        sceneParameters.model = transform.getModelMatrix();
     }
 }
