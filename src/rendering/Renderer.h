@@ -24,6 +24,7 @@ public:
         glm::mat4 view;
         glm::mat4 projection;
         glm::vec3 viewPos;
+        Light light;
     };
 
     void CreateShadowMap();
@@ -40,8 +41,7 @@ public:
 
     void BeginScenePass(Shader &shader, int screenWidth, int screenHeight);
 
-    void Submit(GameObject &gameObject, Shader &shader, Light &light, const glm::mat4 &model, const glm::mat4 &view,
-                      const glm::mat4 &projection, const glm::vec3 &viewPos);
+    void Submit(MainPassParameters);
 
     void SetLight(const Light &light, Shader &shader);
 

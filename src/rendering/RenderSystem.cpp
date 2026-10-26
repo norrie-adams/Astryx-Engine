@@ -7,13 +7,12 @@
 #include "asset/AssetManager.h"
 #include "Renderer.h"
 #include "Mesh.h"
+#include "Camera.h"
 #include <string>
 #include <vector>
 #include <cstdint>
 #include <memory>
-
-System renderSystem;
-AssetManager assetManager;
+#include <glm/glm.hpp>
 
 void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeight) {
     //  ------- PASS 1 ------- 
@@ -22,7 +21,7 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
 
     // Lights
     if (!lights.empty()) {
-        uint32_t lightIndex = lightPool.m_denseIndexIDs[0]; // just uses 1 for now
+        uint32_t lightIndex = lightPool.m_denseIndexIDs[0]; // just uses 1 main light for now
         Light& light = lightPool.m_componentData[lightIndex];
 
         Light shadowLight;
@@ -68,16 +67,32 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         // All same stuff as before
         uint32_t transformIndex = transformPool.m_denseIndexIDs[entity];
         uint32_t meshRendererIndex = meshRendererPool.m_denseIndexIDs[entity];
+        uint32_t lightIndex = lightPool.m_denseIndexIDs[entity];
 
         Transform& transform = transformPool.m_componentData[transformIndex];
         MeshRenderer& meshRenderer = meshRendererPool.m_componentData[meshRendererIndex];
+        Light& light = lightPool.m_componentData[lightIndex];
 
         assetHash assetKey = assetManager.registerModel(meshRenderer.modelFilePath);
         Mesh* mesh = assetManager.getMesh(assetKey);
+
+        // View and Projection Matrices
+        glm::mat4 view = camera.getViewMatrix(); // View transform (camera space)
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f); // Perspective projection
+        glm::vec3 camPos = camera.getPosition();                          // ^ aspect ratio calculation ^
 
         Renderer::MainPassParameters sceneParameters;
         sceneParameters.mesh = mesh;
         sceneParameters.shader = m_sceneShader.get();
         sceneParameters.model = transform.getModelMatrix();
+        sceneParameters.view = view;
+        sceneParameters.projection = projection;
+        sceneParameters.viewPos = camPos;
+        sceneParameters.light.position = light.position;
+        sceneParameters.light.color = light.color;
+        sceneParameters.light.direction = light.direction;
+        sceneParameters.light.intensity = light.intensity;
+
+        m_Renderer.Submit(sceneParameters);
     }
 }

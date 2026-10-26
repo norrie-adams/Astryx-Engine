@@ -1,5 +1,8 @@
 #pragma once
 #include "ecs/Registry.h"
+#include "ecs/System.h"
+#include "asset/AssetManager.h"
+#include "Camera.h"
 #include "Shader.h"
 #include "Renderer.h"
 #include <memory>
@@ -9,6 +12,9 @@ private:
     std::shared_ptr<Registry> m_Registry;
     std::unique_ptr<Shader> m_shadowShader;
     std::unique_ptr<Shader> m_sceneShader;
+    System renderSystem;
+    AssetManager assetManager;
+    Camera camera;
 
 public:
     RenderSystem(std::shared_ptr<Registry> registry) : m_Registry(registry) {
