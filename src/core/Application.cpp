@@ -213,7 +213,7 @@ void Application::render()
         m_Renderer.SubmitShadow(*m_shadowShader, model3, *m_Cube3);
     }
 
-    m_Renderer.EndShadowPass(); */
+    m_Renderer.EndShadowPass(); 
 
     // ---------------------------------
     //              PASS 2
@@ -250,8 +250,8 @@ void Application::render()
     if (m_Cube3) {
         glm::mat4 model3 = m_Cube3->transform.getModelMatrix();
         m_Renderer.Submit(*m_Cube3, *m_Shader, light, model3, view, projection, camPos);
-    }
-}
+    } */
+} 
 
 void Application::renderImGui() {
     ImGui_ImplOpenGL3_NewFrame();
