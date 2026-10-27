@@ -11,9 +11,11 @@
 
 #include "Renderer.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "scene/GameObject.h"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <memory>
 
 void Renderer::CreateShadowMap() {
     glGenFramebuffers(1, &m_depthMapFBO);
@@ -57,9 +59,9 @@ void Renderer::BeginShadowPass(Light &light, Shader &shader) {
     shader.setMat4("m_lightSpaceMatrix", m_lightSpaceMatrix);
 }
 
-void Renderer::SubmitShadow(Shader &shader, glm::mat4 &model, GameObject &gameObject) {
-    shader.setMat4("model", model);
-    gameObject.draw(shader);
+void Renderer::SubmitShadow(ShadowPassParameters shadowPassParameters) {
+    shadowPassParameters.shadowShader->setMat4("model", shadowPassParameters.model);
+    shadowPassParameters.mesh->draw();
 }
 
 void Renderer::EndShadowPass() {
@@ -82,20 +84,28 @@ void Renderer::BeginScenePass(Shader &shader, int screenWidth, int screenHeight)
     BindShadowMap(shader);
 }
 
-void Renderer::Submit(GameObject &gameObject, Shader &shader, Light &light, const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {
-    shader.use();
-    
-    shader.setMat4("model", model);
-    shader.setMat4("view", view);
-    shader.setMat4("projection", projection);
-    shader.setVec3("viewPos", viewPos);
-    
-    shader.setMat4("m_lightSpaceMatrix", m_lightSpaceMatrix);
+void Renderer::Submit(MainPassParameters mainPassParameters) {
+    mainPassParameters.shader->use(); 
+    // Texture   
+    if (mainPassParameters.texture != nullptr) {
+        mainPassParameters.texture->bind();
+        mainPassParameters.shader->setBool("hasTexture", true);
+    } else {
+        mainPassParameters.shader->setBool("hasTexture", false);
+        mainPassParameters.shader->setVec3("fallbackColor", glm::vec3(0.7, 0.7, 0.7));
+    }
 
-    shader.setVec3("light.position", light.position);
-    shader.setVec3("light.color", light.color);
-    shader.setVec3("light.direction", light.direction);
-    shader.setFloat("light.intensity", light.intensity);
+    mainPassParameters.shader->setMat4("model", mainPassParameters.model);
+    mainPassParameters.shader->setMat4("view", mainPassParameters.view);
+    mainPassParameters.shader->setMat4("projection", mainPassParameters.projection);
+    mainPassParameters.shader->setVec3("viewPos", mainPassParameters.viewPos);
     
-    gameObject.draw(shader);
+    mainPassParameters.shader->setMat4("m_lightSpaceMatrix", m_lightSpaceMatrix);
+
+    mainPassParameters.shader->setVec3("light.position", mainPassParameters.light.position);
+    mainPassParameters.shader->setVec3("light.color", mainPassParameters.light.color);
+    mainPassParameters.shader->setVec3("light.direction",mainPassParameters.light.direction);
+    mainPassParameters.shader->setFloat("light.intensity", mainPassParameters.light.intensity);
+    
+    mainPassParameters.mesh->draw();
 }

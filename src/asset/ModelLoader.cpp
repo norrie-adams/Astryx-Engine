@@ -16,7 +16,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-namespace Loader {
+namespace AssetLoader {
 
 void processNode(aiNode* node, const aiScene* scene, ModelData& data, unsigned int& vertexOffset);
 void processMesh(aiMesh* mesh, const aiScene* scene, ModelData& data, unsigned int& vertexOffset);
@@ -142,4 +142,4 @@ std::vector<float> buildMeshData(const ModelData &data) {
     return meshData;
 }
 
-} // namespace Loader
+} // namespace AssetLoader

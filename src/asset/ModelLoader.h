@@ -7,7 +7,7 @@
 
 #define ASSIMP_FLAGS (aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_FlipUVs | aiProcess_GenSmoothNormals)
 
-namespace Loader {
+namespace AssetLoader {
 
 struct Vertex {
     float x, y, z;

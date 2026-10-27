@@ -22,19 +22,6 @@ class ComponentIDGenerator {
         }   
 };
 
-// Test Structs
-struct Transform {
-    float x, y, z;
-};
-
-struct MeshRenderer {
-    std::string modelFilePath;
-};
-
-struct Rigidbody {
-    float Velocity;
-};
-
 class Registry {
 
 public:
@@ -65,5 +52,5 @@ public:
 
 #include "Registry.inl"
 
-// global registry
-extern Registry g_Registry; 
+extern std::shared_ptr<Registry> g_Registry;
+
