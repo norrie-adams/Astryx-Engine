@@ -16,10 +16,11 @@
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "core/Log.h"
 
 void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeight) {
     //  ------- PASS 1 ------- 
-    std::vector<Entity> lights = renderSystem.matchEntites<Light>();
+    std::vector<Entity> lights = System::matchEntites<Light>();
     auto& lightPool = m_Registry->getPool<Light>();
     uint32_t lightIndex = 0;
     bool mainLightExists = false;
@@ -39,7 +40,7 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         m_Renderer.BeginShadowPass(shadowLight, (*m_shadowShader));
     }
 
-    std::vector<Entity> drawnEntites = renderSystem.matchEntites<Transform, MeshRenderer>();
+    std::vector<Entity> drawnEntites = System::matchEntites<Transform, MeshRenderer>();
 
     auto& meshRendererPool = m_Registry->getPool<MeshRenderer>();
     auto& transformPool = m_Registry->getPool<Transform>();
@@ -53,8 +54,8 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         MeshRenderer& meshRenderer = meshRendererPool.m_componentData[meshRendererIndex];
 
         // Register model and retrieve mesh
-        assetHash assetKey = assetManager.registerModel(meshRenderer.modelFilePath);
-        Mesh* mesh = assetManager.getMesh(assetKey);
+        assetHash assetKey = m_AssetManager->registerModel(meshRenderer.modelFilePath);
+        Mesh* mesh = m_AssetManager->getMesh(assetKey);
 
         // pass in parameters
         Renderer::ShadowPassParameters shadowParameters;
@@ -85,16 +86,16 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         if (texturePool.m_entityIDs[texturePool.m_denseIndexIDs[entity]] != -1) {
             uint32_t textureIndex = texturePool.m_denseIndexIDs[entity];
             TextureComponent& textureData = texturePool.m_componentData[textureIndex];
-            assetHash textureKey = assetManager.registerTexture(textureData.textureFilePath);
-            Texture* texture = assetManager.getTexture(textureKey);
+            assetHash textureKey = m_AssetManager->registerTexture(textureData.textureFilePath);
+            Texture* texture = m_AssetManager->getTexture(textureKey);
             sceneParameters.texture = texture;
         }
 
         Transform& transform = transformPool.m_componentData[transformIndex];
         MeshRenderer& meshRenderer = meshRendererPool.m_componentData[meshRendererIndex];
 
-        assetHash assetKey = assetManager.registerModel(meshRenderer.modelFilePath);
-        Mesh* mesh = assetManager.getMesh(assetKey);
+        assetHash assetKey = m_AssetManager->registerModel(meshRenderer.modelFilePath);
+        Mesh* mesh = m_AssetManager->getMesh(assetKey);
 
         // View and Projection Matrices
         glm::mat4 view = camera.getViewMatrix(); // View transform (camera space)

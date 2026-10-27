@@ -52,3 +52,5 @@ public:
 
 #include "Registry.inl"
 
+extern std::shared_ptr<Registry> g_Registry;
+

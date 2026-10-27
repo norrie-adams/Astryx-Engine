@@ -7,17 +7,15 @@
 #include "Renderer.h"
 #include <memory>
 
-class RenderSystem { 
+class RenderSystem : System { 
 private:
-    std::shared_ptr<Registry> m_Registry;
+    std::shared_ptr<AssetManager> m_AssetManager;
     std::unique_ptr<Shader> m_shadowShader;
     std::unique_ptr<Shader> m_sceneShader;
-    System renderSystem;
-    AssetManager assetManager;
     Camera camera;
 
 public:
-    RenderSystem(std::shared_ptr<Registry> registry) : m_Registry(registry) {
+    RenderSystem(std::shared_ptr<Registry> registry) : System(registry) {
         m_sceneShader = std::make_unique<Shader>("assets/shaders/blinn_phong.vert", "assets/shaders/blinn_phong.frag");
         m_shadowShader = std::make_unique<Shader>("assets/shaders/shadow_map.vert", "assets/shaders/shadow_map.frag");
     };

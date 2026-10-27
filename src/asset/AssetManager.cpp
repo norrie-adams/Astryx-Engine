@@ -11,6 +11,8 @@
 #include <cstdint>
 #include <memory>
 
+std::shared_ptr<AssetManager> g_AssetManager = nullptr;
+
 // 64-bit FNV-1a constants
 constexpr uint64_t FNV_OFFSET_BASIS = 14695981039346656037ULL;
 constexpr uint64_t FNV_PRIME = 1099511628211ULL;
@@ -77,7 +79,7 @@ Texture* AssetManager::getTexture(assetHash hash) {
     return nullptr;
 }
 
-bool AssetManager::init() {
+bool AssetManager::init(std::shared_ptr<Registry> m_Registry) {
     auto& meshRendererPool = m_Registry->getPool<MeshRenderer>();
     auto& texturePool = m_Registry->getPool<TextureComponent>();
 

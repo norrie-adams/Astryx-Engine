@@ -9,10 +9,12 @@
 using SystemMask = std::bitset<256>;
 
 class System {
-private:
+protected:
     std::shared_ptr<Registry> m_Registry;
 
 public:
+    System(std::shared_ptr<Registry> registry) : m_Registry(registry) {};
+    virtual ~System() = default;
     void execute();
 
     // Put here because of weird compiler errors, may be moved back later

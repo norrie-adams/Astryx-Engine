@@ -29,5 +29,7 @@ class AssetManager {
     Mesh* getMesh(assetHash hash);
     Texture* getTexture(assetHash hash);
     assetHash registerTexture(std::string filePath);
-    bool init();
+    bool init(std::shared_ptr<Registry> m_Registry); 
 };
+
+extern std::shared_ptr<AssetManager> g_AssetManager;

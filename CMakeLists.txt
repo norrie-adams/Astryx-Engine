@@ -23,6 +23,10 @@ target_include_directories(glad PUBLIC external/glad/include)
 target_link_libraries(glad PUBLIC OpenGL::GL)
 
 # Engine sources
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=address)
+endif()
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
 add_executable(AstryxEngine ${SRC_FILES})
 
