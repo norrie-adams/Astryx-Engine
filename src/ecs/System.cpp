@@ -1,16 +1,18 @@
 #include "Registry.h"
 #include "System.h"
+#include "ecs/components/Transform.h"
+#include "ecs/components/MeshRenderer.h"
 #include <iostream>
 
-// Example system
+// Example system so I don't forget how this works
 
-void System::execute(Registry& registry) {
+void System::execute() {
     // Matches the entites
-    std::vector<Entity> renderedEntites = System::matchEntites<Transform, MeshRenderer>(registry);
+    std::vector<Entity> renderedEntites = System::matchEntites<Transform, MeshRenderer>();
 
     // Gets pools
-    auto& TransformPool = registry.getPool<Transform>();
-    auto& MeshRendererPool = registry.getPool<MeshRenderer>();
+    auto& TransformPool = m_Registry->getPool<Transform>();
+    auto& MeshRendererPool = m_Registry->getPool<MeshRenderer>();
 
     // Loops through entites
     for (Entity entity : renderedEntites) {
@@ -21,6 +23,5 @@ void System::execute(Registry& registry) {
         Transform& transform = TransformPool.m_componentData[transformIndex];
         MeshRenderer& meshRenderer = MeshRendererPool.m_componentData[meshRendererIndex];
 
-        std::cout << "Entity: " << entity << " will be rendered at: " << transform.x << transform.y << transform.z << "\n";
     }
 }

@@ -7,7 +7,7 @@
 #include <string>
 #include <queue>
 
-Registry g_Registry;
+std::shared_ptr<Registry> g_Registry = nullptr;
 
 Entity Registry::createEntity() {
     if (m_reusedEntities.size() != 0) {

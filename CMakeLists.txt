@@ -1,4 +1,8 @@
 cmake_minimum_required(VERSION 3.15) 
+if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+endif()
+
 project(AstryxEngine)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -19,13 +23,17 @@ target_include_directories(glad PUBLIC external/glad/include)
 target_link_libraries(glad PUBLIC OpenGL::GL)
 
 # Engine sources
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=address)
+endif()
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
 add_executable(AstryxEngine ${SRC_FILES})
 
 # Include directories
 target_include_directories(AstryxEngine PRIVATE 
-    src
-    external/stb   
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/external 
 )
 
 # Link libraries
