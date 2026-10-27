@@ -18,6 +18,7 @@
 #include "rendering/Shader.h"
 #include "rendering/Texture.h"
 #include "scene/GameObject.h"
+#include "rendering/RenderSystem.h"
 
 // Standard Library
 #include <memory>
@@ -25,8 +26,8 @@
 class Application
 {
 public:
-    Application();
     ~Application();
+    Application();
 
     bool init();
     void run();
@@ -41,14 +42,7 @@ private:
 
     Camera m_Camera;
     Renderer m_Renderer;
-
-    std::unique_ptr<Shader> m_Shader;
-    std::unique_ptr<Shader> m_shadowShader;
-    std::unique_ptr<GameObject> m_Cube;
-    std::unique_ptr<GameObject> m_Cube2;
-    std::unique_ptr<GameObject> m_Cube3;
-    std::unique_ptr<GameObject> m_Plane;
-    std::unique_ptr<Texture> m_Texture;
+    std::unique_ptr<RenderSystem> m_renderSystem;
 
     int m_FramebufferWidth = 800;
     int m_FramebufferHeight = 600;
