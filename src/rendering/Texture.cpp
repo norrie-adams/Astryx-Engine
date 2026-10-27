@@ -16,24 +16,20 @@
 // - Image is flipped vertically for OpenGL coordinate system
 
 #include "Texture.h"
-#include "../../external/glad/include/glad/glad.h"
+#include "glad/glad.h"
 #include "core/Log.h"
+#include "asset/TextureLoader.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "../external/stb/stb_image.h"
+extern "C" void stbi_image_free(void* retval_from_stbi_load); // don't need to include the header now
 
 Texture::Texture(const std::string &path)
 {
     glGenTextures(1, &ID);
     glBindTexture(GL_TEXTURE_2D, ID);
 
-    int width, height, nrChannels;
-    stbi_set_flip_vertically_on_load(true);
+    unsigned char* pixelData = AssetLoader::loadTexture(path, width, height, nrChannels);
 
-    unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
-
-    if (data)
-    {
+    if (pixelData) {
         GLenum internalFormat = GL_RGB;
         GLenum dataFormat = GL_RGB;
 
@@ -55,7 +51,7 @@ Texture::Texture(const std::string &path)
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, pixelData);
 
         glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -68,7 +64,7 @@ Texture::Texture(const std::string &path)
         Log::error("Texture failed to load at path: " + path);
     }
 
-    stbi_image_free(data);
+    stbi_image_free(pixelData);
 }
 
 Texture::~Texture() { 

@@ -123,11 +123,11 @@ bool Application::init()
     glViewport(0, 0, 800, 600);
     m_Renderer.Init();
 
-    auto cubeData = Loader::loadModel("test_assets/engine_cube.obj");
-    std::vector<float> cubeVertices = Loader::buildMeshData(cubeData);
+    auto cubeData = AssetLoader::loadModel("test_assets/engine_cube.obj");
+    std::vector<float> cubeVertices = AssetLoader::buildMeshData(cubeData);
 
-    auto planeData = Loader::loadModel("test_assets/engine_plane.obj");
-    std::vector<float> planeVertices = Loader::buildMeshData(planeData);
+    auto planeData = AssetLoader::loadModel("test_assets/engine_plane.obj");
+    std::vector<float> planeVertices = AssetLoader::buildMeshData(planeData);
 
     Log::info("Loaded " + std::to_string(cubeData.vertices.size()) + " vertices");
     Log::info("Loaded " + std::to_string(cubeData.faces.size()) + " faces");

@@ -11,6 +11,7 @@
 
 #include "Renderer.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "scene/GameObject.h"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -84,7 +85,16 @@ void Renderer::BeginScenePass(Shader &shader, int screenWidth, int screenHeight)
 }
 
 void Renderer::Submit(MainPassParameters mainPassParameters) {
-    mainPassParameters.shader->use();    
+    mainPassParameters.shader->use(); 
+    // Texture   
+    if (mainPassParameters.texture != nullptr) {
+        mainPassParameters.texture->bind();
+        mainPassParameters.shader->setBool("hasTexture", true);
+    } else {
+        mainPassParameters.shader->setBool("hasTexture", false);
+        mainPassParameters.shader->setVec3("fallbackColor", glm::vec3(0.7, 0.7, 0.7));
+    }
+
     mainPassParameters.shader->setMat4("model", mainPassParameters.model);
     mainPassParameters.shader->setMat4("view", mainPassParameters.view);
     mainPassParameters.shader->setMat4("projection", mainPassParameters.projection);

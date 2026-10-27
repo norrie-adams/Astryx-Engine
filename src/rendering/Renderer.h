@@ -5,6 +5,7 @@
 #include <memory>
 #include "Mesh.h"
 #include "ecs/components/Light.h"
+#include "Texture.h"
 
 class GameObject;
 class Shader;
@@ -20,6 +21,7 @@ public:
     struct MainPassParameters {
         Mesh* mesh = nullptr;
         Shader* shader = nullptr;
+        Texture* texture = nullptr;
         glm::mat4 model;
         glm::mat4 view;
         glm::mat4 projection;

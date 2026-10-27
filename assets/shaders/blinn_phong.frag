@@ -9,6 +9,9 @@ in vec4 FragPosLightSpace;
 uniform sampler2D diffuseTexture;
 uniform sampler2D shadowMap;
 
+uniform bool useTexture;
+uniform vec3 fallbackColor;
+
 uniform vec3 viewPos;
 
 struct Light {
@@ -59,7 +62,12 @@ float ShadowCalculation (vec4 FragPosLightSpace, vec3 norm, vec3 lightDir)
 
 void main()
 {
-    vec3 objectColor = texture(diffuseTexture, TexCoord).rgb;
+    vec3 objectColor;
+    if (useTexture) {
+        objectColor = texture(diffuseTexture, TexCoord).rgb;
+    } else {
+        objectColor = fallbackColor;
+    }
 
     // Ambient
     float ambientStrength = 0.15;
