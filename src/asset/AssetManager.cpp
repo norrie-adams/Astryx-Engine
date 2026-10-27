@@ -4,6 +4,9 @@
 #include "core/Log.h"
 #include "rendering/Mesh.h"
 #include "ecs/components/MeshRenderer.h"
+#include "ecs/components/Texture.h"
+#include "TextureLoader.h"
+#include "rendering/Texture.h"
 #include <functional>
 #include <cstdint>
 #include <memory>
@@ -34,14 +37,29 @@ assetHash AssetManager::registerModel(std::string &filePath) {
         return assetHash;
     };
 
-    m_filePaths[assetHash] = filePath;
+    m_modelFilePaths[assetHash] = filePath;
 
-    Loader::ModelData model = Loader::loadModel(filePath);
-    std::vector<float> modelData = Loader::buildMeshData(model);
+    AssetLoader::ModelData model = AssetLoader::loadModel(filePath);
+    std::vector<float> modelData = AssetLoader::buildMeshData(model);
     m_Models[assetHash] = std::make_unique<Mesh>(modelData.data(), modelData.size());
 
     return assetHash;
 };
+
+assetHash AssetManager::registerTexture(std::string filePath) {
+    assetHash textureHash = hashAsset(filePath.c_str());
+    
+    auto it = m_Textures.find(textureHash);
+    if (it != m_Textures.end()) {
+        return textureHash;
+    }
+
+    m_textureFilePaths[textureHash] = filePath;
+    m_Textures[textureHash] = std::make_unique<Texture>(filePath);
+
+    return textureHash;
+}
+
 
 Mesh* AssetManager::getMesh(assetHash hash) {
     auto it = m_Models.find(hash);
@@ -51,18 +69,35 @@ Mesh* AssetManager::getMesh(assetHash hash) {
     return nullptr;
 };
 
+Texture* AssetManager::getTexture(assetHash hash) {
+    auto it = m_Textures.find(hash);
+    if (it != m_Textures.end()) {
+        return it->second.get();
+    }
+    return nullptr;
+}
+
 bool AssetManager::init() {
     auto& meshRendererPool = m_Registry->getPool<MeshRenderer>();
+    auto& texturePool = m_Registry->getPool<TextureComponent>();
 
+    // Meshes
     if (meshRendererPool.m_componentData.empty()) {
         Log::error("No entites have a MeshRenderer component. Will not render anything");
         // Will eventually set to default scene
         return false;
     }
-
     for (auto& component : meshRendererPool.m_componentData) {
         assetHash modelHash = registerModel(component.modelFilePath);
     };
 
+    // Textures
+    if (texturePool.m_componentData.empty()) {
+        Log::error("No entites have a texture compoent. No texture will be drawn");
+        return false;
+    }
+    for (auto& component : texturePool.m_componentData) {
+        assetHash textureHash = registerTexture(component.textureFilePath);
+    }
     return true;
 }

@@ -28,8 +28,8 @@ add_executable(AstryxEngine ${SRC_FILES})
 
 # Include directories
 target_include_directories(AstryxEngine PRIVATE 
-    src
-    external/stb   
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/external 
 )
 
 # Link libraries
