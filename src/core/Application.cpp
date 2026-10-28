@@ -33,6 +33,10 @@
 #include "ecs/Registry.h"
 #include "asset/AssetManager.h"
 
+// Globals
+std::shared_ptr<Registry> g_Registry = nullptr;
+std::shared_ptr<AssetManager> g_AssetManager = nullptr;
+
 // Handles mouse movement and forwards deltas to active camera
 static Camera *g_Camera = nullptr;
 
@@ -124,7 +128,7 @@ bool Application::init()
 
     g_Registry = std::make_shared<Registry>();
     g_AssetManager = std::make_shared<AssetManager>();
-    m_renderSystem = std::make_unique<RenderSystem>(g_Registry);
+    m_renderSystem = std::make_unique<RenderSystem>(g_Registry, *g_AssetManager);
 
     g_AssetManager->init(g_Registry);
 

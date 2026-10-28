@@ -4,14 +4,12 @@
 #include "core/Log.h"
 #include "rendering/Mesh.h"
 #include "ecs/components/MeshRenderer.h"
-#include "ecs/components/Texture.h"
+#include "ecs/components/TextureComponent.h"
 #include "TextureLoader.h"
 #include "rendering/Texture.h"
 #include <functional>
 #include <cstdint>
 #include <memory>
-
-std::shared_ptr<AssetManager> g_AssetManager = nullptr;
 
 // 64-bit FNV-1a constants
 constexpr uint64_t FNV_OFFSET_BASIS = 14695981039346656037ULL;

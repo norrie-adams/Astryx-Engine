@@ -1,4 +1,5 @@
 #include "Registry.h"
+#include "core/Log.h"
 
 // Returns a reference to a specific pool
 template <typename T>
@@ -20,6 +21,7 @@ SparseSet<T>& Registry::getPool() {
 
 template <typename T> 
 void Registry::addComponent(Entity ent, T component) {
+    Log::info("Added Component");
     // Entity Masks
     uint32_t componentID = ComponentIDGenerator::getComponentID<T>();
     if (ent >= m_EntityMasks.size()) { // simple resize check
