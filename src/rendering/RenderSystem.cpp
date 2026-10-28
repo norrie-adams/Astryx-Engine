@@ -5,7 +5,7 @@
 #include "ecs/components/Transform.h"
 #include "ecs/components/MeshRenderer.h"
 #include "ecs/components/Light.h"
-#include "ecs/components/Texture.h"
+#include "ecs/components/TextureComponent.h"
 #include "asset/AssetManager.h"
 #include "Renderer.h"
 #include "Mesh.h"
@@ -54,8 +54,8 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         MeshRenderer& meshRenderer = meshRendererPool.m_componentData[meshRendererIndex];
 
         // Register model and retrieve mesh
-        assetHash assetKey = m_AssetManager->registerModel(meshRenderer.modelFilePath);
-        Mesh* mesh = m_AssetManager->getMesh(assetKey);
+        assetHash assetKey = m_AssetManager.registerModel(meshRenderer.modelFilePath);
+        Mesh* mesh = m_AssetManager.getMesh(assetKey);
 
         // pass in parameters
         Renderer::ShadowPassParameters shadowParameters;
@@ -81,21 +81,20 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         // Gets pools and checks if texture exists
         uint32_t transformIndex = transformPool.m_denseIndexIDs[entity];
         uint32_t meshRendererIndex = meshRendererPool.m_denseIndexIDs[entity];
-        uint32_t lightIndex = lightPool.m_denseIndexIDs[entity];
 
-        if (texturePool.m_entityIDs[texturePool.m_denseIndexIDs[entity]] != -1) {
+        if (m_Registry->hasComponent<TextureComponent>(entity)) {
             uint32_t textureIndex = texturePool.m_denseIndexIDs[entity];
             TextureComponent& textureData = texturePool.m_componentData[textureIndex];
-            assetHash textureKey = m_AssetManager->registerTexture(textureData.textureFilePath);
-            Texture* texture = m_AssetManager->getTexture(textureKey);
+            assetHash textureKey = m_AssetManager.registerTexture(textureData.textureFilePath);
+            Texture* texture = m_AssetManager.getTexture(textureKey);
             sceneParameters.texture = texture;
         }
 
         Transform& transform = transformPool.m_componentData[transformIndex];
         MeshRenderer& meshRenderer = meshRendererPool.m_componentData[meshRendererIndex];
 
-        assetHash assetKey = m_AssetManager->registerModel(meshRenderer.modelFilePath);
-        Mesh* mesh = m_AssetManager->getMesh(assetKey);
+        assetHash assetKey = m_AssetManager.registerModel(meshRenderer.modelFilePath);
+        Mesh* mesh = m_AssetManager.getMesh(assetKey);
 
         // View and Projection Matrices
         glm::mat4 view = camera.getViewMatrix(); // View transform (camera space)
@@ -110,6 +109,7 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         sceneParameters.viewPos = camPos;
 
         if (mainLightExists) {
+            uint32_t lightIndex = lightPool.m_denseIndexIDs[entity];
             Light& light = lightPool.m_componentData[lightIndex];
             sceneParameters.light.position = light.position;
             sceneParameters.light.color = light.color;

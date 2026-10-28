@@ -49,5 +49,5 @@ cmake --build build
 To launch the engine:
 
 ```bash
-./build/AstryxEngine
+./build/sandbox/AstryxSandbox
 ```

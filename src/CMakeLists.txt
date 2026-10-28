@@ -3,7 +3,7 @@ find_package(assimp CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 
-file(GLOB_RECURSE ENGINE_SOURCES "*.cpp" "*.h")
+file(GLOB_RECURSE ENGINE_SOURCES CONFIGURE_DEPENDS "*.cpp" "*.h")
 
 add_library(Engine STATIC ${ENGINE_SOURCES})
 

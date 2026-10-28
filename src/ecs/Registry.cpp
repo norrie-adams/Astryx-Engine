@@ -1,15 +1,15 @@
 #include "Registry.h"
 #include "Entity.h"
 #include "System.h"
+#include "core/Log.h"
 #include <iostream>
 #include <cstdint>
 #include <bitset>
 #include <string>
 #include <queue>
 
-std::shared_ptr<Registry> g_Registry = nullptr;
-
 Entity Registry::createEntity() {
+    Log::info("YES HI ITS ME! YOU actually created something so this works!");
     if (m_reusedEntities.size() != 0) {
         Entity id = m_reusedEntities.front();
         return id;
