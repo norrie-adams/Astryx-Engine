@@ -102,7 +102,7 @@ bool Application::init()
     m_Window = glfwCreateWindow(800, 600, "Astryx Engine", NULL, NULL);
     if (!m_Window)
     {
-        Log::error("GLFW Window Creation Failed");
+        Log::error("Window Creation Failed");
         glfwTerminate();
         return false;
     }

@@ -13,6 +13,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "scene/GameObject.h"
+#include "core/Log.h"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>
@@ -86,12 +87,18 @@ void Renderer::BeginScenePass(Shader &shader, int screenWidth, int screenHeight)
 
 void Renderer::Submit(MainPassParameters mainPassParameters) {
     mainPassParameters.shader->use(); 
+    mainPassParameters.shader->setInt("diffuseTexture", 0);
+    mainPassParameters.shader->setInt("shadowMap", 1);
+
     // Texture   
     if (mainPassParameters.texture != nullptr) {
         mainPassParameters.texture->bind();
-        mainPassParameters.shader->setBool("hasTexture", true);
+        mainPassParameters.shader->setBool("useTexture", true);
     } else {
-        mainPassParameters.shader->setBool("hasTexture", false);
+        // Unbinded so slot is empty
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        mainPassParameters.shader->setBool("useTexture", false);
         mainPassParameters.shader->setVec3("fallbackColor", glm::vec3(0.7, 0.7, 0.7));
     }
 
