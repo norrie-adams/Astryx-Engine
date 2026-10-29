@@ -27,7 +27,7 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
 
     // Lights
     if (!lights.empty()) {
-        lightIndex = lightPool.m_denseIndexIDs[0]; // just uses 1 main light for now
+        // Just uses 1 main light for now
         Light& light = lightPool.m_componentData[lightIndex];
         mainLightExists = true;
 
@@ -109,7 +109,6 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         sceneParameters.viewPos = camPos;
 
         if (mainLightExists) {
-            uint32_t lightIndex = lightPool.m_denseIndexIDs[lightIndex];
             Light& light = lightPool.m_componentData[lightIndex];
             sceneParameters.light.position = light.position;
             sceneParameters.light.color = light.color;
