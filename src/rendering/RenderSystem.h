@@ -9,13 +9,14 @@
 
 class RenderSystem : System { 
 private:
-    std::shared_ptr<AssetManager> m_AssetManager;
+    AssetManager &m_AssetManager;
+    Camera &m_Camera;
     std::unique_ptr<Shader> m_shadowShader;
     std::unique_ptr<Shader> m_sceneShader;
-    Camera camera;
 
 public:
-    RenderSystem(std::shared_ptr<Registry> registry) : System(registry) {
+    RenderSystem(std::shared_ptr<Registry> registry, AssetManager& assetManager, Camera& camera)
+        : System(registry), m_AssetManager(assetManager), m_Camera(camera) {
         m_sceneShader = std::make_unique<Shader>("assets/shaders/blinn_phong.vert", "assets/shaders/blinn_phong.frag");
         m_shadowShader = std::make_unique<Shader>("assets/shaders/shadow_map.vert", "assets/shaders/shadow_map.frag");
     };

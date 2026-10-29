@@ -33,8 +33,12 @@
 #include "ecs/Registry.h"
 #include "asset/AssetManager.h"
 
+// Globals
+std::shared_ptr<Registry> g_Registry = nullptr;
+std::shared_ptr<AssetManager> g_AssetManager = nullptr;
+std::shared_ptr<Camera> g_Camera = nullptr;
+
 // Handles mouse movement and forwards deltas to active camera
-static Camera *g_Camera = nullptr;
 
 static bool firstMouse = true;
 static float lastX = 400.0f;
@@ -98,7 +102,7 @@ bool Application::init()
     m_Window = glfwCreateWindow(800, 600, "Astryx Engine", NULL, NULL);
     if (!m_Window)
     {
-        Log::error("GLFW Window Creation Failed");
+        Log::error("Window Creation Failed");
         glfwTerminate();
         return false;
     }
@@ -114,8 +118,6 @@ bool Application::init()
 
     Input::init(m_Window);
 
-    g_Camera = &m_Camera;
-
     glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(m_Window, mouse_callback);
 
@@ -124,7 +126,8 @@ bool Application::init()
 
     g_Registry = std::make_shared<Registry>();
     g_AssetManager = std::make_shared<AssetManager>();
-    m_renderSystem = std::make_unique<RenderSystem>(g_Registry);
+    g_Camera = std::make_unique<Camera>();
+    m_renderSystem = std::make_unique<RenderSystem>(g_Registry, *g_AssetManager, *g_Camera);
 
     g_AssetManager->init(g_Registry);
 
@@ -189,7 +192,7 @@ void Application::run()
 {
     while (!glfwWindowShouldClose(m_Window))
     {
-        // Deltatime
+        // Time
         float currentFrame = glfwGetTime();
         float deltaTime = currentFrame - m_LastFrame;
         m_LastFrame = currentFrame;
@@ -198,8 +201,8 @@ void Application::run()
         glfwGetFramebufferSize(m_Window, &m_FramebufferWidth, &m_FramebufferHeight);
         glViewport(0, 0, m_FramebufferWidth, m_FramebufferHeight);
 
-        // INPUT
-        m_Camera.processInput(deltaTime);
+        // Input
+        g_Camera->processInput(deltaTime);
 
         // Render
         m_renderSystem->render(m_Renderer, m_FramebufferWidth, m_FramebufferHeight);

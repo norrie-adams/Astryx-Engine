@@ -31,6 +31,7 @@ public:
 
     bool init();
     void run();
+    std::shared_ptr<Registry> getRegistry() const { return g_Registry; }
 
 private:
     void render();
