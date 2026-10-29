@@ -14,6 +14,7 @@
 
 #include "Camera.h"
 #include "core/Input.h"
+#include "core/Log.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 // Starting Camera Position

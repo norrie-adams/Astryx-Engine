@@ -4,7 +4,7 @@ This short guide explains to you (and me when I forget and set this up on a new 
 
 ### Dependencies
 
-* [GCC/G++](https://gcc.gnu.org/)
+* [GCC/G++20](https://gcc.gnu.org/)
 * [CMake](https://cmake.org/)
 * [vcpkg](https://learn.microsoft.com/en-gb/vcpkg/get_started/overview)
 * [Ninja](https://ninja-build.org/)

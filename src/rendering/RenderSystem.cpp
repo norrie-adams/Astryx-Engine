@@ -97,9 +97,9 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         Mesh* mesh = m_AssetManager.getMesh(assetKey);
 
         // View and Projection Matrices
-        glm::mat4 view = camera.getViewMatrix(); // View transform (camera space)
+        glm::mat4 view = m_Camera.getViewMatrix(); // View transform (camera space)
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f); // Perspective projection
-        glm::vec3 camPos = camera.getPosition();                          // ^ aspect ratio calculation ^
+        glm::vec3 camPos = m_Camera.getPosition();                        // ^ aspect ratio calculation ^
 
         sceneParameters.mesh = mesh;
         sceneParameters.shader = m_sceneShader.get();

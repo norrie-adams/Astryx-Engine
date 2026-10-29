@@ -25,20 +25,16 @@ We use specific casing styles to instantly identify the scope and type of an ide
 
 To keep code visually consistent, we follow a strict structural layout:
 
-* **Indentation:** Use **4 spaces** instead of tabs.
-* **Brace Style:** Allman style (braces on a new line) for classes, namespaces, and functions. 
+* **Indentation:** Use tabs
+* **Brace Style:** Braces next fo functions
 * **Control Flow Braces:** Braces are mandatory for `if`, `else`, `for`, and `while` statements, even for single-line blocks.
 
 ```cpp
-namespace Astryx
-{
-    class Renderer
-    {
+namespace Astryx {
+    class Renderer {
     public:
-        void drawIndexed(uint32_t count)
-        {
-            if (count == 0)
-            {
+        void drawIndexed(uint32_t count) {
+            if (count == 0) {
                 return; 
             }
             
