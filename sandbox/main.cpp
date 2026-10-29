@@ -10,7 +10,7 @@
 
 int main()
 {
-    Log::info("nanam");
+    Log::info("Engine intialized");
 
     Application app;
 
