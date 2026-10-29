@@ -5,7 +5,6 @@ CMakeFiles/
 CMakeCache.txt
 
 *.exe
-*.obj
 *.o
 *.a
 *.lib
@@ -14,7 +13,6 @@ CMakeCache.txt
 .vs/
 .idea/
 
-test_assets/
 .clang-format
 
 to-do.txt

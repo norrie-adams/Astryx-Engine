@@ -4,14 +4,12 @@
 #include "core/Log.h"
 #include "rendering/Mesh.h"
 #include "ecs/components/MeshRenderer.h"
-#include "ecs/components/Texture.h"
+#include "ecs/components/TextureComponent.h"
 #include "TextureLoader.h"
 #include "rendering/Texture.h"
 #include <functional>
 #include <cstdint>
 #include <memory>
-
-std::shared_ptr<AssetManager> g_AssetManager = nullptr;
 
 // 64-bit FNV-1a constants
 constexpr uint64_t FNV_OFFSET_BASIS = 14695981039346656037ULL;
@@ -84,21 +82,21 @@ bool AssetManager::init(std::shared_ptr<Registry> m_Registry) {
     auto& texturePool = m_Registry->getPool<TextureComponent>();
 
     // Meshes
-    if (meshRendererPool.m_componentData.empty()) {
-        Log::error("No entites have a MeshRenderer component. Will not render anything");
-        // Will eventually set to default scene
-        return false;
-    }
     for (auto& component : meshRendererPool.m_componentData) {
+        if (meshRendererPool.m_componentData.empty()) {
+            Log::error("No entites have a MeshRenderer component. Will not render anything");
+            // Will eventually set to default scene
+            return false;
+        }
         assetHash modelHash = registerModel(component.modelFilePath);
     };
 
     // Textures
-    if (texturePool.m_componentData.empty()) {
-        Log::error("No entites have a texture compoent. No texture will be drawn");
-        return false;
-    }
     for (auto& component : texturePool.m_componentData) {
+        if (texturePool.m_componentData.empty()) {
+            Log::error("No entites have a texture compoent. No texture will be drawn");
+            return false;
+        }
         assetHash textureHash = registerTexture(component.textureFilePath);
     }
     return true;

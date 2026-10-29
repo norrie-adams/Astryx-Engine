@@ -9,10 +9,11 @@ in vec4 FragPosLightSpace;
 uniform sampler2D diffuseTexture;
 uniform sampler2D shadowMap;
 
+uniform vec3 viewPos;
+
 uniform bool useTexture;
 uniform vec3 fallbackColor;
-
-uniform vec3 viewPos;
+vec3 objectColor;
 
 struct Light {
     vec3 position;
@@ -62,7 +63,6 @@ float ShadowCalculation (vec4 FragPosLightSpace, vec3 norm, vec3 lightDir)
 
 void main()
 {
-    vec3 objectColor;
     if (useTexture) {
         objectColor = texture(diffuseTexture, TexCoord).rgb;
     } else {

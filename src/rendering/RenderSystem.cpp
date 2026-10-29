@@ -5,8 +5,9 @@
 #include "ecs/components/Transform.h"
 #include "ecs/components/MeshRenderer.h"
 #include "ecs/components/Light.h"
-#include "ecs/components/Texture.h"
+#include "ecs/components/TextureComponent.h"
 #include "asset/AssetManager.h"
+#include "stats/renderer/RendererStats.h"
 #include "Renderer.h"
 #include "Mesh.h"
 #include "Camera.h"
@@ -18,7 +19,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "core/Log.h"
 
-void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeight) {
+void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeight) {    
     //  ------- PASS 1 ------- 
     std::vector<Entity> lights = System::matchEntites<Light>();
     auto& lightPool = m_Registry->getPool<Light>();
@@ -27,7 +28,7 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
 
     // Lights
     if (!lights.empty()) {
-        lightIndex = lightPool.m_denseIndexIDs[0]; // just uses 1 main light for now
+        // Just uses 1 main light for now
         Light& light = lightPool.m_componentData[lightIndex];
         mainLightExists = true;
 
@@ -54,8 +55,8 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         MeshRenderer& meshRenderer = meshRendererPool.m_componentData[meshRendererIndex];
 
         // Register model and retrieve mesh
-        assetHash assetKey = m_AssetManager->registerModel(meshRenderer.modelFilePath);
-        Mesh* mesh = m_AssetManager->getMesh(assetKey);
+        assetHash assetKey = m_AssetManager.registerModel(meshRenderer.modelFilePath);
+        Mesh* mesh = m_AssetManager.getMesh(assetKey);
 
         // pass in parameters
         Renderer::ShadowPassParameters shadowParameters;
@@ -76,31 +77,31 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
     auto& texturePool = m_Registry->getPool<TextureComponent>();
 
     for (Entity entity : drawnEntites) {
+        rendererStats.drawCalls = 0;
         Renderer::MainPassParameters sceneParameters;
 
         // Gets pools and checks if texture exists
         uint32_t transformIndex = transformPool.m_denseIndexIDs[entity];
         uint32_t meshRendererIndex = meshRendererPool.m_denseIndexIDs[entity];
-        uint32_t lightIndex = lightPool.m_denseIndexIDs[entity];
 
-        if (texturePool.m_entityIDs[texturePool.m_denseIndexIDs[entity]] != -1) {
+        if (m_Registry->hasComponent<TextureComponent>(entity)) {
             uint32_t textureIndex = texturePool.m_denseIndexIDs[entity];
             TextureComponent& textureData = texturePool.m_componentData[textureIndex];
-            assetHash textureKey = m_AssetManager->registerTexture(textureData.textureFilePath);
-            Texture* texture = m_AssetManager->getTexture(textureKey);
+            assetHash textureKey = m_AssetManager.registerTexture(textureData.textureFilePath);
+            Texture* texture = m_AssetManager.getTexture(textureKey);
             sceneParameters.texture = texture;
         }
 
         Transform& transform = transformPool.m_componentData[transformIndex];
         MeshRenderer& meshRenderer = meshRendererPool.m_componentData[meshRendererIndex];
 
-        assetHash assetKey = m_AssetManager->registerModel(meshRenderer.modelFilePath);
-        Mesh* mesh = m_AssetManager->getMesh(assetKey);
+        assetHash assetKey = m_AssetManager.registerModel(meshRenderer.modelFilePath);
+        Mesh* mesh = m_AssetManager.getMesh(assetKey);
 
         // View and Projection Matrices
-        glm::mat4 view = camera.getViewMatrix(); // View transform (camera space)
+        glm::mat4 view = m_Camera.getViewMatrix(); // View transform (camera space)
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f); // Perspective projection
-        glm::vec3 camPos = camera.getPosition();                          // ^ aspect ratio calculation ^
+        glm::vec3 camPos = m_Camera.getPosition();                        // ^ aspect ratio calculation ^
 
         sceneParameters.mesh = mesh;
         sceneParameters.shader = m_sceneShader.get();
@@ -115,6 +116,11 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
             sceneParameters.light.color = light.color;
             sceneParameters.light.direction = light.direction;
             sceneParameters.light.intensity = light.intensity;
+        } else {
+                sceneParameters.light.position = glm::vec3(5.0f, 10.0f, 5.0f);
+                sceneParameters.light.color = glm::vec3(1.0f, 1.0f, 1.0f);      
+                sceneParameters.light.direction = glm::vec3(-0.2f, -1.0f, -0.3f); 
+                sceneParameters.light.intensity = 1.0f;
         };
 
         m_Renderer.Submit(sceneParameters);
