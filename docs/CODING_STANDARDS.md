@@ -18,6 +18,7 @@ We use specific casing styles to instantly identify the scope and type of an ide
 | **Global Variables** | `g_` + camelCase | `g_Registry` |
 | **Constants / Macros** | ALL_CAPS | `MAX_BONES`, `AST_ASSERT` |
 | **Enums and Enum Members** | PascalCase | `BufferType::VertexBuffer` |
+| **Assets** | snake_case | `engine_cube.obj` |
 
 ---
 

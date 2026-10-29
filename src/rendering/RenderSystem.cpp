@@ -7,6 +7,7 @@
 #include "ecs/components/Light.h"
 #include "ecs/components/TextureComponent.h"
 #include "asset/AssetManager.h"
+#include "stats/renderer/RendererStats.h"
 #include "Renderer.h"
 #include "Mesh.h"
 #include "Camera.h"
@@ -18,7 +19,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "core/Log.h"
 
-void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeight) {
+void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeight) {    
     //  ------- PASS 1 ------- 
     std::vector<Entity> lights = System::matchEntites<Light>();
     auto& lightPool = m_Registry->getPool<Light>();
@@ -76,6 +77,7 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
     auto& texturePool = m_Registry->getPool<TextureComponent>();
 
     for (Entity entity : drawnEntites) {
+        rendererStats.drawCalls = 0;
         Renderer::MainPassParameters sceneParameters;
 
         // Gets pools and checks if texture exists
