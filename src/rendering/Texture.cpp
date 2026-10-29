@@ -20,7 +20,7 @@
 #include "core/Log.h"
 #include "asset/TextureLoader.h"
 
-extern "C" void stbi_image_free(void* retval_from_stbi_load); // don't need to include the header now
+#include "stb/stb_image.h"
 
 Texture::Texture(const std::string &path)
 {

@@ -109,12 +109,17 @@ void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeigh
         sceneParameters.viewPos = camPos;
 
         if (mainLightExists) {
-            uint32_t lightIndex = lightPool.m_denseIndexIDs[entity];
+            uint32_t lightIndex = lightPool.m_denseIndexIDs[lightIndex];
             Light& light = lightPool.m_componentData[lightIndex];
             sceneParameters.light.position = light.position;
             sceneParameters.light.color = light.color;
             sceneParameters.light.direction = light.direction;
             sceneParameters.light.intensity = light.intensity;
+        } else {
+                sceneParameters.light.position = glm::vec3(5.0f, 10.0f, 5.0f);
+                sceneParameters.light.color = glm::vec3(1.0f, 1.0f, 1.0f);      
+                sceneParameters.light.direction = glm::vec3(-0.2f, -1.0f, -0.3f); 
+                sceneParameters.light.intensity = 1.0f;
         };
 
         m_Renderer.Submit(sceneParameters);
