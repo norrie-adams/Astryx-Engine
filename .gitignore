@@ -13,7 +13,6 @@ CMakeCache.txt
 .vs/
 .idea/
 
-test_assets/
 .clang-format
 
 to-do.txt
