@@ -38,7 +38,17 @@ public:
     std::vector<std::unique_ptr<ISparseSet>> m_ComponentPools;
 
     void deleteEntity(uint32_t ID);
-    
+    // delete entity helper function
+    std::vector<Entity> getDeadEntities() const {
+        auto copy = m_reusedEntities;
+        std::vector<Entity> elements;
+        while (copy.size() != 0) {
+            elements.push_back(copy.front());
+            copy.pop();
+        }
+        return elements;
+    };
+
     template<typename T>
     bool hasComponent(Entity ent);
 
