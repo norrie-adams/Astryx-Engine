@@ -1,0 +1,41 @@
+name: Astryx CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Pull the repository code
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Set up vcpkg and its cache
+    - name: Setup vcpkg
+      uses: lukka/run-vcpkg@v11
+      with:
+        vcpkgDirectory: ${{ github.workspace }}/vcpkg
+        # Automatically activates caching for installed packages
+        appendedArgs: '--x-manifest-install' 
+
+    # Configure CMake using the vcpkg toolchain file
+    - name: Configure CMake
+      run: |
+        cmake -B build \
+          -S . \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+    # Build the project and tests
+    - name: Build Project
+      run: cmake --build build --config Release
+
+    # Run GoogleTest suites via CTest
+    - name: Run Tests
+      working-directory: build
+      run: ctest --output-on-failure -C Release
