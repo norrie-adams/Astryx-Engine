@@ -7,7 +7,6 @@
 #include <gmock/gmock.h>
 #include <vector>
 
-
 TEST_F(ECSTests, CreateEntity) {
     Entity expectedID = testRegistry->m_EntityCounter;
     Entity actualID = testRegistry->createEntity();
