@@ -1,6 +1,6 @@
 find_package(GTest CONFIG REQUIRED)
 
-file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "*.cpp")
+file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "*.cpp" "*.hpp")
 add_executable(ENGINE_TESTS ${TEST_SOURCES})
 
 target_link_libraries(ENGINE_TESTS PRIVATE 
