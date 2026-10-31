@@ -33,20 +33,22 @@ CLion: [CLion Documentation](https://www.jetbrains.com/help/clion/package-manage
 }
 ```
 
-While in the root of the project, run the following CMake Command. This command must be run once to configure the project:
+3. While in the root of the project, run the following CMake Command. This command must be run once to configure the project:
 
 ```bash
 # Replace PATH_TO_VCPKG with the path to vcpkg on your system
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$PATH_TO_VCPKG/vcpkg/scripts/buildsystems/vcpkg.cmake -G Ninja
 ```
 
-This runs the vcpkg setup (installing dependencies), and configures CMake. After this, run the build command. Run this whenver you want to build the project:
+This runs the vcpkg setup (installing dependencies), and configures CMake.
+
+4. After this, run the build command. Run this whenver you want to build the project:
 
 ```bash
 cmake --build build
 ```
 
-To launch the engine:
+5. To launch the engine:
 
 ```bash
 ./build/sandbox/AstryxSandbox
