@@ -22,7 +22,7 @@ class ComponentIDGenerator {
         }   
 };
 
-class Registry {
+class Registry : public ComponentIDGenerator {
 
 public:
     uint32_t m_EntityCounter = 0;
@@ -44,6 +44,8 @@ public:
 
     template <typename T> 
     void addComponent(Entity ent, T component);
+    template <typename T>
+    void removeComponent(Entity ent);
 
     template <typename T>
     SparseSet<T>& getPool();

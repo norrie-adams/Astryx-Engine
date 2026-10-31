@@ -35,7 +35,13 @@ TEST_F(ECSTests, AddComponent) {
         glm::vec3(0.0f),
         glm::vec3(0.0f)
     });
-    EXPECT_EQ(testRegistry->m_ComponentPools.size(), 1);
+
+    ComponentMask testMask;
+    uint32_t transformID = testRegistry->getComponentID<Transform>();
+    testMask.set(transformID);
+    ComponentMask entityMask = testRegistry->m_EntityMasks[actualID];
+
+    EXPECT_EQ(testMask, entityMask);
 }
 
 TEST_F(ECSTests, RemoveComponent) {
@@ -48,10 +54,25 @@ TEST_F(ECSTests, RemoveComponent) {
         glm::vec3(0.0f),
         glm::vec3(0.0f)
     });
-    ASSERT_EQ(testRegistry->m_ComponentPools.size(), 1);
 
-    testRegistry->deleteEntity(actualID);
-    EXPECT_EQ(testRegistry->m_ComponentPools.size(), 0);
+    // Make sure add component works
+    ComponentMask testMask;
+    uint32_t transformID = testRegistry->getComponentID<Transform>();
+    testMask.set(transformID);
+    ComponentMask entityMask = testRegistry->m_EntityMasks[actualID];
+    bool hasComponent;
+    ASSERT_EQ(testMask, entityMask);
+
+    testRegistry->removeComponent<Transform>(actualID);
+    entityMask = testRegistry->m_EntityMasks[actualID];
+
+    if (entityMask == testMask) {
+        bool hasComponent = true;
+    } else { // we want the ELSE statement to run (ik its confusing idrc)
+        bool hasComponent = false;
+    }
+
+    EXPECT_FALSE(hasComponent);
 }
 
 TEST_F(ECSTests, QuerieEntites) {

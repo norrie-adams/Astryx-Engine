@@ -17,9 +17,6 @@ class ECSTests : public AstryxTest {
         return elements;
     };
 
-    // Checks if component exists in pool
-    template<typename T>
-    bool didComponentDelete() {
-        Registry::getPool<T>();
-    }
+    // Remove component helper function
+
 };
