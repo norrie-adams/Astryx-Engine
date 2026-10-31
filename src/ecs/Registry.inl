@@ -34,6 +34,13 @@ void Registry::addComponent(Entity ent, T component) {
     pool.insert(ent, component);
 }
 
+template <typename T>
+void Registry::removeComponent(Entity ent) {
+    uint32_t componentID = ComponentIDGenerator::getComponentID<T>();
+    auto& pool = getPool<T>();
+    pool.remove(ent);
+}
+
 // helper function
 template <typename T> 
 bool Registry::hasComponent(Entity ent) {

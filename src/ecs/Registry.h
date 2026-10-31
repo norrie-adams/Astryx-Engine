@@ -22,7 +22,7 @@ class ComponentIDGenerator {
         }   
 };
 
-class Registry {
+class Registry : public ComponentIDGenerator {
 
 public:
     uint32_t m_EntityCounter = 0;
@@ -38,12 +38,14 @@ public:
     std::vector<std::unique_ptr<ISparseSet>> m_ComponentPools;
 
     void deleteEntity(uint32_t ID);
-    
+
     template<typename T>
     bool hasComponent(Entity ent);
 
     template <typename T> 
     void addComponent(Entity ent, T component);
+    template <typename T>
+    void removeComponent(Entity ent);
 
     template <typename T>
     SparseSet<T>& getPool();
