@@ -31,11 +31,14 @@ jobs:
 
       # Generate with Ninja and G++
       - name: Configure CMake
-        env:
-          CC: gcc
-          CXX: g++
         run: |
-          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -G Ninja
+          export CC=/usr/bin/gcc
+          export CXX=/usr/bin/g++
+          cmake -B build -G Ninja \
+            -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+
 
       # Compile using Ninja
       - name: Build Project
