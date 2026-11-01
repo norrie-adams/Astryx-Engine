@@ -11,31 +11,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Pull the repository code
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      # Pull the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # Set up vcpkg and its cache
-    - name: Setup vcpkg
-      uses: lukka/run-vcpkg@v11
-      with:
-        vcpkgDirectory: ${{ github.workspace }}/vcpkg
-        # Automatically activates caching for installed packages
-        appendedArgs: '--x-manifest-install' 
+      # Install GCC and essential build tools
+      - name: Install GCC Build Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc g++ build-essential tar unzip curl
 
-    # Configure CMake using the vcpkg toolchain file
-    - name: Configure CMake
-      run: |
-        cmake -B build \
-          -S . \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+      # Set up vcpkg and its cache
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: ${{ github.workspace }}/vcpkg
+          runVcpkgInstall: true
+          vcpkgGitCommitId: '5b1214315250939257ef5d62ecdcbca18cf4fb1c'
 
-    # Build the project and tests
-    - name: Build Project
-      run: cmake --build build --config Release
+      # Configure CMake using the vcpkg toolchain file
+      - name: Configure CMake
+        env:
+          # Force CMake to use GCC
+          CC: gcc
+          CXX: g++
+          # Expose GHA cache details so vcpkg can download/upload binaries
+          ACTIONS_RUNTIME_TOKEN: ${{ env.ACTIONS_RUNTIME_TOKEN }}
+          ACTIONS_CACHE_URL: ${{ env.ACTIONS_CACHE_URL }}
+        run: |
+          cmake -B build \
+            -S . \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
-    # Run GoogleTest suites via CTest
-    - name: Run Tests
-      working-directory: build
-      run: ctest --output-on-failure -C Release
+      # Build the project and tests
+      - name: Build Project
+        run: cmake --build build --config Release
+
+      # Run GoogleTest suites via CTest
+      - name: Run Tests
+        working-directory: build
+        run: ctest --output-on-failure -C Release
