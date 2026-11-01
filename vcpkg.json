@@ -1,6 +1,7 @@
 {
   "name": "astryx-engine",
   "version-string": "0.3.0",
+  "builtin-baseline": "5b1214315250939257ef5d62ecdcbca18cf4fb1c",
   "dependencies": [
     "assimp",
     "glfw3",
