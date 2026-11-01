@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: microsoft/vcpkg
-          ref: '5b1214315250939257ef5d62ecdcbca18cf4fb1c'
+          ref: 'master'
           path: vcpkg
 
       # 3. Cleanly install system build tools, compilers, and Linux graphics headers
