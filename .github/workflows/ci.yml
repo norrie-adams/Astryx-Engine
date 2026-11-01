@@ -11,40 +11,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Pull code
+      # Pull your engine source repository code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Setup your concrete engine stack: G++, Ninja, and vcpkg deps
-      - name: Install Tools
+      # Pull the vcpkg source release directly via Git clone
+      - name: Checkout vcpkg source code
+        uses: actions/checkout@v4
+        with:
+          repository: microsoft/vcpkg
+          ref: '5b1214315250939257ef5d62ecdcbca18cf4fb1c'
+          path: vcpkg
+
+      # Cleanly install system build tools, compilers, and Linux graphics headers
+      - name: Install System Build Tools & Graphic Drivers
         run: |
           sudo apt-get update
-          sudo apt-get install -y g++ ninja-build tar unzip curl
+          sudo apt-get install -y g++ ninja-build tar unzip curl libgl1-mesa-dev xorg-dev
 
-      # Download/bootstrap vcpkg cleanly without executing internal installations
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgDirectory: ${{ github.workspace }}/vcpkg
-          vcpkgGitCommitId: '5b1214315250939257ef5d62ecdcbca18cf4fb1c'
-          runVcpkgInstall: false # Let CMake handle it natively during generation
+      # Bootstrap vcpkg natively 
+      - name: Bootstrap vcpkg
+        run: ./vcpkg/bootstrap-vcpkg.sh
 
-      # Generate with Ninja and G++
+      # Native CMake configuration using GCC, Ninja, and the toolchain path
       - name: Configure CMake
+        env:
+          CC: gcc
+          CXX: g++
         run: |
-          export CC=/usr/bin/gcc
-          export CXX=/usr/bin/g++
-          cmake -B build -G Ninja \
-            -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -G Ninja
 
-
-      # Compile using Ninja
+      #Build the engine and targets using Ninja
       - name: Build Project
         run: cmake --build build --config Release
 
-      # Test
+      # Run the test suite via CTest
       - name: Run Tests
         working-directory: build
         run: ctest --output-on-failure -C Release
