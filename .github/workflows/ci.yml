@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Pull your engine source repository code
+      # 1. Pull engine source repository code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Pull the vcpkg source release directly via Git clone
+      # 2. Pull the exact, verified vcpkg source release directly via Git clone
       - name: Checkout vcpkg source code
         uses: actions/checkout@v4
         with:
@@ -23,29 +23,37 @@ jobs:
           ref: '5b1214315250939257ef5d62ecdcbca18cf4fb1c'
           path: vcpkg
 
-      # Cleanly install system build tools, compilers, and Linux graphics headers
+      # 3. Cleanly install system build tools, compilers, and Linux graphics headers
       - name: Install System Build Tools & Graphic Drivers
         run: |
           sudo apt-get update
           sudo apt-get install -y g++ ninja-build tar unzip curl libgl1-mesa-dev xorg-dev
 
-      # Bootstrap vcpkg natively 
+      # 4. Bootstrap vcpkg natively
       - name: Bootstrap vcpkg
         run: ./vcpkg/bootstrap-vcpkg.sh
 
-      # Native CMake configuration using GCC, Ninja, and the toolchain path
+      # 5. Natively configure and compile your manifest packages via CMake & Ninja
       - name: Configure CMake
         env:
-          CC: gcc
-          CXX: g++
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+          # Injects the GitHub cache endpoints so vcpkg can store/restore pre-compiled packages
+          ACTIONS_RUNTIME_TOKEN: ${{ env.ACTIONS_RUNTIME_TOKEN }}
+          ACTIONS_CACHE_URL: ${{ env.ACTIONS_CACHE_URL }}
+          VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
         run: |
-          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -G Ninja
+          cmake -B build -G Ninja \
+            -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja \
+            -DCMAKE_C_COMPILER=/usr/bin/gcc \
+            -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
-      #Build the engine and targets using Ninja
+      # 6. Build the engine and targets using Ninja
       - name: Build Project
         run: cmake --build build --config Release
 
-      # Run the test suite via CTest
+      # 7. Run the test suite via CTest
       - name: Run Tests
         working-directory: build
         run: ctest --output-on-failure -C Release
