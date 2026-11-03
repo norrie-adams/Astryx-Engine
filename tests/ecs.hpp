@@ -17,6 +17,4 @@ class ECSTests : public AstryxTest {
         return elements;
     };
 
-    // Remove component helper function
-
 };

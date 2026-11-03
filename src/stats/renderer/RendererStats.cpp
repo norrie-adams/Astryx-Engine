@@ -4,5 +4,5 @@
 RendererStats rendererStats;
 
 void ClearRendererStats() {
-    uint32_t drawCalls = 0;
+    rendererStats.drawCalls = 0;
 }
