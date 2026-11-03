@@ -61,7 +61,7 @@ Texture::Texture(const std::string &path)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     }
     else {
-        Log::error("Texture failed to load at path: " + path);
+        Log::Error("Texture failed to load at path: ", path);
     }
 
     stbi_image_free(pixelData);

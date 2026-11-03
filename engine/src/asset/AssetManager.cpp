@@ -84,7 +84,7 @@ bool AssetManager::init(std::shared_ptr<Registry> m_Registry) {
     // Meshes
     for (auto& component : meshRendererPool.m_componentData) {
         if (meshRendererPool.m_componentData.empty()) {
-            Log::error("No entites have a MeshRenderer component. Will not render anything");
+            Log::Warn("No entites have a MeshRenderer component. Will not render anything");
             // Will eventually set to default scene
             return false;
         }
@@ -94,7 +94,7 @@ bool AssetManager::init(std::shared_ptr<Registry> m_Registry) {
     // Textures
     for (auto& component : texturePool.m_componentData) {
         if (texturePool.m_componentData.empty()) {
-            Log::error("No entites have a texture compoent. No texture will be drawn");
+            Log::Warn("No entites have a texture compoent. No texture will be drawn");
             return false;
         }
         assetHash textureHash = registerTexture(component.textureFilePath);

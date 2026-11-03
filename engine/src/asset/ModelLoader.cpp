@@ -30,7 +30,7 @@ ModelData loadModel(const std::string &filename) {
     const aiScene* scene = importer.ReadFile(filename, ASSIMP_FLAGS);
     
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-        Log::error(importer.GetErrorString());
+        Log::Error("Failed to load model: ", filename, "Assimp Error: ", importer.GetErrorString());
         return data;
     }
     
