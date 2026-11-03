@@ -1,6 +1,5 @@
-#include "Registry.h"
-#include "Entity.h"
-#include "System.h"
+#include "scene/Registry.h"
+#include "ecs/System.h"
 #include "core/Log.h"
 #include "stats/ecs/entites.h"
 #include <iostream>

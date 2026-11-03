@@ -1,5 +1,5 @@
 #pragma once
-#include "Registry.h"
+#include "scene/Registry.h"
 #include "Component.h"
 #include <bitset>
 #include <iostream>

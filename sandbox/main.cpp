@@ -3,7 +3,7 @@
 #include "ecs/components/Transform.h"
 #include "ecs/components/MeshRenderer.h"
 #include "Game.h"
-#include "ecs/Registry.h"
+#include "scene/Registry.h"
 #include <glm/glm.hpp>
 #include <cstdint>
 #include <string>

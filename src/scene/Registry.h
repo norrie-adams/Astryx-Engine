@@ -6,8 +6,8 @@
 #include <queue>
 #include <string>
 
-#include "Entity.h"
-#include "Component.h"
+#include "ecs/Entity.h"
+#include "ecs/Component.h"
 
 using ComponentMask = std::bitset<256>;
 
@@ -52,7 +52,6 @@ public:
 
 };
 
-#include "Registry.inl"
+#include "ecs/Registry.inl"
 
 extern std::shared_ptr<Registry> g_Registry;
-

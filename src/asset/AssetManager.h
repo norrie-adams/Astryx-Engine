@@ -6,7 +6,7 @@
 #include <string>
 #include <memory>
 #include "rendering/Mesh.h"
-#include "ecs/Registry.h"
+#include "scene/Registry.h"
 #include "TextureLoader.h"
 #include "rendering/Texture.h"
 

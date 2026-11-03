@@ -1,5 +1,5 @@
 #pragma once
-#include "ecs/Registry.h"
+#include "scene/Registry.h"
 #include "ecs/System.h"
 #include "gtest/gtest.h"
 #include <memory>
