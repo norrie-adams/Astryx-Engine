@@ -24,9 +24,7 @@ set(ENGINE_HEADERS
     ${CMAKE_SOURCE_DIR}/include/rendering/Renderer.hpp
     ${CMAKE_SOURCE_DIR}/include/rendering/Shader.hpp
     ${CMAKE_SOURCE_DIR}/include/rendering/Texture.hpp
-    ${CMAKE_SOURCE_DIR}/include/scene/GameObject.hpp
     ${CMAKE_SOURCE_DIR}/include/scene/Registry.hpp
-    ${CMAKE_SOURCE_DIR}/include/scene/Scene.hpp
     ${CMAKE_SOURCE_DIR}/include/stats/ecs/entites.hpp
     ${CMAKE_SOURCE_DIR}/include/stats/renderer/RendererStats.hpp
 )
@@ -45,9 +43,7 @@ set(ENGINE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/rendering/Renderer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/rendering/Shader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/rendering/Texture.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/scene/GameObject.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/scene/Registry.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/scene/Scene.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/stats/ecs/entites.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/stats/renderer/RendererStats.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/stb_implementation.cpp

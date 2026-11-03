@@ -7,7 +7,6 @@
 #include "ecs/components/Light.hpp"
 #include "Texture.hpp"
 
-class GameObject;
 class Shader;
 class Light;
 
