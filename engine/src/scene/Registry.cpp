@@ -9,7 +9,7 @@
 #include <queue>
 
 Entity Registry::createEntity() {
-    Log::info("YES HI ITS ME! YOU actually created something so this works!");
+    Log::Info("YES HI ITS ME! YOU actually created something so this works!");
     if (m_reusedEntities.size() != 0) {
         Entity id = m_reusedEntities.front();
         return id;

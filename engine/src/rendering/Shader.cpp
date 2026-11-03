@@ -26,7 +26,7 @@ static std::string readFile(const char *filePath)
     std::ifstream file(filePath);
     if (!file.is_open())
     {
-        Log::error("Failed to open shader file: " + std::string(filePath));
+        Log::Fatal("Failed to open shader file: ", std::string(filePath));
         return "";
     }
 
@@ -51,7 +51,7 @@ static unsigned int compileShader(unsigned int type, const char *source)
     if (!success)
     {
         glGetShaderInfoLog(shader, 1024, nullptr, log);
-        Log::error(std::string("Shader compiler error: ") + log);
+        Log::Fatal(std::string("Shader compiler error: ") + log);
     }
 
     return shader;
@@ -60,13 +60,12 @@ static unsigned int compileShader(unsigned int type, const char *source)
 // Links compiled shaders into a program
 Shader::Shader(const char *vertexPath, const char *fragmentPath)
 {
-
     std::string vertexStr = readFile(vertexPath);
     std::string fragmentStr = readFile(fragmentPath);
 
     if (vertexStr.empty() || fragmentStr.empty())
     {
-        Log::error("Shader source empty");
+        Log::Fatal("Shader source empty");
         return;
     }
 
@@ -88,7 +87,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
     if (!success)
     {
         glGetProgramInfoLog(ID, 1024, nullptr, log);
-        Log::error(std::string("Shader link error: ") + log);
+        Log::Fatal(std::string("Shader link error: ") + log);
     }
 
     glDeleteShader(vs);

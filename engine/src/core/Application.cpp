@@ -92,7 +92,7 @@ bool Application::init()
 {
     if (!glfwInit())
     {
-        Log::error("GLFW Init Failed");
+        Log::Fatal("GLFW Init Failed");
         return false;
     }
 
@@ -103,7 +103,7 @@ bool Application::init()
     m_Window = glfwCreateWindow(800, 600, "Astryx Engine", NULL, NULL);
     if (!m_Window)
     {
-        Log::error("Window Creation Failed");
+        Log::Fatal("Window Creation Failed");
         glfwTerminate();
         return false;
     }
@@ -113,7 +113,7 @@ bool Application::init()
     // GLAD init
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        Log::error("Failed to initialize GLAD");
+        Log::Fatal("Failed to initialize GLAD");
         return false;
     }
 
