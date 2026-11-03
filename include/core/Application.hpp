@@ -17,7 +17,6 @@
 #include "rendering/Renderer.hpp"
 #include "rendering/Shader.hpp"
 #include "rendering/Texture.hpp"
-#include "scene/GameObject.hpp"
 #include "rendering/RenderSystem.hpp"
 
 // Standard Library

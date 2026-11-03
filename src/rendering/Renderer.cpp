@@ -12,7 +12,6 @@
 #include "rendering/Renderer.hpp"
 #include "rendering/Shader.hpp"
 #include "rendering/Texture.hpp"
-#include "scene/GameObject.hpp"
 #include "core/Log.hpp"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
