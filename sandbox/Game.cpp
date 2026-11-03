@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "Game.hpp"
 #include "ecs/Entity.hpp"
 #include "ecs/components/Components.hpp"
 

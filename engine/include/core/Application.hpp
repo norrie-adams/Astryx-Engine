@@ -18,6 +18,7 @@
 #include "rendering/Shader.hpp"
 #include "rendering/Texture.hpp"
 #include "rendering/RenderSystem.hpp"
+#include "ui/UIManager.hpp"
 
 // Standard Library
 #include <memory>
@@ -34,7 +35,7 @@ public:
 
 private:
     void render();
-    void renderImGui();
+    void renderUI();
 
     GLFWwindow *m_Window = nullptr;
     const unsigned int m_Width = 800;
@@ -43,6 +44,7 @@ private:
     Camera m_Camera;
     Renderer m_Renderer;
     std::unique_ptr<RenderSystem> m_renderSystem;
+    UIManager m_uiManager;
 
     int m_FramebufferWidth = 800;
     int m_FramebufferHeight = 600;

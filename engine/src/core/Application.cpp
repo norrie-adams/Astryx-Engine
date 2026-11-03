@@ -29,6 +29,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "ui/UIManager.hpp"
 #include "stats/renderer/RendererStats.hpp"
 #include "scene/Registry.hpp"
 #include "asset/AssetManager.hpp"
@@ -147,40 +148,12 @@ bool Application::init()
     return true;
 }
 
-void Application::renderImGui() {
+void Application::renderUI() {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    // Will be moved to another file later, just temporary
-    {
-        float padding = 10.0f; // Distance from the screen edges
-        ImGui::SetNextWindowPos(ImVec2(padding, padding), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(340, 120), ImGuiCond_Always);
-
-        ImGui::Begin("Astryx Engine Debug Panel");
-        
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 
-                    1000.0f / ImGui::GetIO().Framerate, 
-                    ImGui::GetIO().Framerate);
-
-        ImGui::Text("Application Draw Calls (Per Frame): %u", 
-                    rendererStats.drawCalls);
-                    
-        ImGui::Separator();
-        
-        const GLubyte* renderAPIVersion = glGetString(GL_VERSION);
-        ImGui::Text("OpenGL: %s",
-            reinterpret_cast<const char*>(glGetString(GL_VERSION)));
-
-        ImGui::Text("GPU: %s",
-            reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
-
-        ImGui::Text("Vendor: %s",
-            reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
-
-        ImGui::End();
-    }
+    m_uiManager.drawUI();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -207,7 +180,8 @@ void Application::run()
         // Render
         m_renderSystem->render(m_Renderer, m_FramebufferWidth, m_FramebufferHeight);
 
-        renderImGui();
+        // UI
+        renderUI();
 
         glfwSwapBuffers(m_Window);
         glfwPollEvents();
