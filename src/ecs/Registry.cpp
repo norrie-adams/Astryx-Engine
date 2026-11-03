@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "System.h"
 #include "core/Log.h"
+#include "stats/ecs/entites.h"
 #include <iostream>
 #include <cstdint>
 #include <bitset>
@@ -18,6 +19,7 @@ Entity Registry::createEntity() {
     m_EntityCounter++;
     m_liveEntities.push_back(id);
     m_EntityMasks.resize(id + 1);
+    ecsStats.entityCount += 1;
     return id;
 };
 
@@ -31,8 +33,7 @@ void Registry::deleteEntity(Entity entity) {
             pool->remove(entity);
         }
     }
-    // Test
-    std::cout << "Deleted Entity: " << entity << std::endl;
+    ecsStats.entityCount -= 1;
 }
 
 // Example Code for Creation (and was used for testing)
