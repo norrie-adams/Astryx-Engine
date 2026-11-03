@@ -2,7 +2,7 @@
 #include "core/Log.hpp"
 #include "ecs/components/Transform.hpp"
 #include "ecs/components/MeshRenderer.hpp"
-#include "Game.h"
+#include "Game.hpp"
 #include "scene/Registry.hpp"
 #include <glm/glm.hpp>
 #include <cstdint>
