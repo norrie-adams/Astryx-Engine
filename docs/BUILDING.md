@@ -26,10 +26,13 @@ CLion: [CLion Documentation](https://www.jetbrains.com/help/clion/package-manage
 {
     "cmake.buildDirectory": "${workspaceFolder}/build",
     "cmake.configureSettings": {
-        "CMAKE_TOOLCHAIN_FILE": "PATH_TO_VCPKG/vcpkg/scripts/buildsystems/vcpkg.cmake" 
+        "CMAKE_TOOLCHAIN_FILE": "/home/norrieadams/vcpkg/scripts/buildsystems/vcpkg.cmake"
     },
     "cmake.configureOnOpen": true,
-    "cmake.generator": "Ninja" 
+    "cmake.generator": "Ninja", 
+    "cmake.configureArgs": [
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+    ]
 }
 ```
 
