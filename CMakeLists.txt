@@ -24,7 +24,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_link_options(-fsanitize=address)
 endif()
 
-add_subdirectory(src)
+add_subdirectory(engine)
 
 option(BUILD_SANDBOX "Build the sandbox developer mode application" ON)
 option(BUILD_TESTS "Build the unit tests" ON)
