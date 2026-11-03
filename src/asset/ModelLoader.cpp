@@ -8,7 +8,7 @@
 // 3. Extracts mesh data (vertices, UVs, faces) into ModelData
 // 4. Converts ModelData into a GPU-ready meshData vector
 
-#include "ModelLoader.hpp"
+#include "asset/ModelLoader.hpp"
 #include "core/Log.hpp"
 #include <string>
 #include <vector>

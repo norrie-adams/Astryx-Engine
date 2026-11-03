@@ -11,7 +11,7 @@
 // Intended for development debugging only.
 // Will be expanded in future versions (levels, file output, filtering)
 
-#include "Log.hpp"
+#include "core/Log.hpp"
 #include <iostream>
 
 // Prints general engine/runtime information to console

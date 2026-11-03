@@ -20,7 +20,7 @@
 // - Forward rendering only (no ECS, no batching yet)
 // - Temporary global camera pointer used for mouse callback routing
 
-#include "Application.hpp"
+#include "core/Application.hpp"
 #include "asset/ModelLoader.hpp"
 #include "core/Input.hpp"
 #include "core/Log.hpp"

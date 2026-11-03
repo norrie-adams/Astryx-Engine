@@ -1,4 +1,4 @@
-#include "RendererStats.hpp"
+#include "stats/renderer/RendererStats.hpp"
 #include <cstdint>
 
 RendererStats rendererStats;

@@ -15,7 +15,7 @@
 // - No fallback texture if loading fails
 // - Image is flipped vertically for OpenGL coordinate system
 
-#include "Texture.hpp"
+#include "rendering/Texture.hpp"
 #include "glad/glad.h"
 #include "core/Log.hpp"
 #include "asset/TextureLoader.hpp"

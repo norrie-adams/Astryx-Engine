@@ -1,11 +1,11 @@
-#include "AssetManager.hpp"
-#include "ModelLoader.hpp"
+#include "asset/AssetManager.hpp"
+#include "asset/ModelLoader.hpp"
 #include "scene/Registry.hpp"
 #include "core/Log.hpp"
 #include "rendering/Mesh.hpp"
 #include "ecs/components/MeshRenderer.hpp"
 #include "ecs/components/TextureComponent.hpp"
-#include "TextureLoader.hpp"
+#include "asset/TextureLoader.hpp"
 #include "rendering/Texture.hpp"
 #include <functional>
 #include <cstdint>
