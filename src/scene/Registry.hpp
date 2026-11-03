@@ -6,8 +6,8 @@
 #include <queue>
 #include <string>
 
-#include "ecs/Entity.h"
-#include "ecs/Component.h"
+#include "ecs/Entity.hpp"
+#include "ecs/Component.hpp"
 
 using ComponentMask = std::bitset<256>;
 

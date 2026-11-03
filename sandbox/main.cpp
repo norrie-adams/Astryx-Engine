@@ -1,9 +1,9 @@
-#include "core/Application.h"
-#include "core/Log.h"
-#include "ecs/components/Transform.h"
-#include "ecs/components/MeshRenderer.h"
+#include "core/Application.hpp"
+#include "core/Log.hpp"
+#include "ecs/components/Transform.hpp"
+#include "ecs/components/MeshRenderer.hpp"
 #include "Game.h"
-#include "scene/Registry.h"
+#include "scene/Registry.hpp"
 #include <glm/glm.hpp>
 #include <cstdint>
 #include <string>

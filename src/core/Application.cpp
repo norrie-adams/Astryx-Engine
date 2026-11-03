@@ -20,18 +20,18 @@
 // - Forward rendering only (no ECS, no batching yet)
 // - Temporary global camera pointer used for mouse callback routing
 
-#include "Application.h"
-#include "asset/ModelLoader.h"
-#include "core/Input.h"
-#include "core/Log.h"
-#include "rendering/Camera.h"
-#include "rendering/Renderer.h"
+#include "Application.hpp"
+#include "asset/ModelLoader.hpp"
+#include "core/Input.hpp"
+#include "core/Log.hpp"
+#include "rendering/Camera.hpp"
+#include "rendering/Renderer.hpp"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include "stats/renderer/RendererStats.h"
-#include "scene/Registry.h"
-#include "asset/AssetManager.h"
+#include "stats/renderer/RendererStats.hpp"
+#include "scene/Registry.hpp"
+#include "asset/AssetManager.hpp"
 
 // Globals
 std::shared_ptr<Registry> g_Registry = nullptr;

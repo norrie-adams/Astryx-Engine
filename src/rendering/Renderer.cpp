@@ -9,11 +9,11 @@
 // Camera/view logic is external and passed in per frame
 // Each Submit() represents one draw call
 
-#include "Renderer.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "scene/GameObject.h"
-#include "core/Log.h"
+#include "Renderer.hpp"
+#include "Shader.hpp"
+#include "Texture.hpp"
+#include "scene/GameObject.hpp"
+#include "core/Log.hpp"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>

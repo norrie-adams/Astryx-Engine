@@ -1,5 +1,5 @@
 #pragma once
-#include "scene/Registry.h"
+#include "scene/Registry.hpp"
 
 class Scene {
     Scene();

@@ -1,6 +1,6 @@
 #include "Game.h"
-#include "ecs/Entity.h"
-#include "ecs/components/Components.h"
+#include "ecs/Entity.hpp"
+#include "ecs/components/Components.hpp"
 
 void Game::createScene() {
     // Brick

@@ -1,7 +1,7 @@
 #include "ecs.hpp"
-#include "scene/Registry.h"
-#include "ecs/System.h"
-#include "ecs/components/Components.h"
+#include "scene/Registry.hpp"
+#include "ecs/System.hpp"
+#include "ecs/components/Components.hpp"
 #include <glm/glm.hpp>
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>

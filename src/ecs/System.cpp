@@ -1,7 +1,7 @@
-#include "scene/Registry.h"
-#include "System.h"
-#include "ecs/components/Transform.h"
-#include "ecs/components/MeshRenderer.h"
+#include "scene/Registry.hpp"
+#include "System.hpp"
+#include "ecs/components/Transform.hpp"
+#include "ecs/components/MeshRenderer.hpp"
 #include <iostream>
 
 // Example system so I don't forget how this works

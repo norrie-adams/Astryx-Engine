@@ -7,7 +7,7 @@
 // - Provides model matrix for rendering
 // - Delegates actual drawing to its Mesh
 
-#include "GameObject.h"
+#include "GameObject.hpp"
 
 void GameObject::draw(Shader &shader)
 {

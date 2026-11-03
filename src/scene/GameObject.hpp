@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../rendering/Mesh.h"
-#include "../rendering/Shader.h"
-#include "ecs/components/Transform.h"
+#include "../rendering/Mesh.hpp"
+#include "../rendering/Shader.hpp"
+#include "ecs/components/Transform.hpp"
 
 class GameObject {
 public:

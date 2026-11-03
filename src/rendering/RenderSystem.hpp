@@ -1,10 +1,10 @@
 #pragma once
-#include "scene/Registry.h"
-#include "ecs/System.h"
-#include "asset/AssetManager.h"
-#include "Camera.h"
-#include "Shader.h"
-#include "Renderer.h"
+#include "scene/Registry.hpp"
+#include "ecs/System.hpp"
+#include "asset/AssetManager.hpp"
+#include "Camera.hpp"
+#include "Shader.hpp"
+#include "Renderer.hpp"
 #include <memory>
 
 class RenderSystem : System { 

@@ -1,4 +1,4 @@
-#include "Component.h"
+#include "Component.hpp"
 
 template <typename T>
 void SparseSet<T>::insert (Entity ent, T component) {

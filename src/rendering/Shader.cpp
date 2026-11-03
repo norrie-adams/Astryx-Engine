@@ -13,8 +13,8 @@
 // - Logs shader compile/link failures (via Log system)
 // - Does not throw exceptions (fails silently after logging)
 
-#include "Shader.h"
-#include "core/Log.h"
+#include "Shader.hpp"
+#include "core/Log.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>

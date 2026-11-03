@@ -1,20 +1,20 @@
-#include "RenderSystem.h"
-#include "ecs/System.h"
-#include "scene/Registry.h"
-#include "ecs/Entity.h"
-#include "ecs/components/Components.h"
-#include "asset/AssetManager.h"
-#include "stats/renderer/RendererStats.h"
-#include "Renderer.h"
-#include "Mesh.h"
-#include "Camera.h"
+#include "RenderSystem.hpp"
+#include "ecs/System.hpp"
+#include "scene/Registry.hpp"
+#include "ecs/Entity.hpp"
+#include "ecs/components/Components.hpp"
+#include "asset/AssetManager.hpp"
+#include "stats/renderer/RendererStats.hpp"
+#include "Renderer.hpp"
+#include "Mesh.hpp"
+#include "Camera.hpp"
 #include <string>
 #include <vector>
 #include <cstdint>
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "core/Log.h"
+#include "core/Log.hpp"
 
 void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeight) {    
     //  ------- PASS 1 ------- 
