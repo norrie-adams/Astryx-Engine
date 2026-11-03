@@ -1,5 +1,5 @@
-#include "scene/Registry.h"
-#include "core/Log.h"
+#include "scene/Registry.hpp"
+#include "core/Log.hpp"
 
 // Returns a reference to a specific pool
 template <typename T>

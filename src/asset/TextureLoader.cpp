@@ -1,7 +1,7 @@
-#include "TextureLoader.h"
+#include "TextureLoader.hpp"
 #include <string>
 #include "stb/stb_image.h"
-#include "core/Log.h"
+#include "core/Log.hpp"
 
 namespace AssetLoader {
 

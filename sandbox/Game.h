@@ -1,4 +1,4 @@
-#include "scene/Registry.h"
+#include "scene/Registry.hpp"
 #include <memory>
 
 class Game {

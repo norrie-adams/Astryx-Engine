@@ -12,9 +12,9 @@
 // - Generates view matrix using glm::lookAt
 // - Movement is frame-rate independent using deltaTime
 
-#include "Camera.h"
-#include "core/Input.h"
-#include "core/Log.h"
+#include "Camera.hpp"
+#include "core/Input.hpp"
+#include "core/Log.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 // Starting Camera Position

@@ -1,7 +1,7 @@
-#include "scene/Registry.h"
-#include "ecs/System.h"
-#include "core/Log.h"
-#include "stats/ecs/entites.h"
+#include "scene/Registry.hpp"
+#include "ecs/System.hpp"
+#include "core/Log.hpp"
+#include "stats/ecs/entites.hpp"
 #include <iostream>
 #include <cstdint>
 #include <bitset>

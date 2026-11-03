@@ -5,10 +5,10 @@
 #include <cstdint>
 #include <string>
 #include <memory>
-#include "rendering/Mesh.h"
-#include "scene/Registry.h"
-#include "TextureLoader.h"
-#include "rendering/Texture.h"
+#include "rendering/Mesh.hpp"
+#include "scene/Registry.hpp"
+#include "TextureLoader.hpp"
+#include "rendering/Texture.hpp"
 
 using assetHash = uint64_t;
 

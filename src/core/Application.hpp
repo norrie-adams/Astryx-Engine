@@ -13,12 +13,12 @@
 #include <glm/gtx/string_cast.hpp>
 
 // Engine Systems
-#include "rendering/Camera.h"
-#include "rendering/Renderer.h"
-#include "rendering/Shader.h"
-#include "rendering/Texture.h"
-#include "scene/GameObject.h"
-#include "rendering/RenderSystem.h"
+#include "rendering/Camera.hpp"
+#include "rendering/Renderer.hpp"
+#include "rendering/Shader.hpp"
+#include "rendering/Texture.hpp"
+#include "scene/GameObject.hpp"
+#include "rendering/RenderSystem.hpp"
 
 // Standard Library
 #include <memory>

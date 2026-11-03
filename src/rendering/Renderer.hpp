@@ -3,9 +3,9 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <memory>
-#include "Mesh.h"
-#include "ecs/components/Light.h"
-#include "Texture.h"
+#include "Mesh.hpp"
+#include "ecs/components/Light.hpp"
+#include "Texture.hpp"
 
 class GameObject;
 class Shader;

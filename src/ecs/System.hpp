@@ -1,6 +1,6 @@
 #pragma once
-#include "scene/Registry.h"
-#include "Component.h"
+#include "scene/Registry.hpp"
+#include "Component.hpp"
 #include <bitset>
 #include <iostream>
 #include <algorithm>

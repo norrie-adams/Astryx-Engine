@@ -8,8 +8,8 @@
 // 3. Extracts mesh data (vertices, UVs, faces) into ModelData
 // 4. Converts ModelData into a GPU-ready meshData vector
 
-#include "ModelLoader.h"
-#include "core/Log.h"
+#include "ModelLoader.hpp"
+#include "core/Log.hpp"
 #include <string>
 #include <vector>
 #include <assimp/Importer.hpp>
@@ -26,7 +26,7 @@ ModelData loadModel(const std::string &filename) {
     ModelData data;
     Assimp::Importer importer;
     
-    // ASSIMP_FLAGS is visible here from ModelLoader.h
+    // ASSIMP_FLAGS is visible here from ModelLoader.hpp
     const aiScene* scene = importer.ReadFile(filename, ASSIMP_FLAGS);
     
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {

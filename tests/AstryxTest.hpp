@@ -1,6 +1,6 @@
 #pragma once
-#include "scene/Registry.h"
-#include "ecs/System.h"
+#include "scene/Registry.hpp"
+#include "ecs/System.hpp"
 #include "gtest/gtest.h"
 #include <memory>
 
