@@ -17,7 +17,7 @@
 // - Rendered using GL_TRIANGLES
 // - Assumes external renderer handles shader binding
 
-#include "Mesh.hpp"
+#include "rendering/Mesh.hpp"
 #include "stats/renderer/RendererStats.hpp"
 
 // Creates GPU buffers and uploads vertex data

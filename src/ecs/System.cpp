@@ -1,5 +1,5 @@
 #include "scene/Registry.hpp"
-#include "System.hpp"
+#include "ecs/System.hpp"
 #include "ecs/components/Transform.hpp"
 #include "ecs/components/MeshRenderer.hpp"
 #include <iostream>

@@ -1,13 +1,13 @@
-#include "RenderSystem.hpp"
+#include "rendering/RenderSystem.hpp"
 #include "ecs/System.hpp"
 #include "scene/Registry.hpp"
 #include "ecs/Entity.hpp"
 #include "ecs/components/Components.hpp"
 #include "asset/AssetManager.hpp"
 #include "stats/renderer/RendererStats.hpp"
-#include "Renderer.hpp"
-#include "Mesh.hpp"
-#include "Camera.hpp"
+#include "rendering/Renderer.hpp"
+#include "rendering/Mesh.hpp"
+#include "rendering/Camera.hpp"
 #include <string>
 #include <vector>
 #include <cstdint>

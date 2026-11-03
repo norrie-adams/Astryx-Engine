@@ -16,7 +16,7 @@
 // - Keyboard only (no mouse input yet)
 // - State is event-updated via GLFW, not manually polled
 
-#include "Input.hpp"
+#include "core/Input.hpp"
 
 std::bitset<GLFW_KEY_LAST + 1> Input::m_KeyStates;
 

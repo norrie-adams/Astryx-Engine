@@ -12,7 +12,7 @@
 // - Generates view matrix using glm::lookAt
 // - Movement is frame-rate independent using deltaTime
 
-#include "Camera.hpp"
+#include "rendering/Camera.hpp"
 #include "core/Input.hpp"
 #include "core/Log.hpp"
 #include <glm/gtc/matrix_transform.hpp>

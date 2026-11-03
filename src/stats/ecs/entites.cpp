@@ -1,5 +1,5 @@
 #include "scene/Registry.hpp"
-#include "entites.hpp"
+#include "stats/ecs/entites.hpp"
 
 ECSStats ecsStats;
 
