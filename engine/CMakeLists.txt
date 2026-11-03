@@ -27,6 +27,7 @@ set(ENGINE_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/scene/Registry.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/stats/ecs/entites.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/stats/renderer/RendererStats.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/ui/UIManager.hpp
 )
 
 set(ENGINE_SOURCES
@@ -46,6 +47,8 @@ set(ENGINE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scene/Registry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stats/ecs/entites.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stats/renderer/RendererStats.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ui/UIManager.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ui/DebugPanel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stb_implementation.cpp
 )
 
