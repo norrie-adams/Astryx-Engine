@@ -1,4 +1,4 @@
-#include "Registry.h"
+#include "scene/Registry.h"
 #include "core/Log.h"
 
 // Returns a reference to a specific pool

@@ -1,4 +1,4 @@
-#include "Registry.h"
+#include "scene/Registry.h"
 #include "System.h"
 #include "ecs/components/Transform.h"
 #include "ecs/components/MeshRenderer.h"

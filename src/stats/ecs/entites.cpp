@@ -1,4 +1,4 @@
-#include "ecs/Registry.h"
+#include "scene/Registry.h"
 #include "entites.h"
 
 ECSStats ecsStats;

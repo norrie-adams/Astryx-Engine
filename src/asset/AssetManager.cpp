@@ -1,6 +1,6 @@
 #include "AssetManager.h"
 #include "ModelLoader.h"
-#include "ecs/Registry.h"
+#include "scene/Registry.h"
 #include "core/Log.h"
 #include "rendering/Mesh.h"
 #include "ecs/components/MeshRenderer.h"

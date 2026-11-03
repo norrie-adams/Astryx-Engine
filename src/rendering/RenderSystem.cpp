@@ -1,6 +1,6 @@
 #include "RenderSystem.h"
 #include "ecs/System.h"
-#include "ecs/Registry.h"
+#include "scene/Registry.h"
 #include "ecs/Entity.h"
 #include "ecs/components/Components.h"
 #include "asset/AssetManager.h"

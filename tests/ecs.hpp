@@ -1,6 +1,6 @@
 #pragma once
 #include "ecs/System.h"
-#include "ecs/Registry.h"
+#include "scene/Registry.h"
 #include "AstryxTest.hpp"
 #include <vector>
 

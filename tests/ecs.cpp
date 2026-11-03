@@ -1,5 +1,5 @@
 #include "ecs.hpp"
-#include "ecs/Registry.h"
+#include "scene/Registry.h"
 #include "ecs/System.h"
 #include "ecs/components/Components.h"
 #include <glm/glm.hpp>

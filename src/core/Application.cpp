@@ -30,7 +30,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "stats/renderer/RendererStats.h"
-#include "ecs/Registry.h"
+#include "scene/Registry.h"
 #include "asset/AssetManager.h"
 
 // Globals
