@@ -1,4 +1,4 @@
-#include "ecs/Registry.h"
+#include "ecs/Registry.hpp"
 #include <memory>
 
 class Game {
