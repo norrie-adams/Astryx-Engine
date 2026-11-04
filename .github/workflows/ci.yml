@@ -1,0 +1,60 @@
+name: Astryx CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      # Pull engine source repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Pull a verified, pinned vcpkg release instead of 'master'
+      - name: Checkout vcpkg source code
+        uses: actions/checkout@v4
+        with:
+          repository: microsoft/vcpkg
+          ref: '2024.11.12' # Pin to a stable vcpkg release tag
+          path: vcpkg
+          fetch-depth: 1
+
+      # Cleanly install system build tools, compilers, and Linux graphics headers
+      - name: Install System Build Tools & Graphic Drivers
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            g++ \
+            ninja-build \
+            tar \
+            unzip \
+            curl \
+            libgl1-mesa-dev \
+            xorg-dev
+
+      # Bootstrap vcpkg natively
+      - name: Bootstrap vcpkg
+        run: ./vcpkg/bootstrap-vcpkg.sh
+
+      # Natively configure and compile your manifest packages via CMake & Ninja
+      - name: Configure CMake
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja \
+            -DCMAKE_C_COMPILER=/usr/bin/gcc \
+            -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+      # Build the engine and targets using Ninja
+      - name: Build Project
+        run: cmake --build build --config Release
+
+      # Run the test suite via CTest
+      - name: Run Tests
+        working-directory: build
+        run: ctest --output-on-failure -C Release
