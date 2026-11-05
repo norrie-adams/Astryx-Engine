@@ -1,6 +1,8 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 class Camera
 {
@@ -9,10 +11,11 @@ public:
 
     glm::mat4 getViewMatrix();
 
-    void processInput(float deltaTime);
+    void processInput(GLFWwindow* window, float deltaTime);
     void processMouseMovement(float xoffset, float yoffset);
 
     glm::vec3 getPosition() const { return position; } 
+    bool isMenuOpen() { return m_isMenuOpen; }
 
 private:
     glm::vec3 position;
@@ -24,6 +27,9 @@ private:
     float pitch;
     float rotationSpeed;
     float mouseSensitivity;
+
+    bool m_isMenuOpen = false;
+    bool m_TabPressedLastFrame = false;
 
     void updateCameraVectors();
 };

@@ -2,7 +2,6 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include <memory>
 #include "Mesh.hpp"
 #include "ecs/components/Light.hpp"
 #include "Texture.hpp"

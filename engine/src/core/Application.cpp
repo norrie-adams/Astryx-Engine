@@ -30,24 +30,34 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "ui/UIManager.hpp"
-#include "stats/renderer/RendererStats.hpp"
 #include "scene/Registry.hpp"
 #include "asset/AssetManager.hpp"
 
 // Globals
 std::shared_ptr<Registry> g_Registry = nullptr;
 std::shared_ptr<AssetManager> g_AssetManager = nullptr;
-std::shared_ptr<Camera> g_Camera = nullptr;
 
 // Handles mouse movement and forwards deltas to active camera
 
 static bool firstMouse = true;
+static bool isMenuOpen = false;
 static float lastX = 400.0f;
 static float lastY = 300.0f;
 
 // Mouse-look Function
 void mouse_callback(GLFWwindow *window, double xposIn, double yposIn)
 {
+    ImGui_ImplGlfw_CursorPosCallback(window, xposIn, yposIn);
+    Camera* camera = static_cast<Camera*>(glfwGetWindowUserPointer(window));
+    if(!camera) {
+        Log::Error("Camera is null, so you can't look around! Its okay you can just mess around with the UI its interesting enough...");
+    }
+
+    if (camera && camera->isMenuOpen()) {
+        firstMouse = true;
+        return;
+    }
+
     float xpos = static_cast<float>(xposIn);
     float ypos = static_cast<float>(yposIn);
 
@@ -64,10 +74,21 @@ void mouse_callback(GLFWwindow *window, double xposIn, double yposIn)
     lastX = xpos;
     lastY = ypos;
 
-    if (g_Camera)
+    if (camera)
     {
-        g_Camera->processMouseMovement(xoffset, yoffset);
+        camera->processMouseMovement(xoffset, yoffset);
     }
+}
+
+void Application::toggleInputMode(GLFWwindow* window) {
+    ImGuiIO& io = ImGui::GetIO();
+    if (g_Camera->isMenuOpen()) {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // UI
+        io.ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+    } else {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Game
+        io.ConfigFlags |= ImGuiConfigFlags_NoMouse;
+    };
 }
 
 Application::Application() {}
@@ -117,20 +138,14 @@ bool Application::init()
         return false;
     }
 
-    Input::init(m_Window);
-
-    glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPosCallback(m_Window, mouse_callback);
-
-    glViewport(0, 0, 800, 600);
-    m_Renderer.Init();
-
     g_Registry = std::make_shared<Registry>();
     g_AssetManager = std::make_shared<AssetManager>();
     g_Camera = std::make_unique<Camera>();
-    m_renderSystem = std::make_unique<RenderSystem>(g_Registry, *g_AssetManager, *g_Camera);
+    glfwSetWindowUserPointer(m_Window, g_Camera.get());
 
-    g_AssetManager->init(g_Registry);
+    Input::init(m_Window);
+    glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(m_Window, ::mouse_callback);
 
     // Initialize Dear ImGui
     IMGUI_CHECKVERSION();
@@ -142,8 +157,15 @@ bool Application::init()
     ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(m_Window, true); 
-    ImGui_ImplOpenGL3_Init("#version 330");       
+    ImGui_ImplOpenGL3_Init("#version 330");  
+    // Install ImGui callbacks after the engine callbacks so it chains to them.
+    ImGui_ImplGlfw_InitForOpenGL(m_Window, false);
+
+    glViewport(0, 0, 800, 600);
+    m_Renderer.Init();
+    m_uiManager = std::make_unique<UIManager>(g_Registry);
+    m_renderSystem = std::make_unique<RenderSystem>(g_Registry, *g_AssetManager, *g_Camera);
+    g_AssetManager->init(g_Registry);  
 
     return true;
 }
@@ -153,7 +175,7 @@ void Application::renderUI() {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    m_uiManager.drawUI();
+    m_uiManager->drawUI();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -175,7 +197,8 @@ void Application::run()
         glViewport(0, 0, m_FramebufferWidth, m_FramebufferHeight);
 
         // Input
-        g_Camera->processInput(deltaTime);
+        g_Camera->processInput(m_Window, deltaTime);
+        toggleInputMode(m_Window);
 
         // Render
         m_renderSystem->render(m_Renderer, m_FramebufferWidth, m_FramebufferHeight);

@@ -7,16 +7,9 @@
 // GLM Math
 #define GLM_ENABLE_EXPERIMENTAL
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/string_cast.hpp>
-
 // Engine Systems
 #include "rendering/Camera.hpp"
 #include "rendering/Renderer.hpp"
-#include "rendering/Shader.hpp"
-#include "rendering/Texture.hpp"
 #include "rendering/RenderSystem.hpp"
 #include "ui/UIManager.hpp"
 
@@ -29,22 +22,23 @@ public:
     ~Application();
     Application();
 
+    void mouse_callback(GLFWwindow *window, double xposIn, double yposIn);
     bool init();
     void run();
     std::shared_ptr<Registry> getRegistry() const { return g_Registry; }
+    void toggleInputMode(GLFWwindow* window);
 
 private:
-    void render();
     void renderUI();
 
     GLFWwindow *m_Window = nullptr;
     const unsigned int m_Width = 800;
     const unsigned int m_Height = 600;
 
-    Camera m_Camera;
-    Renderer m_Renderer;
+    std::unique_ptr<Camera> g_Camera;
+    std::unique_ptr<UIManager> m_uiManager;
     std::unique_ptr<RenderSystem> m_renderSystem;
-    UIManager m_uiManager;
+    Renderer m_Renderer;
 
     int m_FramebufferWidth = 800;
     int m_FramebufferHeight = 600;

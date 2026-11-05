@@ -16,3 +16,4 @@ CMakeCache.txt
 .clang-format
 
 to-do.txt
+.imgui.ini

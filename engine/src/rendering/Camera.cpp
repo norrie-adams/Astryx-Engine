@@ -14,7 +14,6 @@
 
 #include "rendering/Camera.hpp"
 #include "core/Input.hpp"
-#include "core/Log.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 // Starting Camera Position
@@ -34,8 +33,20 @@ Camera::Camera()
 glm::mat4 Camera::getViewMatrix() { return glm::lookAt(position, position + front, up); }
 
 // Polls input and applies transform
-void Camera::processInput(float deltaTime)
+void Camera::processInput(GLFWwindow* window, float deltaTime)
 {
+   bool tabPressed = (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS);
+
+    if (tabPressed && !m_TabPressedLastFrame) {
+        m_isMenuOpen = !m_isMenuOpen; // Toggle state from true to false
+    }
+    m_TabPressedLastFrame = tabPressed;
+
+    // Early exit if the menu is open so the keyboard doesn't move the camera
+    if (m_isMenuOpen) {
+        return; 
+    }
+
     float speed = 2.0f * deltaTime;
     if (Input::isKeyPressed(GLFW_KEY_W))
         position += front * speed;

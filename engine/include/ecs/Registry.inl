@@ -1,4 +1,5 @@
 #include "scene/Registry.hpp"
+#include "core/Helpers.hpp"
 #include "core/Log.hpp"
 
 // Returns a reference to a specific pool
@@ -21,7 +22,7 @@ SparseSet<T>& Registry::getPool() {
 
 template <typename T> 
 void Registry::addComponent(Entity ent, T component) {
-    Log::Info("Added Component: ", component, "to Entity: ", ent);
+    Log::Info("Added Component: ", getStructName<T>(), " to Entity: ", ent);
     // Entity Masks
     uint32_t componentID = ComponentIDGenerator::getComponentID<T>();
     if (ent >= m_EntityMasks.size()) { // simple resize check
@@ -39,7 +40,6 @@ void Registry::removeComponent(Entity ent) {
     uint32_t componentID = ComponentIDGenerator::getComponentID<T>();
     auto& pool = getPool<T>();
     pool.remove(ent);
-    Log::Info("Removed Component: ", component, "from Entity: ", ent);
 }
 
 // helper function

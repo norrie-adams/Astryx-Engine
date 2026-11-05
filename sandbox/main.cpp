@@ -1,31 +1,26 @@
 #include "core/Application.hpp"
 #include "core/Log.hpp"
-#include "ecs/components/Transform.hpp"
-#include "ecs/components/MeshRenderer.hpp"
 #include "Game.hpp"
 #include "scene/Registry.hpp"
-#include <glm/glm.hpp>
-#include <cstdint>
-#include <string>
 
 int main()
 {
-    Log::info("Engine intialized");
+    Log::Info("Engine intialized");
 
     Application app;
 
     if (!app.init())
     {
-        Log::error("Application initialization failed");
+        Log::Fatal("Application initialization failed");
         return -1;
     }
 
-    Log::info("nanam");
+    Log::Info("nanam");
     std::shared_ptr<Registry> gameRegistry = app.getRegistry();
-    Log::info("nanam");
+    Log::Info("nanam");
     Game game(gameRegistry);
     game.createScene();
-    Log::info("nanam");
+    Log::Info("nanam");
 
     app.run();
 
