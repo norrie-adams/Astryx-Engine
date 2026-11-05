@@ -37,8 +37,7 @@ namespace Astryx {
         void drawIndexed(uint32_t count) {
             if (count == 0) {
                 return; 
-            }
-            
+            } 
             glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
         }
     };
