@@ -1,4 +1,4 @@
 #pragma once
 #include <cstdint>
 
-uint32_t xOffset = 0;
+uint32_t xOffset = 5.0f;
