@@ -4,7 +4,6 @@
 #include <bitset>
 #include <memory>
 #include <queue>
-#include <string>
 
 #include "ecs/Entity.hpp"
 #include "ecs/Component.hpp"
