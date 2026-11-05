@@ -5,6 +5,7 @@
 #include "ecs/components/Components.hpp"
 #include "stats/renderer/RendererStats.hpp"
 #include "glad/glad.h"
+#include "core/Log.hpp"
 #include <string>
 #include <glm/glm.hpp>
 
@@ -36,13 +37,14 @@ void UIManager::drawDebugPanel() {
 
 
     if(ImGui::Button("Add Cube")) {
+        Log::Info("Created Cube");
         uint32_t cube = m_Registry->createEntity();
         m_Registry->addComponent<Transform>(cube, Transform{
         .position = glm::vec3(xOffset, 0.0f, 0.0f),
         .rotation = glm::vec3(0.0f, 45.0f, 0.0f),
         .scale = glm::vec3(1.0f)
         });
-        xOffset += 2.0f; // Increase offset of each cube
+        xOffset += 5.0f; // Increase offset of each cube
         m_Registry->addComponent<MeshRenderer>(cube, MeshRenderer{
             .modelFilePath = std::string("assets/models/engine_cube.obj")
         });
