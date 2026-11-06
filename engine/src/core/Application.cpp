@@ -144,10 +144,14 @@ bool Application::init()
     glfwSetWindowUserPointer(m_Window, g_Camera.get());
 
     Input::init(m_Window);
+    
     // Sets keybinds since ImGui doesn't do it for us
     glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* w, int b, int a, int m) { ImGui_ImplGlfw_MouseButtonCallback(w, b, a, m); });
     glfwSetScrollCallback(m_Window, [](GLFWwindow* w, double x, double y) { ImGui_ImplGlfw_ScrollCallback(w, x, y); });
-    glfwSetKeyCallback(m_Window, [](GLFWwindow* w, int k, int s, int a, int m) { ImGui_ImplGlfw_KeyCallback(w, k, s, a, m); });
+    glfwSetKeyCallback(m_Window, [](GLFWwindow* w, int k, int s, int a, int m) { 
+        Input::keyCallback(w, k, s, a, m);         
+        ImGui_ImplGlfw_KeyCallback(w, k, s, a, m); 
+    });
     glfwSetCharCallback(m_Window, [](GLFWwindow* w, unsigned int c) { ImGui_ImplGlfw_CharCallback(w, c); });
     
     glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

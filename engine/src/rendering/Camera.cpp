@@ -12,8 +12,8 @@
 // - Generates view matrix using glm::lookAt
 // - Movement is frame-rate independent using deltaTime
 
-#include "rendering/Camera.hpp"
 #include "core/Input.hpp"
+#include "rendering/Camera.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 // Starting Camera Position
@@ -48,16 +48,19 @@ void Camera::processInput(GLFWwindow* window, float deltaTime)
     }
 
     float speed = 2.0f * deltaTime;
-    if (Input::isKeyPressed(GLFW_KEY_W))
+    if (Input::isKeyPressed(GLFW_KEY_W)) {
         position += front * speed;
-    if (Input::isKeyPressed(GLFW_KEY_S))
+    }
+    if (Input::isKeyPressed(GLFW_KEY_S)) {
         position -= front * speed;
-
+    }
     glm::vec3 right = glm::normalize(glm::cross(front, worldUp));
-    if (Input::isKeyPressed(GLFW_KEY_A))
+    if (Input::isKeyPressed(GLFW_KEY_A)) {
         position -= right * speed;
-    if (Input::isKeyPressed(GLFW_KEY_D))
+    }
+    if (Input::isKeyPressed(GLFW_KEY_D)) {
         position += right * speed;
+    }
 }
 
 // Applies WASD movement based on current input state
