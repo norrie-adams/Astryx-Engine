@@ -17,6 +17,7 @@
 // - State is event-updated via GLFW, not manually polled
 
 #include "core/Input.hpp"
+#include "core/Log.hpp"
 
 std::bitset<GLFW_KEY_LAST + 1> Input::m_KeyStates;
 

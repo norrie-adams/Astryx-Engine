@@ -1,5 +1,7 @@
 # Astryx Engine Documentation
 
+**Latest Updated Version is v0.3**
+
 Welcome to the Astryx Engine Documentation! 
 
 This is an overview of the documentation, and how to navigate it. 
