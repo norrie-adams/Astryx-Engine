@@ -44,13 +44,15 @@ The way that the structure is explained is in large, vague-ish chunks.
 
 We can start at the heart of the engine [Application.cpp](../../engine/src/core/Application.cpp). This is the main orchestrator file, where we initalize things like GLFW, GLAD, etc. and set up our Registry, AssetManager, ECS systems, etc. and also contains the run() function. 
 
-We can then branch off into the other major systems, AssetManager, Registry, and UIManager. AssetManager manages all of the assets in the engine. Registry is the centeral manager of our scene, using the ECS implementation. We will go more indepth in that in [ECS Implementation](ecs.md). And UIManager manages the creation of our UI.
+We can then branch off into the other major systems, AssetManager, Registry, and UIManager. AssetManager manages all of the assets in the engine. Registry is the centeral manager of our scene, using the ECS implementation. We will go more indepth in that in [ECS Implementation](ECS.md). And UIManager manages the creation of our UI.
 
-For ECS systems, right now we just have [RenderSystem](../../engine/src/rendering/RenderSystem.cpp). It is the orchestrator of all the rendering parts, like [Renderer](../../engine/src/rendering/Renderer.cpp), [Shader]((../../engine/src/rendering/Shader.cpp)), [Mesh]((../../engine/src/rendering/Mesh.cpp)), etc. We will discuss the renderer further in depth in the [Renderer Page](renderer.md).
+For ECS systems, right now we just have [RenderSystem](../../engine/src/rendering/RenderSystem.cpp). It is the orchestrator of all the rendering parts, like [Renderer](../../engine/src/rendering/Renderer.cpp), [Shader]((../../engine/src/rendering/Shader.cpp)), [Mesh]((../../engine/src/rendering/Mesh.cpp)), etc. We will discuss the renderer further in depth in the [Renderer Page](RENDERER.md).
 
 Circling back to the overall architecture, I would like to explain how I seperate the engine and the game. Right now, we call it sandbox. Sandbox, as stated before, is our developer testing enviornment. However, it could be represented as a game (and for the sake of this). Our engine builds the source code as its own library and the sandbox interacts with it via the engine header files. This is why we seperate the .hpp and .cpp implementation of the files. This is also how the engine will be distributed when developers distribute games in the future. 
 
 #### Diagrams
+
+##### Overall Engine Flow
 
 ```mermaid
 flowchart LR

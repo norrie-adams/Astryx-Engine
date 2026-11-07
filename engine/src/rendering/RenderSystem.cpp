@@ -8,13 +8,11 @@
 #include "rendering/Renderer.hpp"
 #include "rendering/Mesh.hpp"
 #include "rendering/Camera.hpp"
-#include <string>
 #include <vector>
 #include <cstdint>
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "core/Log.hpp"
 
 void RenderSystem::render(Renderer& m_Renderer, int screenWidth, int screenHeight) {    
     //  ------- PASS 1 ------- 
