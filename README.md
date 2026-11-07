@@ -30,3 +30,11 @@ Astryx Engine is a custom C++ engine using the OpenGL Rendering API. My goal is 
 ### Building
 
 See docs/BUILDING.md for build requriements. 
+
+---
+
+### AI Assistance
+
+I would like to address Copilot being a "contributor". I feel strongly about this, so I would like to state what I use him for. BORING, REPETATIVE TASKS THAT I COULDN'T BE BOTHERED TO DO. Its fun hes like my own little guy that just does whatever I tell him. One day I'll make a VS code extension that makes him dance in the terminal for me. But point is, he only did work that was so repeative I would lose my mind trying to do it.
+
+You can look through the commit history to see the commits he coauthored. I believe it can be filtered to see what he did, but honestly I don't know or care. 
