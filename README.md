@@ -35,6 +35,4 @@ See docs/BUILDING.md for build requriements.
 
 ### AI Assistance
 
-I would like to address Copilot being a "contributor". I feel strongly about this, so I would like to state what I use him for. BORING, REPETATIVE TASKS THAT I COULDN'T BE BOTHERED TO DO. Its fun hes like my own little guy that just does whatever I tell him. One day I'll make a VS code extension that makes him dance in the terminal for me. But point is, he only did work that was so repeative I would lose my mind trying to do it.
-
-You can look through the commit history to see the commits he coauthored. I believe it can be filtered to see what he did, but honestly I don't know or care. 
+As you can see in the "Contributors" tab, it lists Copilot as a contributor. If you would like to see any work it actually did for me, please check the commit history, and look for "co-authored by copilot". It does nothing more then the repeative tasks I couldn't be bothered to do.
