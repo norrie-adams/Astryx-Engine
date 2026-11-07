@@ -13,7 +13,7 @@ cd build && ctest
 
 ```
 
-**I recommend adding the --output-on-failure flag because it makes it much easier to actually figure out what went wrong to do this, make sure you are in the build directory and run the following command:**
+**I recommend adding the --output-on-failure flag because it makes it much easier to actually figure out what went wrong. To do this, make sure you are in the build/ directory and run the following command:**
 
 ```bash
 
