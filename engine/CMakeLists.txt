@@ -18,6 +18,7 @@ set(ENGINE_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/ecs/components/MeshRenderer.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/ecs/components/TextureComponent.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/ecs/components/Transform.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/memory/Arena.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/rendering/Camera.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/rendering/Mesh.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/rendering/RenderSystem.hpp
@@ -38,6 +39,7 @@ set(ENGINE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/Input.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/Log.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ecs/System.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/memory/Arena.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/rendering/Camera.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/rendering/Mesh.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/rendering/RenderSystem.cpp
